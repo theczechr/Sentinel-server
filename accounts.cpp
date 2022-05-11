@@ -29,8 +29,18 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 		if (type == 2)
 		{
 			std::ifstream myfile("clients.json");
-			myfile >> all_acounts;
-			myfile.close();
+			if (!myfile || is_empty(myfile))
+			{
+				log("File is empty or couldn't be opened.");
+				myfile.close();
+				return true;
+			}
+			else
+			{
+				myfile >> all_acounts;
+				myfile.close();
+			}
+
 			std::string hashed_key = std::to_string(client_id(to_check));
 			for (auto it = all_acounts.begin(); it != all_acounts.end(); ++it) //looping through the json keys
 			{
@@ -94,11 +104,12 @@ void createAccount() {
 	key_email = std::to_string(client_id(client_email));
 
 
-
+	std::cout << "happened successfully";
 	std::ifstream myfile("clients.json"); // first we read the database
 	if (!myfile || is_empty(myfile))
 	{
 		log("File is empty or couldn't be opened.");
+		myfile.close();
 	}
 	else
 	{
