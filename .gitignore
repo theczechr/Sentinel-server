@@ -32,6 +32,6 @@
 *.app
 
 # Other
-/vs
+/.vs
 /out
 /build
