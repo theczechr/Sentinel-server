@@ -1,6 +1,24 @@
-﻿cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
-project ("krapp")
-add_executable (PaypalFinal "PaypalFinal.cpp")
+project(KRapp
+        LANGUAGES CXX
+)
+
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+file(GLOB SRC
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+)
+
 find_package(nlohmann_json CONFIG REQUIRED)
-target_link_libraries(PaypalFinal PRIVATE nlohmann_json nlohmann_json::nlohmann_json libssl libcrypto)
+
+add_executable (${PROJECT_NAME} ${SRC})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    nlohmann_json
+    nlohmann_json::nlohmann_json
+    libssl
+    libcrypto
+)
