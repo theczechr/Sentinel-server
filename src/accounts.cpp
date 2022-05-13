@@ -28,7 +28,7 @@ bool Register::control(std::string to_check, int type, int min_length = 3, int m
 			{
 				clog("File is empty or couldn't be opened.");
 				clients.close();
-				return true;
+				return false;
 			}
 			else
 			{
@@ -67,7 +67,9 @@ bool Register::control(std::string to_check, int type, int min_length = 3, int m
 
 bool Register::login_control()
 {
-	std::string email, password, key_email;
+	std::string email;
+	std::string password;
+	std::string key_email;
 	nlohmann::json loaded_accounts;
 	std::ifstream file("clients.json"); // first we read the database
 	file >> loaded_accounts; // and set it as "loaded_accounts"
