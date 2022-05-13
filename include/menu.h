@@ -1,2 +1,2 @@
 #pragma once
-inline void menu();
+void menu();

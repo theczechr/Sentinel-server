@@ -1,14 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include "nlohmann/json.hpp"
-#include "Console.h"
 #include "accounts.h"
-#include "hashing.h"
-using namespace nlohmann;
 
+using namespace nlohmann; // maybe dont use namespace ?
 
-bool is_empty(std::ifstream& pFile)
-{
+bool is_empty(std::ifstream& pFile) {
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
 
@@ -23,7 +17,7 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 		allowed_characters = allowed_characters + "@_-.+=`;'[];,./|?<>:\"";
 	}
 
-	if ( to_check.length() >= min_length && to_check.length() <= max_length)  //checking correct word length
+	if ( to_check.length() >= min_length && to_check.length() <= max_length)  // checking correct word length
 	{
 
 		if (type == 2)
@@ -31,7 +25,7 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 			std::ifstream myfile("clients.json");
 			if (!myfile || is_empty(myfile))
 			{
-				log("File is empty or couldn't be opened.");
+				clog("File is empty or couldn't be opened.");
 				myfile.close();
 				return true;
 			}
@@ -42,11 +36,11 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 			}
 
 			std::string hashed_key = std::to_string(client_id(to_check));
-			for (auto it = all_acounts.begin(); it != all_acounts.end(); ++it) //looping through the json keys
+			for (auto it = all_acounts.begin(); it != all_acounts.end(); ++it) // looping through the json keys
 			{
 				if (it.key() == hashed_key) // if we find the email is already being used, we return false
 				{
-					log("There is already an account with this email");
+					clog("There is already an account with this email");
 					return false;
 				}
 			}
@@ -55,26 +49,25 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 		for (size_t x = 0; x < to_check.length(); x++) {
 			if (allowed_characters.find(to_check[x]) == std::string::npos) // checking if all characters are correct
 			{
-				log("There was an inccorect character");
+				clog("There was an inccorect character");
 				correct = false; // sets the correct variable false if there are any incorrect characters
 			}
 		}
 		if (correct)  // checking if the word is correct, returns true if it is
 		{
-			log("All characters were correct");
+			clog("All characters were correct");
 			return true;
 		}
 	}
 	return false; // returns false if the word is wrong
 }
 
-std::string registration(std::string tag, int type, int min_length = 3, int max_length = 30) // registraion
-{
+std::string registration(std::string tag, int type, int min_length = 3, int max_length = 30) {  // registraion
 	bool correct = true;
 	std::string to_control;
 	while (correct) // remains true until the string to_control is correct
 	{
-		log("Use atleast 3 characters");
+		clog("Use atleast 3 characters");
 		std::cout << "Enter " << tag << ": ";
 		std::cin >> to_control;
 		if (control(to_control, type, min_length, max_length)) {
@@ -94,7 +87,7 @@ void createAccount() {
 	json loaded_accounts;
 
 	flush();
-	log("Create your account!");
+	clog("Create your account!");
 
 	name = hash(registration("name", 0));
 	surname = hash(registration("surname", 1));
@@ -108,7 +101,7 @@ void createAccount() {
 	std::ifstream myfile("clients.json"); // first we read the database
 	if (!myfile || is_empty(myfile))
 	{
-		log("File is empty or couldn't be opened.");
+		clog("File is empty or couldn't be opened.");
 		myfile.close();
 	}
 	else
@@ -125,8 +118,7 @@ void createAccount() {
 	write.close();
 }
 
-bool logincontrol()
-{
+bool logincontrol() {
 	std::string email, password, key_email;
 	json loaded_accounts;
 	std::ifstream file("clients.json"); // first we read the database
@@ -155,18 +147,18 @@ bool logincontrol()
 						return true;
 					}
 				}
-				log("Incorrect password.");
+				clog("Incorrect password.");
 				break;
 			}
 		}
-		log("This account doesn't exist.");
+		clog("This account doesn't exist.");
 	}
-	log("You have failed to log in.");
+	clog("You have failed to log in.");
 	return false;
 }
 
 void login() { 
 	if (logincontrol()) {
-		log("Logged in!");
+		clog("Logged in!");
 	}
 }

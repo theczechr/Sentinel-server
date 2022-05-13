@@ -13,12 +13,13 @@ file(GLOB SRC
 )
 
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
-add_executable (${PROJECT_NAME} ${SRC})
+add_executable(${PROJECT_NAME} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     nlohmann_json
     nlohmann_json::nlohmann_json
-    libssl
-    libcrypto
+    OpenSSL::SSL
+    OpenSSL::Crypto
 )
