@@ -5,7 +5,14 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
-bool is_empty(std::ifstream& pFile);
-void create_account();
-bool login_control();
-void login();
+class Register
+{
+private:
+	bool is_empty(std::ifstream& pFile);
+	bool control(std::string to_check, int type, int min_length = 3, int max_length = 30);
+	bool login_control();
+public:
+	std::string registration(std::string tag, int type, int min_length = 3, int max_length = 30);
+	void create_account();
+	void login();
+};
