@@ -2,6 +2,7 @@
 
 using namespace nlohmann; // maybe dont use namespace ?
 
+// not needed, CRT default function should be used
 bool is_empty(std::ifstream& pFile) {
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
