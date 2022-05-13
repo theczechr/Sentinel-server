@@ -2,7 +2,8 @@
 #include "accounts.h"
 #include "console.h"
 
-void menu() {
+void menu()
+{
 	int choice;
 	bool choosing_path = true;
 	while (choosing_path)
@@ -12,12 +13,12 @@ void menu() {
 		clog("1: Open an account");
 		clog("2: Login to an existing account");
 		clog("3: To be implemented soon!");
-		std::cout << "Your choice:" << "\n" << "~ ";
+		clog("Your choice:\n~");
 		std::cin >> choice;
 		switch (choice)
 		{
 		case 1:
-			createAccount();
+			create_account();
 			choosing_path = false;
 			break;
 
