@@ -1,7 +1,5 @@
 #include "accounts.hpp"
 
-using namespace nlohmann; // maybe dont use namespace ?
-
 // not needed, CRT default function should be used
 bool is_empty(std::ifstream& pFile)
 {
@@ -11,7 +9,7 @@ bool is_empty(std::ifstream& pFile)
 bool control(std::string to_check, int type, int min_length = 3, int max_length = 30)
 {
 	bool correct = true;
-	json all_acounts;
+	nlohmann::json all_acounts;
 	std::string allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	if (type == 2)
 	{
@@ -96,7 +94,7 @@ void create_account()
 	size_t password;
 	std::string key_email;
 	std::string client_email;
-	json loaded_accounts;
+	nlohmann::json loaded_accounts;
 
 	flush();
 	clog("Create your account!");
@@ -133,7 +131,7 @@ void create_account()
 bool login_control()
 {
 	std::string email, password, key_email;
-	json loaded_accounts;
+	nlohmann::json loaded_accounts;
 	std::ifstream file("clients.json"); // first we read the database
 	file >> loaded_accounts; // and set it as "loaded_accounts"
 	file.close();
@@ -153,7 +151,7 @@ bool login_control()
 		{
 			if (it.key() == key_email) // find the email
 			{
-				json value = it.value(); // creating a json from the keys
+				nlohmann::json value = it.value(); // creating a json from the keys
 				for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
 				{
 					if (val.key() == "passw" && val.value() == hashed_password) // checking if the password is correct
