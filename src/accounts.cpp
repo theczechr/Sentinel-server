@@ -9,7 +9,7 @@ bool Register::control(std::string to_check, int type, int min_length = 3, int m
 {
 	bool correct = true;
 	nlohmann::json all_acounts;
-	std::string allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	std::string allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // change to char map
 	if (type == 2)
 	{
 		allowed_characters = allowed_characters + "@_-.";

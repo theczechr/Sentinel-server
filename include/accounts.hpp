@@ -16,3 +16,9 @@ public:
 	void create_account();
 	void login();
 };
+
+class Login
+{
+	void login();
+	void login_control();
+};

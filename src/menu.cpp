@@ -9,12 +9,9 @@ void menu()
 	Register R;
 	while (choosing_path)
 	{
-		clog("AAAAAAAAAAAAAAAA\n");
-		clog("Choose from the further options: ");
-		clog("1: Open an account");
-		clog("2: Login to an existing account");
-		clog("3: To be implemented soon!");
-		clog("Your choice:\n~");
+		clog("[1] - Open an account");
+		clog("[2] - Login to an existing account");
+		clog("----");
 		std::cin >> choice;
 		switch (choice)
 		{
