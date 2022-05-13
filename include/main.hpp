@@ -1,4 +1,4 @@
 #pragma once
-#include "console.h"
-#include "menu.h"
-#include "accounts.h"
+#include "console.hpp"
+#include "menu.hpp"
+#include "accounts.hpp"

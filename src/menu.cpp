@@ -1,6 +1,6 @@
-#include "menu.h"
-#include "accounts.h"
-#include "console.h"
+#include "menu.hpp"
+#include "accounts.hpp"
+#include "console.hpp"
 
 void menu()
 {

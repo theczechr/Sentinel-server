@@ -1,6 +1,6 @@
 #pragma once
-#include "Console.h"
-#include "hashing.h"
+#include "console.hpp"
+#include "hashing.hpp"
 #include <iostream>
 #include <fstream>
 #include <nlohmann/json.hpp>
