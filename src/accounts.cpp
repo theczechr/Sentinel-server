@@ -90,8 +90,12 @@ std::string registration(std::string tag, int type, int min_length = 3, int max_
 
 void create_account()
 {
-	size_t name, surname, email, password;
-	std::string key_email, client_email;
+	size_t name;
+	size_t surname;
+	size_t email;
+	size_t password;
+	std::string key_email;
+	std::string client_email;
 	json loaded_accounts;
 
 	flush();
