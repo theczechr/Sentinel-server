@@ -2,18 +2,22 @@
 
 using namespace nlohmann; // maybe dont use namespace ?
 
-bool is_empty(std::ifstream& pFile) {
+bool is_empty(std::ifstream& pFile)
+{
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
 
-bool control(std::string to_check, int type, int min_length = 3, int max_length = 30) {
+bool control(std::string to_check, int type, int min_length = 3, int max_length = 30)
+{
 	bool correct = true;
 	json all_acounts;
 	std::string allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	if (type == 2) {
+	if (type == 2)
+	{
 		allowed_characters = allowed_characters + "@_-.";
 	}
-	else if (type == 3) {
+	else if (type == 3)
+	{
 		allowed_characters = allowed_characters + "@_-.+=`;'[];,./|?<>:\"";
 	}
 
@@ -22,17 +26,17 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 
 		if (type == 2)
 		{
-			std::ifstream myfile("clients.json");
-			if (!myfile || is_empty(myfile))
+			std::ifstream clients("clients.json");
+			if (!clients || is_empty(clients))
 			{
 				clog("File is empty or couldn't be opened.");
-				myfile.close();
+				clients.close();
 				return true;
 			}
 			else
 			{
-				myfile >> all_acounts;
-				myfile.close();
+				clients >> all_acounts;
+				clients.close();
 			}
 
 			std::string hashed_key = std::to_string(client_id(to_check));
@@ -46,7 +50,8 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 			}
 		}
 
-		for (size_t x = 0; x < to_check.length(); x++) {
+		for (size_t x = 0; x < to_check.length(); x++)
+		{
 			if (allowed_characters.find(to_check[x]) == std::string::npos) // checking if all characters are correct
 			{
 				clog("There was an inccorect character");
@@ -62,7 +67,8 @@ bool control(std::string to_check, int type, int min_length = 3, int max_length 
 	return false; // returns false if the word is wrong
 }
 
-std::string registration(std::string tag, int type, int min_length = 3, int max_length = 30) {  // registraion
+std::string registration(std::string tag, int type, int min_length = 3, int max_length = 30) // registraion
+{
 	bool correct = true;
 	std::string to_control;
 	while (correct) // remains true until the string to_control is correct
@@ -70,7 +76,8 @@ std::string registration(std::string tag, int type, int min_length = 3, int max_
 		clog("Use atleast 3 characters");
 		std::cout << "Enter " << tag << ": ";
 		std::cin >> to_control;
-		if (control(to_control, type, min_length, max_length)) {
+		if (control(to_control, type, min_length, max_length))
+		{
 			correct = false;
 		}
 	}
@@ -80,10 +87,10 @@ std::string registration(std::string tag, int type, int min_length = 3, int max_
 	return to_control;
 }
 
-void createAccount() {
+void create_account()
+{
 	size_t name, surname, email, password;
 	std::string key_email, client_email;
-	bool boolname = true, boolsurname = true, boolemail = true, boolpassword = true;
 	json loaded_accounts;
 
 	flush();
@@ -97,17 +104,17 @@ void createAccount() {
 	key_email = std::to_string(client_id(client_email));
 
 
-	std::cout << "happened successfully";
-	std::ifstream myfile("clients.json"); // first we read the database
-	if (!myfile || is_empty(myfile))
+	clog("Happened succesfully!");
+	std::ifstream clients("clients.json"); // first we read the database
+	if (!clients || is_empty(clients)) // check if file is empty
 	{
 		clog("File is empty or couldn't be opened.");
-		myfile.close();
+		clients.close();
 	}
 	else
 	{
-		myfile >> loaded_accounts; // and set it as "loaded_accounts"
-		myfile.close();
+		clients >> loaded_accounts; // and set it as "loaded_accounts"
+		clients.close();
 	}
 	
 
@@ -118,13 +125,15 @@ void createAccount() {
 	write.close();
 }
 
-bool logincontrol() {
+bool login_control()
+{
 	std::string email, password, key_email;
 	json loaded_accounts;
 	std::ifstream file("clients.json"); // first we read the database
 	file >> loaded_accounts; // and set it as "loaded_accounts"
 	file.close();
-	for (size_t num_of_tries = 3; num_of_tries > 0; --num_of_tries ) {
+	for (size_t num_of_tries = 3; num_of_tries > 0; --num_of_tries )
+	{
 		std::cout << "You have " << num_of_tries << " tries." << std::endl;
 		std::cout << "Enter your email: ";
 		std::cin >> email;
@@ -157,8 +166,10 @@ bool logincontrol() {
 	return false;
 }
 
-void login() { 
-	if (logincontrol()) {
+void login()
+{ 
+	if (login_control())
+	{
 		clog("Logged in!");
 	}
 }
