@@ -1,7 +1,8 @@
 #include <iostream>
 #include "stdlib.h"
 #include "console.h"
-void log(std::string consoleOut) // printing out text
+template<typename T>
+void log(T consoleOut) // printing out texts
 {
 	std::cout << consoleOut << "\n";
 }
