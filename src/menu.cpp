@@ -6,9 +6,10 @@ void menu()
 {
 	int choice;
 	bool choosing_path = true;
+	Register R;
 	while (choosing_path)
 	{
-		clog("Bank system\n");
+		clog("AAAAAAAAAAAAAAAA\n");
 		clog("Choose from the further options: ");
 		clog("1: Open an account");
 		clog("2: Login to an existing account");
@@ -18,12 +19,12 @@ void menu()
 		switch (choice)
 		{
 		case 1:
-			create_account();
+			R.create_account();
 			choosing_path = false;
 			break;
 
 		case 2:
-			login();
+			R.login();
 			choosing_path = false;
 			break;
 
