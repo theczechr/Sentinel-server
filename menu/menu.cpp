@@ -9,19 +9,19 @@ void menu()
 	Account A;
 	while (choosing_path)
 	{
-		utils::clog("[1] - Open an account");
-		utils::clog("[2] - Login to an existing account");
+		utils::clog("[1] - Login");
+		utils::clog("[2] - Register");
 		utils::clog("----");
 		std::cin >> choice;
 		switch (choice)
 		{
 		case 1:
-			A.create();
+			A.login();
 			choosing_path = false;
 			break;
 
 		case 2:
-			A.login();
+			A.create();
 			choosing_path = false;
 			break;
 

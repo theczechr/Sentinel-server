@@ -1,10 +1,5 @@
 #include "account.hpp"
 
-bool Account::is_empty(std::ifstream& pFile) // not needed, CRT default function should be used
-{
-	return pFile.peek() == std::ifstream::traits_type::eof();
-}
-
 bool Account::control(std::string to_check, int type, int min_length = 3, int max_length = 30)
 {
 	bool correct = true;
@@ -24,7 +19,7 @@ bool Account::control(std::string to_check, int type, int min_length = 3, int ma
 		if (type == 2)
 		{
 			std::ifstream clients("clients.json");
-			if (!clients || is_empty(clients))
+			if (!clients || utils::is_file_empty(clients))
 			{
 				utils::clog("File is empty or couldn't be opened.");
 				clients.close();
@@ -63,48 +58,6 @@ bool Account::control(std::string to_check, int type, int min_length = 3, int ma
 		}
 	}
 	return false; // returns false if the word is wrong
-}
-
-bool Account::login_control()
-{
-	std::string email;
-	std::string password;
-	std::string key_email;
-	nlohmann::json loaded_accounts;
-	std::ifstream file("clients.json"); // first we read the database
-	file >> loaded_accounts; // and set it as "loaded_accounts"
-	file.close();
-	for (size_t num_of_tries = 3; num_of_tries > 0; --num_of_tries)
-	{
-		std::cout << "You have " << num_of_tries << " tries." << std::endl;
-		std::cout << "Enter your email: ";
-		std::cin >> email;
-		std::cout << "Enter your password: ";
-		std::cin >> password;
-		size_t hashed_email = client_id(email);
-		size_t hashed_password = hash(password);
-		key_email = std::to_string(hashed_email);
-
-		for (auto it = loaded_accounts.begin(); it != loaded_accounts.end(); ++it) //looping through the json keys
-		{
-			if (it.key() == key_email) // find the email
-			{
-				nlohmann::json value = it.value(); // creating a json from the keys
-				for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
-				{
-					if (val.key() == "passw" && val.value() == hashed_password) // checking if the password is correct
-					{
-						return true;
-					}
-				}
-				utils::clog("Incorrect password.");
-				break;
-			}
-		}
-		utils::clog("This account doesn't exist.");
-	}
-	utils::clog("You have failed to log in.");
-	return false;
 }
 
 std::string Account::registration(std::string tag, int type, int min_length = 3, int max_length = 30) // registraion
@@ -148,7 +101,7 @@ void Account::create()
 
 	utils::clog("Happened succesfully!");
 	std::ifstream clients("clients.json"); // first we read the database
-	if (!clients || is_empty(clients)) // check if file is empty
+	if (!clients || utils::is_file_empty(clients)) // check if file is empty
 	{
 		utils::clog("File is empty or couldn't be opened.");
 		clients.close();
@@ -167,9 +120,42 @@ void Account::create()
 }
 
 void Account::login()
-{ 
-	if (login_control())
+{
+	std::string email;
+	std::string password;
+	std::string key_email;
+	nlohmann::json loaded_accounts;
+	std::ifstream file("clients.json"); // first we read the database
+	file >> loaded_accounts; // and set it as "loaded_accounts"
+	file.close();
+	for (size_t num_of_tries = 3; num_of_tries > 0; --num_of_tries)
 	{
-		utils::clog("Logged in!");
+		std::cout << "You have " << num_of_tries << " tries." << std::endl;
+		std::cout << "Enter your email: ";
+		std::cin >> email;
+		std::cout << "Enter your password: ";
+		std::cin >> password;
+		size_t hashed_email = client_id(email);
+		size_t hashed_password = hash(password);
+		key_email = std::to_string(hashed_email);
+
+		for (auto it = loaded_accounts.begin(); it != loaded_accounts.end(); ++it) //looping through the json keys
+		{
+			if (it.key() == key_email) // find the email
+			{
+				nlohmann::json value = it.value(); // creating a json from the keys
+				for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
+				{
+					if (val.key() == "passw" && val.value() == hashed_password) // checking if the password is correct
+					{
+						utils::clog("Logged in!");
+					}
+				}
+				utils::clog("Incorrect password.");
+				break;
+			}
+		}
+		utils::clog("This account doesn't exist.");
 	}
+	utils::clog("You have failed to log in.");
 }

@@ -27,14 +27,21 @@ file(GLOB SRC
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
 )
 
+find_package(Drogon CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+# The package nlohmann-json can be configured to not provide implicit conversions via a custom triplet file:
+# set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
+# For more information, see the docs here: https://json.nlohmann.me/features/macros/#json_use_implicit_conversions
 find_package(OpenSSL REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    nlohmann_json
+    Drogon::Drogon
     nlohmann_json::nlohmann_json
     OpenSSL::SSL
     OpenSSL::Crypto
+    spdlog::spdlog
+    spdlog::spdlog_header_only
 )

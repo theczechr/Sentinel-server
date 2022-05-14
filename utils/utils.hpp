@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 
 namespace utils
 {
@@ -10,4 +11,5 @@ namespace utils
 	}
 
 	void cflush();
+	bool is_file_empty(std::ifstream& file); // rename ?
 }
