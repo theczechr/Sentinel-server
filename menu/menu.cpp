@@ -1,32 +1,32 @@
 #include "menu.hpp"
-#include "accounts.hpp"
-#include "console.hpp"
+#include "account.hpp"
+#include "utils.hpp"
 
 void menu()
 {
 	int choice;
 	bool choosing_path = true;
-	Register R;
+	Account A;
 	while (choosing_path)
 	{
-		clog("[1] - Open an account");
-		clog("[2] - Login to an existing account");
-		clog("----");
+		utils::clog("[1] - Open an account");
+		utils::clog("[2] - Login to an existing account");
+		utils::clog("----");
 		std::cin >> choice;
 		switch (choice)
 		{
 		case 1:
-			R.create_account();
+			A.create();
 			choosing_path = false;
 			break;
 
 		case 2:
-			R.login();
+			A.login();
 			choosing_path = false;
 			break;
 
 		default:
-			clog("Spatne cislo");
+			utils::clog("Spatne cislo");
 			choosing_path = false;
 			break;
 		}

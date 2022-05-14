@@ -1,11 +1,11 @@
-#include "accounts.hpp"
+#include "account.hpp"
 
-bool Register::is_empty(std::ifstream& pFile) // not needed, CRT default function should be used
+bool Account::is_empty(std::ifstream& pFile) // not needed, CRT default function should be used
 {
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
 
-bool Register::control(std::string to_check, int type, int min_length = 3, int max_length = 30)
+bool Account::control(std::string to_check, int type, int min_length = 3, int max_length = 30)
 {
 	bool correct = true;
 	nlohmann::json all_acounts;
@@ -26,7 +26,7 @@ bool Register::control(std::string to_check, int type, int min_length = 3, int m
 			std::ifstream clients("clients.json");
 			if (!clients || is_empty(clients))
 			{
-				clog("File is empty or couldn't be opened.");
+				utils::clog("File is empty or couldn't be opened.");
 				clients.close();
 				return false;
 			}
@@ -41,7 +41,7 @@ bool Register::control(std::string to_check, int type, int min_length = 3, int m
 			{
 				if (it.key() == hashed_key) // if we find the email is already being used, we return false
 				{
-					clog("There is already an account with this email");
+					utils::clog("There is already an account with this email");
 					return false;
 				}
 			}
@@ -51,21 +51,21 @@ bool Register::control(std::string to_check, int type, int min_length = 3, int m
 		{
 			if (allowed_characters.find(to_check[x]) == std::string::npos) // checking if all characters are correct
 			{
-				clog("There was an inccorect character");
+				utils::clog("There was an inccorect character");
 				correct = false; // sets the correct variable false if there are any incorrect characters
 			}
 		}
 
 		if (correct)  // checking if the word is correct, returns true if it is
 		{
-			clog("All characters were correct");
+			utils::clog("All characters were correct");
 			return true;
 		}
 	}
 	return false; // returns false if the word is wrong
 }
 
-bool Register::login_control()
+bool Account::login_control()
 {
 	std::string email;
 	std::string password;
@@ -97,23 +97,23 @@ bool Register::login_control()
 						return true;
 					}
 				}
-				clog("Incorrect password.");
+				utils::clog("Incorrect password.");
 				break;
 			}
 		}
-		clog("This account doesn't exist.");
+		utils::clog("This account doesn't exist.");
 	}
-	clog("You have failed to log in.");
+	utils::clog("You have failed to log in.");
 	return false;
 }
 
-std::string Register::registration(std::string tag, int type, int min_length = 3, int max_length = 30) // registraion
+std::string Account::registration(std::string tag, int type, int min_length = 3, int max_length = 30) // registraion
 {
 	bool correct = true;
 	std::string to_control;
 	while (correct) // remains true until the string to_control is correct
 	{
-		clog("Use atleast 3 characters");
+		utils::clog("Use atleast 3 characters");
 		std::cout << "Enter " << tag << ": ";
 		std::cin >> to_control;
 		if (control(to_control, type, min_length, max_length))
@@ -121,11 +121,11 @@ std::string Register::registration(std::string tag, int type, int min_length = 3
 			correct = false;
 		}
 	}
-	flush();
+	utils::cflush();
 	return to_control;
 }
 
-void Register::create_account()
+void Account::create()
 {
 	size_t username;
 	size_t password;
@@ -136,8 +136,8 @@ void Register::create_account()
 	std::string client_email;
 	nlohmann::json loaded_accounts;
 
-	flush();
-	clog("Create your account!");
+	utils::cflush();
+	utils::clog("Create your account!");
 
 	username = hash(registration("username", 0));
 	password = hash(registration("password", 3, 3, 40));
@@ -146,11 +146,11 @@ void Register::create_account()
 
 	key_email = std::to_string(client_id(client_email));
 
-	clog("Happened succesfully!");
+	utils::clog("Happened succesfully!");
 	std::ifstream clients("clients.json"); // first we read the database
 	if (!clients || is_empty(clients)) // check if file is empty
 	{
-		clog("File is empty or couldn't be opened.");
+		utils::clog("File is empty or couldn't be opened.");
 		clients.close();
 	}
 	else
@@ -166,10 +166,10 @@ void Register::create_account()
 	write.close();
 }
 
-void Register::login()
+void Account::login()
 { 
 	if (login_control())
 	{
-		clog("Logged in!");
+		utils::clog("Logged in!");
 	}
 }
