@@ -1,47 +1,125 @@
 #include "account.hpp"
 
-bool Account::control(std::string to_check, int type, int min_length = 3, int max_length = 30)
+bool Account::valid_email(std::string email) // Maybe rewrite it ?
 {
+	const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+"); // Tohle se mi nelibi.. je to quick solution. Byl bych radsi kdybychom to udelali my - musime se o tom pobavit
+
+	return std::regex_match(email, pattern);
+}
+
+bool Account::valid_password(std::string password)
+{
+	char allowed_chars[] = {'`','~','!','@','#','$','%','^','&','*',
+							'(',')','-','_','+','=','[',']',';',':',
+							'\'','\"','<','>',',','.','/','?' };
+	if ((password[0] >= 'a' && password[0] <= 'z') || (password[0] >= 'A' && password[0] <= 'Z') || (password == allowed_chars)) // password == allowed_chars - to nevim jestli funguje, ale ostatni by melo
+	{
+		if (password.length() >= 12 && password.length() <= 45) // Check correct password length
+		{
+			utils::clog("Password is correct.");
+			return true;
+		}
+		else
+		{
+			utils::clog("Password is too short or long.");
+			return false;
+		}
+	}
+	else
+	{
+		utils::clog("Password contains forbidden characters.");
+		return false;
+	}
+}
+
+void Account::create()
+{
+	size_t username;
+	size_t password;
+	size_t email;
+	int phone_number;
+
+	std::string key_email;
+	std::string client_email;
+	nlohmann::json loaded_accounts;
+
+	utils::cflush();
+	utils::clog("Create your account!");
+
+	username = hash(registration("username"));
+	password = hash(registration("password", 4, 40));
+	email = hash(registration("email"));
+	phone_number = hash(registration("phone-number"));
+	key_email = std::to_string(client_id(client_email));
+
+	utils::clog("Happened succesfully!");
+	std::ifstream clients("clients.json"); // first we read the database
+	if (!clients || utils::is_file_empty(clients)) // check if file is empty
+	{
+		utils::clog("File is empty or couldn't be opened.");
+		clients.close();
+	}
+	else
+	{
+		clients >> loaded_accounts; // and set it as "loaded_accounts"
+		clients.close();
+	}
+
+	loaded_accounts[key_email] = { {"username", username}, {"password", password} , {"email", email}, {"phone-number", phone_number} }; // then append the new account to it with the key "email"
+	std::ofstream write("clients.json");
+
+	write << loaded_accounts; // save to the file again with new account
+	write.close();
+}
+
+bool Account::control(std::string to_check, int min_length = 3, int max_length = 30) // Tohle potrebuje full rewrite. Snazil jsem se o to, ale jak to je vsechno propojeny tak jsem musel udelat zase neco jinyho a tak
+{
+	// Type:
+	// 2 - email
+	// 3 - password
 	bool correct = true;
 	nlohmann::json all_acounts;
-	std::string allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // change to char map
-	if (type == 2)
-	{
-		allowed_characters = allowed_characters + "@_-.";
-	}
-	else if (type == 3)
-	{
-		allowed_characters = allowed_characters + "@_-.+=`;'[];,./|?<>:\"";
-	}
+	char allowed_chars[] = {'`','~','!','@','#','$','%','^','&','*',
+							'(',')','-','_','+','=','[',']',';',':',
+							'\'','\"','<','>',',','.','/','?'};
+	std::string allowed_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; // change to char array
+	//if (type == 2)
+	//{
+	//	allowed_characters = allowed_characters + "@_-.";
+	//}
+	//else if (type == 3)
+	//{
+	//	allowed_characters = allowed_characters + "@_-.+=`;'[];,./|?<>:\"";
+	//}
 
 	if (to_check.length() >= min_length && to_check.length() <= max_length)  // checking correct word length
 	{
-		if (type == 2)
+		// Check if file exist
+		std::ifstream clients("clients.json");
+		if (!clients || utils::is_file_empty(clients))
 		{
-			std::ifstream clients("clients.json");
-			if (!clients || utils::is_file_empty(clients))
-			{
-				utils::clog("File is empty or couldn't be opened.");
-				clients.close();
-				return false;
-			}
-			else
-			{
-				clients >> all_acounts;
-				clients.close();
-			}
+			utils::clog("File is empty or couldn't be opened.");
+			clients.close();
+			return false;
+		}
+		else
+		{
+			clients >> all_acounts;
+			clients.close();
+		}
 
-			std::string hashed_key = std::to_string(client_id(to_check));
-			for (auto it = all_acounts.begin(); it != all_acounts.end(); ++it) // looping through the json keys
+		// Check if email already exist
+		std::string hashed_key = std::to_string(client_id(to_check));
+		for (auto it = all_acounts.begin(); it != all_acounts.end(); ++it) // looping through the json keys
+		{
+			if (it.key() == hashed_key) // if we find the email is already being used, we return false
 			{
-				if (it.key() == hashed_key) // if we find the email is already being used, we return false
-				{
-					utils::clog("There is already an account with this email");
-					return false;
-				}
+				utils::clog("There is already an account with this email");
+				return false;
 			}
 		}
 
+		// Check for chars
 		for (size_t x = 0; x < to_check.length(); x++)
 		{
 			if (allowed_characters.find(to_check[x]) == std::string::npos) // checking if all characters are correct
@@ -60,7 +138,7 @@ bool Account::control(std::string to_check, int type, int min_length = 3, int ma
 	return false; // returns false if the word is wrong
 }
 
-std::string Account::registration(std::string tag, int type, int min_length = 3, int max_length = 30) // registraion
+std::string Account::registration(std::string tag, int min_length = 3, int max_length = 30) // registraion
 {
 	bool correct = true;
 	std::string to_control;
@@ -69,54 +147,13 @@ std::string Account::registration(std::string tag, int type, int min_length = 3,
 		utils::clog("Use atleast 3 characters");
 		std::cout << "Enter " << tag << ": ";
 		std::cin >> to_control;
-		if (control(to_control, type, min_length, max_length))
+		if (control(to_control, min_length, max_length))
 		{
 			correct = false;
 		}
 	}
 	utils::cflush();
 	return to_control;
-}
-
-void Account::create()
-{
-	size_t username;
-	size_t password;
-	size_t email;
-	int phone_number;
-
-	std::string key_email;
-	std::string client_email;
-	nlohmann::json loaded_accounts;
-
-	utils::cflush();
-	utils::clog("Create your account!");
-
-	username = hash(registration("username", 0));
-	password = hash(registration("password", 3, 3, 40));
-	email = hash(registration("email", 2));
-	phone_number = hash(registration("phone-number", 1));
-
-	key_email = std::to_string(client_id(client_email));
-
-	utils::clog("Happened succesfully!");
-	std::ifstream clients("clients.json"); // first we read the database
-	if (!clients || utils::is_file_empty(clients)) // check if file is empty
-	{
-		utils::clog("File is empty or couldn't be opened.");
-		clients.close();
-	}
-	else
-	{
-		clients >> loaded_accounts; // and set it as "loaded_accounts"
-		clients.close();
-	}
-	
-	loaded_accounts[key_email] = { {"username", username}, {"password", password} , {"email", email}, {"phone-number", phone_number} }; // then append the new account to it with the key "email"
-	std::ofstream write("clients.json");
-
-	write << loaded_accounts; // save to the file again with new account
-	write.close();
 }
 
 void Account::login()
@@ -146,7 +183,7 @@ void Account::login()
 				nlohmann::json value = it.value(); // creating a json from the keys
 				for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
 				{
-					if (val.key() == "passw" && val.value() == hashed_password) // checking if the password is correct
+					if (val.key() == "password" && val.value() == hashed_password) // checking if the password is correct
 					{
 						utils::clog("Logged in!");
 					}
