@@ -7,16 +7,27 @@
 
 class Account
 {
-	// Register
+	size_t username;
+	size_t email;
+	size_t password;
+	// Mozna zmenit datatyp ? ^
+	int phone_number;
+
+	bool valid_username(std::string username);
 	bool valid_email(std::string email);
 	bool valid_password(std::string password);
-	void create();
+	void create(std::string username, std::string email, std::string password, int phone_number);
 
-	bool control(std::string to_check, int min_length, int max_length);
-	std::string registration(std::string tag, int min_length, int max_length); // Remove and implement it in create
 	void login();
 
+	void change_username();
+	void change_email();
+	void change_password();
+
 	void close(); // Delete account
-	void reopen(); // Only within x days
-	// Add things like change username, email, password etc.
+	void reopen(); // Only within x days ?
 };
+
+// Mozna zvlast funkce na registraci a v te funkci by se proste vytvarel Account
+// Musime se o tom pobavit, ale podle me to bude lepsi
+// Premyslel jsem nad tim vic a ztratil jsem se v tom..

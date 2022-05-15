@@ -7,5 +7,5 @@ namespace menu
 {
 	void start_menu();
 	void login_menu();
-	void register_menu(std::string tag);
+	void register_menu();
 }

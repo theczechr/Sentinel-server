@@ -20,7 +20,7 @@ void menu::start_menu()
 			break;
 
 		case 2:
-			//menu::register_menu();
+			menu::register_menu();
 			choosing_path = false;
 			break;
 
@@ -32,13 +32,13 @@ void menu::start_menu()
 	}
 }
 
-void menu::register_menu(std::string tag) // Chtel jsem sem dat i registration funkci z account, ale ted me nenapada jak to udelat
+void menu::register_menu() // Chtel jsem sem dat i registration funkci z account, ale ted me nenapada jak to udelat
 {
 	bool correct = true;
 	std::string to_control;
 	while (correct)
 	{
-		std::cout << "Enter " << tag << ": ";
+		std::cout << "Enter "  << ": ";
 		std::cin >> to_control;
 	}
 	utils::cflush();
