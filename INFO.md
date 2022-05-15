@@ -8,6 +8,3 @@ void foo() // Comment
   - Snake case
 
 ---
-
-- Database: MySQL / SQLite / MariaDB / MongoDB
-- 
