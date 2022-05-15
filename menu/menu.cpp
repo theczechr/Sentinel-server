@@ -1,6 +1,8 @@
 #include "menu.hpp"
 
 // Chtel jsem aby jsme meli takhle rozdeleny to menu, ale rn to nefunguje.. Musime nejdriv poresit ty ucty a potom se vrhnem na tohle
+// Update: Nejak jsem to fixnul, ale nefungujou ty accounts xDD
+// Update: Register, login funkce se opakuje, ale podle me to je ok
 
 void menu::start_menu()
 {
@@ -8,9 +10,8 @@ void menu::start_menu()
 	bool choosing_path = true;
 	while (choosing_path)
 	{
-		utils::clog("[1] - Login");
-		utils::clog("[2] - Register");
-		utils::clog("----");
+		utils::clog("[1] Login");
+		utils::clog("[2] Register");
 		std::cin >> choice;
 		switch (choice)
 		{
@@ -32,19 +33,34 @@ void menu::start_menu()
 	}
 }
 
-void menu::register_menu() // Chtel jsem sem dat i registration funkci z account, ale ted me nenapada jak to udelat
+void menu::register_menu()
 {
-	bool correct = true;
-	std::string to_control;
-	while (correct)
-	{
-		std::cout << "Enter "  << ": ";
-		std::cin >> to_control;
-	}
+	Account A;
+	std::string username;
+	std::string email;
+	std::string password;
+	int phone_number = 0;
+	utils::clog("* - required");
+	std::cout << "Enter username*: "; std::cin >> username;
+	std::cout << "Enter email: "; std::cin >> username;
+	std::cout << "Enter password*: "; std::cin >> username;
+	std::cout << "Enter phone number: "; std::cin >> username;
+	A.create(username, email, password, phone_number);
 	utils::cflush();
 }
 
 void menu::login_menu()
 {
-
+	Account A;
+	std::string username;
+	std::string email;
+	std::string password;
+	int phone_number = 0;
+	utils::clog("Leave blank if none");
+	std::cout << "Enter username: "; std::cin >> username;
+	std::cout << "Enter email: "; std::cin >> username;
+	std::cout << "Enter password: "; std::cin >> username;
+	std::cout << "Enter phone number: "; std::cin >> username;
+	A.login(username, email, password, phone_number);
+	utils::cflush();
 }

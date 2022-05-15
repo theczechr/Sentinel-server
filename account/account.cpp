@@ -57,6 +57,11 @@ bool Account::valid_password(std::string password)
 	}
 }
 
+bool Account::valid_number(int phone_number)
+{
+	// Somehow check it
+}
+
 void Account::create(std::string username, std::string email, std::string password, int phone_number)
 {
 	std::string key_email;
@@ -103,25 +108,7 @@ void Account::create(std::string username, std::string email, std::string passwo
 	write.close();
 }
 
-//std::string Account::registration(std::string tag, int min_length = 3, int max_length = 30) // registraion
-//{
-//	bool correct = true;
-//	std::string to_control;
-//	while (correct) // remains true until the string to_control is correct
-//	{
-//		utils::clog("Use atleast 3 characters");
-//		std::cout << "Enter " << tag << ": ";
-//		std::cin >> to_control;
-//		if (control(to_control, min_length, max_length))
-//		{
-//			correct = false;
-//		}
-//	}
-//	utils::cflush();
-//	return to_control;
-//}
-
-void Account::login()
+void Account::login(std::string username, std::string email, std::string password, int phone_number)
 {
 	std::string email;
 	std::string password;

@@ -2,6 +2,6 @@
 
 int main()
 {
-	menu();
+	menu::start_menu();
 }
 
