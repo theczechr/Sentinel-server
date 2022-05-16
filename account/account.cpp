@@ -28,7 +28,7 @@ bool Account::valid_username(std::string username)
 bool Account::valid_email(std::string email) // Maybe rewrite it ?
 {
 	const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+"); // Tohle se mi nelibi.. je to quick solution. Byl bych radsi kdybychom to udelali my, ale treba se pletu. Musime se o tom pobavit
-
+	// musime zde dodelat kontrolu zda uz email neexistuje, bud dodelame az s databazi, nebo zatim jen jako proof of concept v jsonu
 	return std::regex_match(email, pattern);
 }
 
@@ -37,24 +37,28 @@ bool Account::valid_password(std::string password)
 	char allowed_chars[] = {'`','~','!','@','#','$','%','^','&','*',
 							'(',')','-','_','+','=','[',']',';',':',
 							'\'','\"','<','>',',','.','/','?' };
-	if ((password[0] >= 'a' && password[0] <= 'z') || (password[0] >= 'A' && password[0] <= 'Z') || (password == allowed_chars)) // password == allowed_chars - to nevim jestli funguje, ale ostatni by melo
+	for (char c : password)
 	{
-		if (password.length() >= 12 && password.length() <= 45) // Check correct password length
-		{
-			utils::clog("Password is correct.");
-			return true;
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (password == allowed_chars)) // password == allowed_chars - stale musime fixnout, domluvime se jeste
+	
+			if (password.length() >= 12 && password.length() <= 45) // Check correct password length
+			{
+				utils::clog("Password is correct.");
+				return true;
+			}
+			else
+			{
+				utils::clog("Password is too short or long.");
+				return false;
+			}
 		}
 		else
 		{
-			utils::clog("Password is too short or long.");
+			utils::clog("Password contains forbidden characters.");
 			return false;
 		}
 	}
-	else
-	{
-		utils::clog("Password contains forbidden characters.");
-		return false;
-	}
+
 }
 
 bool Account::valid_number(int phone_number)
@@ -62,7 +66,7 @@ bool Account::valid_number(int phone_number)
 	// Somehow check it
 }
 
-void Account::create(std::string username, std::string email, std::string password, int phone_number)
+void Account::create(std::string t_username, std::string t_email, std::string t_password, int t_phone_number) // t = temporary, conflicting variable names with public variables in account.hpp
 {
 	std::string key_email;
 	std::string client_email;
@@ -71,22 +75,15 @@ void Account::create(std::string username, std::string email, std::string passwo
 	utils::cflush();
 	utils::clog("Create your account!");
 
-	//username = hash(registration("username"));
-	//password = hash(registration("password", 4, 40));
-	//email = hash(registration("email"));
-	//phone_number = hash(registration("phone-number"));
+	hashed_username = hash(registration("username"));
+	hashed_password = hash(registration("password", 4, 40));
+	hashed_email = hash(registration("email"));
+	phone_number = hash(registration("phone-number"));
 	key_email = std::to_string(client_id(client_email));
 
 	// Check if email already exist
 	//std::string hashed_key = std::to_string(client_id(to_check));
-	//for (auto it = all_acounts.begin(); it != all_acounts.end(); ++it) // looping through the json keys
-	//{
-	//	if (it.key() == hashed_key) // if we find the email is already being used, we return false
-	//	{
-	//		utils::clog("There is already an account with this email");
-	//		return false;
-	//	}
-	//}
+
 
 	utils::clog("Happened succesfully!");
 	std::ifstream clients("clients.json"); // first we read the database
