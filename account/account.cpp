@@ -22,7 +22,7 @@ bool Account::valid_username(const std::string& username)
 	{
 		if (username.length() >= 3 && username.length() <= 20) // Check correct username length
 		{
-			LOG(ERROR_ACCESS_AUDIT_BY_POLICY) << "Password is correct.\n";
+			LOG(INFO) << "Password is correct.\n";
 
 			return true;
 		}
