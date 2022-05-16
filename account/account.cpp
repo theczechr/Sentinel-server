@@ -12,8 +12,8 @@
 /* Doesn't specify reason what's wrong, should be added (easy) */
 bool Account::valid_username(const std::string& username)
 {
-	if (!((username.length() >= 3)
-		&& (username.length() <= 20)))
+	if (!(username.length() >= 3
+		&& username.length() <= 20))
 		return false;
 
 	// to check space
@@ -60,7 +60,7 @@ bool Account::valid_username(const std::string& username)
 		for (int i = 65; i <= 90; i++)
 		{
 			// type casting
-			char c = static_cast<char>(i);
+			const char c = static_cast<char>(i);
 
 			std::string str1 = std::to_string(c);
 			if (username.find(str1) != std::string::npos)
@@ -79,7 +79,7 @@ bool Account::valid_username(const std::string& username)
 		for (int i = 97; i <= 122; i++)
 		{
 			// type casting
-			char c = static_cast<char>(i);
+			const char c = static_cast<char>(i);
 			std::string str1 = std::to_string(c);
 
 			if (username.find(str1) != std::string::npos)
