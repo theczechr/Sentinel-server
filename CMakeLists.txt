@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+﻿cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
 # set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "" FORCE) # Vcpkg path
 set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
