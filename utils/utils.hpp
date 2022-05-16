@@ -4,7 +4,7 @@
 
 namespace utils
 {
-	template<typename T>
+	template <typename T>
 	void clog(T consoleOut)
 	{
 		std::cout << consoleOut << std::endl;

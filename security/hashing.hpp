@@ -1,9 +1,8 @@
 #pragma once
 #include <string>
 #include <functional>
-#include <math.h>
 
-size_t hash(std::string to_hash);
-size_t client_id(std::string email);
+size_t hash(const std::string& to_hash);
+size_t client_id(const std::string& email);
 
 // Add to namespace ?

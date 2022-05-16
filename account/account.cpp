@@ -1,72 +1,83 @@
+#include <iostream>
+#include <regex>
+
+#include <nlohmann/json.hpp>
+
+#include "hashing.hpp"
+#include "utils.hpp"
 #include "account.hpp"
 
-bool Account::valid_username(std::string username)
+bool Account::valid_username(const std::string& username)
 {
-	char allowed_chars[] = { '`','~','!','@','#','$','%','^','&','*',
+	const char allowed_chars[] = { '`','~','!','@','#','$','%','^','&','*',
 						'(',')','-','_','+','=','[',']',';',':',
 						'\'','\"','<','>',',','.','/','?' };
+
 	if ((username[0] >= 'a' && username[0] <= 'z') || (username[0] >= 'A' && username[0] <= 'Z') || (username == allowed_chars)) // username == allowed_chars - to nevim jestli funguje, ale ostatni by melo
 	{
 		if (username.length() >= 3 && username.length() <= 20) // Check correct username length
 		{
 			utils::clog("Password is correct.");
+
 			return true;
 		}
-		else
-		{
-			utils::clog("Username is too short or long.");
-			return false;
-		}
-	}
-	else
-	{
-		utils::clog("Username contains forbidden characters.");
+
+		utils::clog("Username is too short or long.");
+
 		return false;
 	}
+
+	utils::clog("Username contains forbidden characters.");
+
+	return false;
 }
 
-bool Account::valid_email(std::string email) // Maybe rewrite it ?
+bool Account::valid_email(const std::string& email) const
+// Maybe rewrite it ?
 {
 	const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+"); // Tohle se mi nelibi.. je to quick solution. Byl bych radsi kdybychom to udelali my, ale treba se pletu. Musime se o tom pobavit
 	// musime zde dodelat kontrolu zda uz email neexistuje, bud dodelame az s databazi, nebo zatim jen jako proof of concept v jsonu
+
 	return std::regex_match(email, pattern);
 }
 
-bool Account::valid_password(std::string password)
+bool Account::valid_password(const std::string& password)
 {
-	char allowed_chars[] = {'`','~','!','@','#','$','%','^','&','*',
+	const char allowed_chars[] = { '`','~','!','@','#','$','%','^','&','*',
 							'(',')','-','_','+','=','[',']',';',':',
 							'\'','\"','<','>',',','.','/','?' };
-	for (char c : password)
+
+	for (const char c : password)
 	{
 		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (password == allowed_chars)) // password == allowed_chars - stale musime fixnout, domluvime se jeste
-	
+
+		{
 			if (password.length() >= 12 && password.length() <= 45) // Check correct password length
 			{
 				utils::clog("Password is correct.");
+
 				return true;
 			}
-			else
-			{
-				utils::clog("Password is too short or long.");
-				return false;
-			}
-		}
-		else
-		{
-			utils::clog("Password contains forbidden characters.");
+
+			utils::clog("Password is too short or long.");
+
 			return false;
 		}
-	}
 
+		utils::clog("Password contains forbidden characters.");
+
+		return false;
+	}
 }
 
 bool Account::valid_number(int phone_number)
 {
 	// Somehow check it
+
+	return false;
 }
 
-void Account::create(std::string t_username, std::string t_email, std::string t_password, int t_phone_number) // t = temporary, conflicting variable names with public variables in account.hpp
+void Account::create(const std::string& t_username, const std::string& t_email, const std::string& t_password, int t_phone_number) // t = temporary, conflicting variable names with public variables in account.hpp
 {
 	std::string key_email;
 	std::string client_email;
@@ -105,7 +116,7 @@ void Account::create(std::string t_username, std::string t_email, std::string t_
 	write.close();
 }
 
-void Account::login(std::string username, std::string email, std::string password, int phone_number)
+void Account::login(const std::string& username, std::string email, std::string password, int phone_number) const
 {
 	std::string email;
 	std::string password;
@@ -133,15 +144,17 @@ void Account::login(std::string username, std::string email, std::string passwor
 				for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
 				{
 					if (val.key() == "password" && val.value() == hashed_password) // checking if the password is correct
-					{
 						utils::clog("Logged in!");
-					}
+
 				}
+
 				utils::clog("Incorrect password.");
 				break;
 			}
 		}
+
 		utils::clog("This account doesn't exist.");
 	}
+
 	utils::clog("You have failed to log in.");
 }
