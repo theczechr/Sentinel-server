@@ -13,15 +13,11 @@ bool Account::valid_username(const std::string& username)
 {
 	if (!((username.length() >= 3)
 		&& (username.length() <= 20)))
-	{
 		return false;
-	}
 
 	// to check space
 	if (username.find(' ') != std::string::npos)
-	{
 		return false;
-	}
 
 	if constexpr (true)
 	{
@@ -34,14 +30,11 @@ bool Account::valid_username(const std::string& username)
 			std::string str1 = std::to_string(i);
 
 			if (username.find(str1) != std::string::npos)
-			{
 				count = 1;
-			}
 		}
+
 		if (count == 0)
-		{
 			return false;
-		}
 	}
 
 	// for special characters
@@ -56,9 +49,7 @@ bool Account::valid_username(const std::string& username)
 		|| username.find(', ') != std::string::npos || username.find('<') != std::string::npos
 		|| username.find('>') != std::string::npos || username.find('?') != std::string::npos
 		|| username.find('|') != std::string::npos))
-	{
 		return false;
-	}
 
 	if constexpr (true)
 	{
@@ -72,14 +63,11 @@ bool Account::valid_username(const std::string& username)
 
 			std::string str1 = std::to_string(c);
 			if (username.find(str1) != std::string::npos)
-			{
 				count = 1;
-			}
 		}
+
 		if (count == 0)
-		{
 			return false;
-		}
 	}
 
 	if constexpr (true)
@@ -94,14 +82,11 @@ bool Account::valid_username(const std::string& username)
 			std::string str1 = std::to_string(c);
 
 			if (username.find(str1) != std::string::npos)
-			{
 				count = 1;
-			}
 		}
+
 		if (count == 0)
-		{
 			return false;
-		}
 	}
 
 	// if all conditions fails
