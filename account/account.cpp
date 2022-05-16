@@ -9,6 +9,7 @@
 #include "hashing.hpp"
 #include "utils.hpp"
 
+/* Doesn't specific reason what's wrong, should be added (easy) */
 bool Account::valid_username(const std::string& username)
 {
 	if (!((username.length() >= 3)
