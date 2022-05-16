@@ -11,30 +11,101 @@
 
 bool Account::valid_username(const std::string& username)
 {
-	const char allowed_chars[] = {
-		'`', '~', '!', '@', '#', '$', '%', '^', '&', '*',
-		'(', ')', '-', '_', '+', '=', '[', ']', ';', ':',
-		'\'', '\"', '<', '>', ',', '.', '/', '?'
-	};
-
-	if (username[0] >= 'a' && username[0] <= 'z' || username[0] >= 'A' && username[0] <= 'Z' || username ==
-		allowed_chars) // username == allowed_chars - to nevim jestli funguje, ale ostatni by melo
+	if (!((username.length() >= 3)
+		&& (username.length() <= 20)))
 	{
-		if (username.length() >= 3 && username.length() <= 20) // Check correct username length
-		{
-			LOG(INFO) << "Password is correct.\n";
-
-			return true;
-		}
-
-		LOG(ERROR) << "ERROR: " << "Username is too short or long.\n";
-
 		return false;
 	}
 
-	LOG(ERROR) << "ERROR: " << "Username contains forbidden characters.\n";
+	// to check space
+	if (username.find(' ') != std::string::npos)
+	{
+		return false;
+	}
 
-	return false;
+	if constexpr (true)
+	{
+		int count = 0;
+
+		// check digits from 0 to 9
+		for (int i = 0; i <= 9; i++)
+		{
+			// to convert int to string
+			std::string str1 = std::to_string(i);
+
+			if (username.find(str1) != std::string::npos)
+			{
+				count = 1;
+			}
+		}
+		if (count == 0)
+		{
+			return false;
+		}
+	}
+
+	// for special characters
+	if (!(username.find('@') != std::string::npos || username.find('#') != std::string::npos
+		|| username.find('!') != std::string::npos || username.find('~') != std::string::npos
+		|| username.find('$') != std::string::npos || username.find('%') != std::string::npos
+		|| username.find('^') != std::string::npos || username.find('&') != std::string::npos
+		|| username.find('*') != std::string::npos || username.find('(') != std::string::npos
+		|| username.find(')') != std::string::npos || username.find('-') != std::string::npos
+		|| username.find('+') != std::string::npos || username.find('/') != std::string::npos
+		|| username.find(':') != std::string::npos || username.find('.') != std::string::npos
+		|| username.find(', ') != std::string::npos || username.find('<') != std::string::npos
+		|| username.find('>') != std::string::npos || username.find('?') != std::string::npos
+		|| username.find('|') != std::string::npos))
+	{
+		return false;
+	}
+
+	if constexpr (true)
+	{
+		int count = 0;
+
+		// checking capital letters
+		for (int i = 65; i <= 90; i++)
+		{
+			// type casting
+			char c = static_cast<char>(i);
+
+			std::string str1 = std::to_string(c);
+			if (username.find(str1) != std::string::npos)
+			{
+				count = 1;
+			}
+		}
+		if (count == 0)
+		{
+			return false;
+		}
+	}
+
+	if constexpr (true)
+	{
+		int count = 0;
+
+		// checking small letters
+		for (int i = 97; i <= 122; i++)
+		{
+			// type casting
+			char c = static_cast<char>(i);
+			std::string str1 = std::to_string(c);
+
+			if (username.find(str1) != std::string::npos)
+			{
+				count = 1;
+			}
+		}
+		if (count == 0)
+		{
+			return false;
+		}
+	}
+
+	// if all conditions fails
+	return true;
 }
 
 bool Account::valid_email(const std::string& email) const
