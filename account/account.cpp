@@ -10,14 +10,14 @@
 #include "utils.hpp"
 
 /* Doesn't specify reason what's wrong, should be added (easy) */
-bool Account::valid_username(const std::string& username)
+bool Account::check_valid(const std::string& to_be_checked, const size_t string_from, const size_t string_to, const bool allow_special_char) const
 {
-	if (!(username.length() >= 3
-		&& username.length() <= 20))
+	if (!(to_be_checked.length() >= string_from
+		&& to_be_checked.length() <= string_to))
 		return false;
 
 	// to check space
-	if (username.find(' ') != std::string::npos)
+	if (to_be_checked.find(' ') != std::string::npos)
 		return false;
 
 	if constexpr (true)
@@ -30,7 +30,7 @@ bool Account::valid_username(const std::string& username)
 			// to convert int to string
 			std::string str1 = std::to_string(i);
 
-			if (username.find(str1) != std::string::npos)
+			if (to_be_checked.find(str1) != std::string::npos)
 				count = 1;
 		}
 
@@ -39,18 +39,21 @@ bool Account::valid_username(const std::string& username)
 	}
 
 	// for special characters
-	if (!(username.find('@') != std::string::npos || username.find('#') != std::string::npos
-		|| username.find('!') != std::string::npos || username.find('~') != std::string::npos
-		|| username.find('$') != std::string::npos || username.find('%') != std::string::npos
-		|| username.find('^') != std::string::npos || username.find('&') != std::string::npos
-		|| username.find('*') != std::string::npos || username.find('(') != std::string::npos
-		|| username.find(')') != std::string::npos || username.find('-') != std::string::npos
-		|| username.find('+') != std::string::npos || username.find('/') != std::string::npos
-		|| username.find(':') != std::string::npos || username.find('.') != std::string::npos
-		|| username.find(', ') != std::string::npos || username.find('<') != std::string::npos
-		|| username.find('>') != std::string::npos || username.find('?') != std::string::npos
-		|| username.find('|') != std::string::npos))
-		return false;
+	if (!allow_special_char)
+	{
+		if (!(to_be_checked.find('@') != std::string::npos || to_be_checked.find('#') != std::string::npos
+			|| to_be_checked.find('!') != std::string::npos || to_be_checked.find('~') != std::string::npos
+			|| to_be_checked.find('$') != std::string::npos || to_be_checked.find('%') != std::string::npos
+			|| to_be_checked.find('^') != std::string::npos || to_be_checked.find('&') != std::string::npos
+			|| to_be_checked.find('*') != std::string::npos || to_be_checked.find('(') != std::string::npos
+			|| to_be_checked.find(')') != std::string::npos || to_be_checked.find('-') != std::string::npos
+			|| to_be_checked.find('+') != std::string::npos || to_be_checked.find('/') != std::string::npos
+			|| to_be_checked.find(':') != std::string::npos || to_be_checked.find('.') != std::string::npos
+			|| to_be_checked.find(', ') != std::string::npos || to_be_checked.find('<') != std::string::npos
+			|| to_be_checked.find('>') != std::string::npos || to_be_checked.find('?') != std::string::npos
+			|| to_be_checked.find('|') != std::string::npos))
+			return false;
+	}
 
 	if constexpr (true)
 	{
@@ -63,7 +66,7 @@ bool Account::valid_username(const std::string& username)
 			const char c = static_cast<char>(i);
 
 			std::string str1 = std::to_string(c);
-			if (username.find(str1) != std::string::npos)
+			if (to_be_checked.find(str1) != std::string::npos)
 				count = 1;
 		}
 
@@ -82,7 +85,7 @@ bool Account::valid_username(const std::string& username)
 			const char c = static_cast<char>(i);
 			std::string str1 = std::to_string(c);
 
-			if (username.find(str1) != std::string::npos)
+			if (to_be_checked.find(str1) != std::string::npos)
 				count = 1;
 		}
 
@@ -91,56 +94,8 @@ bool Account::valid_username(const std::string& username)
 	}
 
 	// if all conditions fails
+
 	return true;
-}
-
-bool Account::valid_email(const std::string& email) const
-// Maybe rewrite it ?
-{
-	const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
-	// Tohle se mi nelibi.. je to quick solution. Byl bych radsi kdybychom to udelali my, ale treba se pletu. Musime se o tom pobavit
-	// musime zde dodelat kontrolu zda uz email neexistuje, bud dodelame az s databazi, nebo zatim jen jako proof of concept v jsonu
-
-	return std::regex_match(email, pattern);
-}
-
-bool Account::valid_password(const std::string& password)
-{
-	constexpr char allowed_chars[] = {
-		'`', '~', '!', '@', '#', '$', '%', '^', '&', '*',
-		'(', ')', '-', '_', '+', '=', '[', ']', ';', ':',
-		'\'', '\"', '<', '>', ',', '.', '/', '?'
-	};
-
-	for (const char c : password)
-	{
-		if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || password == allowed_chars)
-		// password == allowed_chars - stale musime fixnout, domluvime se jeste
-
-		{
-			if (password.length() >= 12 && password.length() <= 45) // Check correct password length
-			{
-				LOG(ERROR) << "ERROR: " << "Password is correct.";
-
-				return true;
-			}
-
-			LOG(ERROR) << "ERROR: " << "Password is too short or long.";
-
-			return false;
-		}
-
-		LOG(ERROR) << "ERROR: " << "Password contains forbidden characters.";
-	}
-
-	return false;
-}
-
-bool Account::valid_number(int phone_number)
-{
-	// Somehow check it
-
-	return false;
 }
 
 void Account::create(const std::string& username, const std::string& email, const std::string& password,
