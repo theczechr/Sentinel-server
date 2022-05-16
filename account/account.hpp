@@ -17,11 +17,10 @@ private:
 	void change_email();
 	void change_password();
 public:
-	size_t hashed_username;
-	size_t username;
-	size_t email;
-	size_t password;
-	int phone_number;
+	size_t hashed_email; // hashed?
+	size_t hashed_username; // hashed?
+	size_t hashed_password;
+	int phone_number; // hashed?
 	void create(std::string username, std::string email, std::string password, int phone_number);
 	void login(std::string username, std::string email, std::string password, int phone_number);
 	void close(); // Delete account
