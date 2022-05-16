@@ -1,7 +1,10 @@
-﻿#include "menu.hpp"
+﻿#include "../vendor/aixlog.hpp"
+
+#include "menu.hpp"
 
 int main()
 {
-	menu::start_menu();
-}
+	menu::start();
 
+	Sleep(-1);
+}
