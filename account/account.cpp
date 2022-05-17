@@ -10,7 +10,7 @@
 #include "utils.hpp"
 
 /* Doesn't specify reason what's wrong, should be added (easy) */
-bool Account::check_valid(const std::string& to_be_checked, const size_t string_from, const size_t string_to, const bool allow_special_char) const
+bool Account::check_valid(const std::string& to_be_checked, const size_t string_from, const size_t string_to, const bool use_digits, const bool allow_special_char) const
 {
 	if (!(to_be_checked.length() >= string_from
 		&& to_be_checked.length() <= string_to))
@@ -20,10 +20,10 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t string_
 	if (to_be_checked.find(' ') != std::string::npos)
 		return false;
 
-	if constexpr (true)
-	{
-		int count = 0;
+	int count = 0;
 
+	if (use_digits)
+	{
 		// check digits from 0 to 9
 		for (int i = 0; i <= 9; i++)
 		{
@@ -38,62 +38,50 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t string_
 			return false;
 	}
 
+
 	// for special characters
 	if (!allow_special_char)
 	{
-		if (!(to_be_checked.find('@') != std::string::npos || to_be_checked.find('#') != std::string::npos
-			|| to_be_checked.find('!') != std::string::npos || to_be_checked.find('~') != std::string::npos
-			|| to_be_checked.find('$') != std::string::npos || to_be_checked.find('%') != std::string::npos
-			|| to_be_checked.find('^') != std::string::npos || to_be_checked.find('&') != std::string::npos
-			|| to_be_checked.find('*') != std::string::npos || to_be_checked.find('(') != std::string::npos
-			|| to_be_checked.find(')') != std::string::npos || to_be_checked.find('-') != std::string::npos
-			|| to_be_checked.find('+') != std::string::npos || to_be_checked.find('/') != std::string::npos
-			|| to_be_checked.find(':') != std::string::npos || to_be_checked.find('.') != std::string::npos
-			|| to_be_checked.find(', ') != std::string::npos || to_be_checked.find('<') != std::string::npos
-			|| to_be_checked.find('>') != std::string::npos || to_be_checked.find('?') != std::string::npos
-			|| to_be_checked.find('|') != std::string::npos))
-			return false;
-	}
+		std::string special_chars = "@#!~$%^&*()-_=+/\.,:?|<> ";
 
-	if constexpr (true)
-	{
-		int count = 0;
-
-		// checking capital letters
-		for (int i = 65; i <= 90; i++)
+		for (char c : special_chars)
 		{
-			// type casting
-			const char c = static_cast<char>(i);
-
-			std::string str1 = std::to_string(c);
-			if (to_be_checked.find(str1) != std::string::npos)
-				count = 1;
+			if (to_be_checked.find(c) != std::string::npos)
+				return false;
 		}
-
-		if (count == 0)
-			return false;
 	}
 
-	if constexpr (true)
+	count = 0;
+
+	// checking capital letters
+	for (int i = 65; i <= 90; i++)
 	{
-		int count = 0;
+		// type casting
+		const char c = static_cast<char>(i);
 
-		// checking small letters
-		for (int i = 97; i <= 122; i++)
-		{
-			// type casting
-			const char c = static_cast<char>(i);
-			std::string str1 = std::to_string(c);
-
-			if (to_be_checked.find(str1) != std::string::npos)
-				count = 1;
-		}
-
-		if (count == 0)
-			return false;
+		std::string str1 = std::to_string(c);
+		if (to_be_checked.find(str1) != std::string::npos)
+			count = 1;
 	}
 
-	// if all conditions fails
+	if (count == 0)
+		return false;
+
+	count = 0;
+
+	// checking small letters
+	for (int i = 97; i <= 122; i++)
+	{
+		// type casting
+		const char c = static_cast<char>(i);
+		std::string str1 = std::to_string(c);
+
+		if (to_be_checked.find(str1) != std::string::npos)
+			count = 1;
+	}
+
+	if (count == 0)
+		return false;
 
 	return true;
 }
@@ -106,7 +94,6 @@ void Account::create(const std::string& username, const std::string& email, cons
 	nlohmann::json loaded_accounts;
 
 	LOG(INFO) << "INFO: " << "Create your account!";
-
 	hashed_username = hash(std::string("username"));
 	hashed_password = hash(std::string("password", 4, 40));
 	hashed_email = hash(std::string("email"));
