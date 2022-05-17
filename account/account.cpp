@@ -98,7 +98,7 @@ void Account::create(const std::string& username, const std::string& email, cons
 		hashed_password = hash(password);
 		hashed_email = hash(email);
 		hashed_phone_number = hash(phone_number);
-		user_id = std::to_string(client_id(email));
+		user_id = std::to_string(hashed_username);
 
 		// Check if username already exists with SQLite
 
@@ -128,48 +128,46 @@ void Account::create(const std::string& username, const std::string& email, cons
 	else LOG(INFO) << "INFO: " << "Failed!";
 }
 
-void Account::login(const std::string& username, std::string email, std::string password, const std::string& phone_number) const
+void Account::login(const std::string& username, std::string password) const
 {
-	std::string key_email;
+	std::string username_key;
 
 	nlohmann::json loaded_accounts;
 
-	std::ifstream file("clients.json");
-	file >> loaded_accounts;
-	file.close();
-
-	for (size_t num_of_tries = 3; num_of_tries > 0; --num_of_tries)
+	std::ifstream clients("clients.json");
+	if (!clients || utils::file_empty(clients)) // check if file is empty
 	{
-		std::cout << "You have " << num_of_tries << " tries." << std::endl;
-
-		std::cout << "Enter your email: ";
-		std::cin >> email;
-
-		std::cout << "Enter your password: ";
-		std::cin >> password;
-
-		size_t l_hashed_email = client_id(email);
-		size_t l_hashed_password = hash(password);
-
-		key_email = std::to_string(l_hashed_email);
-
-		for (auto it = loaded_accounts.begin(); it != loaded_accounts.end(); ++it) //looping through the json keys
-		{
-			if (it.key() == key_email) // find the email
-			{
-				nlohmann::json value = it.value(); // creating a json from the keys
-				for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
-				{
-					if (val.key() == "password" && val.value() == l_hashed_password)
-						// checking if the password is correct
-					LOG(INFO) << "INFO: " << "Logged in!";
-				}
-
-				LOG(ERROR) << "ERROR: " << "Incorrect password.";
-				break;
-			}
-		}
-		LOG(ERROR) << "ERROR: " << "This account doesn't exist.";
+		LOG(ERROR) << "ERROR: " << "File is empty or couldn't be opened.";
+		clients.close();
+		break;
 	}
+	else
+	{
+		clients >> loaded_accounts; // and set it as "loaded_accounts"
+		clients.close();
+	}
+
+	size_t l_hashed_username = hash(username);
+	size_t l_hashed_password = hash(password);
+
+	username_key = std::to_string(l_hashed_username);
+
+	for (auto it = loaded_accounts.begin(); it != loaded_accounts.end(); ++it) //looping through the json keys
+	{
+		if (it.key() == username_key) // find the email
+		{
+			nlohmann::json value = it.value(); // creating a json from the keys
+			for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
+			{
+				if (val.key() == "password" && val.value() == l_hashed_password)
+					// checking if the password is correct
+				LOG(INFO) << "INFO: " << "Logged in!";
+			}
+
+			LOG(ERROR) << "ERROR: " << "Incorrect password.";
+			break;
+		}
+	}
+	LOG(ERROR) << "ERROR: " << "This account doesn't exist.";
 	LOG(ERROR) << "ERROR: " << "You have failed to log in.";
 }
