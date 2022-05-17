@@ -44,13 +44,13 @@ void menu::create()
 	std::string phone_number;
 
 	LOG(INFO) << "INFO: " << "* - required\n";
-	std::cout << "Enter username*: \n";
+	std::cout << "Enter username (1-50)*: ";
 	std::cin >> username;
-	std::cout << "Enter email: \n";
+	std::cout << "Enter email (5-50): ";
 	std::cin >> email;
-	std::cout << "Enter password*: \n";
+	std::cout << "Enter password (12-50)*: ";
 	std::cin >> password;
-	std::cout << "Enter phone number: \n";
+	std::cout << "Enter phone number (9-10): ";
 	std::cin >> phone_number;
 
 	a.create(username, email, password, phone_number);
@@ -66,13 +66,13 @@ void menu::login()
 	std::string phone_number;
 
 	LOG(ERROR) << "ERROR: " << "Leave blank if none\n";
-	std::cout << "Enter username: \n";
+	std::cout << "Enter username: ";
 	std::cin >> username;
-	std::cout << "Enter email: \n";
+	std::cout << "Enter email: ";
 	std::cin >> email;
-	std::cout << "Enter password: \n";
+	std::cout << "Enter password: ";
 	std::cin >> password;
-	std::cout << "Enter phone number: \n";
+	std::cout << "Enter phone number: ";
 	std::cin >> phone_number;
 
 	a.login(username, email, password, phone_number);

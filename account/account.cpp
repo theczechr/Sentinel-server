@@ -77,7 +77,6 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 			if (to_be_checked.find(str1) != std::string::npos)
 				count = 1;
 		}
-
 		if (count == 0)
 			return false;
 	}
@@ -90,7 +89,9 @@ void Account::create(const std::string& username, const std::string& email, cons
 	nlohmann::json loaded_accounts;
 
 	LOG(INFO) << "INFO: " << "Create your account!";
-	if (check_valid(username, 1, 50, false, false, false) && check_valid(email, 5, 50, false, true, false) && check_valid(password, 12, 50, true, true, true) 
+	if (check_valid(username, 1, 50, false, false, false)
+		&& check_valid(email, 5, 50, false, true, false)
+		&& check_valid(password, 12, 50, true, true, true) 
 		&& check_valid(phone_number, 9, 10, true, false, false))
 	{
 		hashed_username = hash(username);
@@ -125,7 +126,6 @@ void Account::create(const std::string& username, const std::string& email, cons
 		write.close();
 	}
 	else LOG(INFO) << "INFO: " << "Failed!";
-
 }
 
 void Account::login(const std::string& username, std::string email, std::string password, const std::string& phone_number) const
@@ -169,9 +169,7 @@ void Account::login(const std::string& username, std::string email, std::string 
 				break;
 			}
 		}
-
 		LOG(ERROR) << "ERROR: " << "This account doesn't exist.";
 	}
-
 	LOG(ERROR) << "ERROR: " << "You have failed to log in.";
 }
