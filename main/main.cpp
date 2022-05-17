@@ -5,6 +5,4 @@
 int main()
 {
 	menu::start();
-
-	Sleep(-1);
 }

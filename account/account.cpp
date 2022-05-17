@@ -52,7 +52,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t string_
 	}
 
 
-	if (!char_check)
+	if (char_check)
 	{
 		count = 0;
 		// checking capital letters
@@ -124,6 +124,7 @@ void Account::create(const std::string& username, const std::string& email, cons
 		write << loaded_accounts; // save to the file again with new account
 		write.close();
 	}
+	else LOG(INFO) << "INFO: " << "Failed!";
 
 }
 
