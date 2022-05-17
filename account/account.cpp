@@ -12,8 +12,8 @@
 /* Doesn't specify reason what's wrong, should be added (easy) */
 bool Account::check_valid(const std::string& to_be_checked, const size_t length_from, const size_t length_to, const bool digits, const bool special_char, const bool char_size) const
 {
-	if (!(to_be_checked.length() >= string_from
-		&& to_be_checked.length() <= string_to))
+	if (!(to_be_checked.length() >= length_from
+		&& to_be_checked.length() <= length_to))
 		return false;
 
 	// to check space
@@ -22,7 +22,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 
 	int count = 0;
 
-	if (use_digits)
+	if (digits)
 	{
 		// check digits from 0 to 9
 		for (int i = 0; i <= 9; i++)
@@ -40,7 +40,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 
 
 	// for special characters
-	if (!allow_special_char)
+	if (!special_char)
 	{
 		std::string special_chars = "@#!~$%^&*()-_=+/\.,:?|<> ";
 
@@ -52,7 +52,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 	}
 
 
-	if (char_check)
+	if (char_size)
 	{
 		count = 0;
 		// checking capital letters
@@ -139,7 +139,7 @@ void Account::login(const std::string& username, std::string password) const
 	{
 		LOG(ERROR) << "ERROR: " << "File is empty or couldn't be opened.";
 		clients.close();
-		break;
+		return;
 	}
 	else
 	{

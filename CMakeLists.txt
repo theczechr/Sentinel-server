@@ -35,7 +35,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 # For more information, see the docs here: https://json.nlohmann.me/features/macros/#json_use_implicit_conversions
 find_package(OpenSSL REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
-find_package(unofficial-sqlite3 CONFIG REQUIRED)
+find_package(SQLiteCpp CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SRC})
 
@@ -46,5 +46,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenSSL::Crypto
     spdlog::spdlog
     spdlog::spdlog_header_only
-    unofficial::sqlite3::sqlite3
+    SQLiteCpp
 )
