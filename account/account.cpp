@@ -10,7 +10,7 @@
 #include "utils.hpp"
 
 /* Doesn't specify reason what's wrong, should be added (easy) */
-bool Account::check_valid(const std::string& to_be_checked, const size_t string_from, const size_t string_to, const bool use_digits, const bool allow_special_char) const
+bool Account::check_valid(const std::string& to_be_checked, const size_t string_from, const size_t string_to, const bool use_digits, const bool allow_special_char, const bool char_check) const
 {
 	if (!(to_be_checked.length() >= string_from
 		&& to_be_checked.length() <= string_to))
@@ -51,38 +51,36 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t string_
 		}
 	}
 
-	count = 0;
 
-	// checking capital letters
-	for (int i = 65; i <= 90; i++)
+	if (!char_check)
 	{
-		// type casting
-		const char c = static_cast<char>(i);
+		count = 0;
+		// checking capital letters
+		for (int i = 65; i <= 90; i++)
+		{
+			// type casting
+			const char c = static_cast<char>(i);
 
-		std::string str1 = std::to_string(c);
-		if (to_be_checked.find(str1) != std::string::npos)
-			count = 1;
+			std::string str1 = std::to_string(c);
+			if (to_be_checked.find(str1) != std::string::npos)
+				count = 1;
+		}
+		if (count == 0)
+			return false;
+		// checking small letters
+		for (int i = 97; i <= 122; i++)
+		{
+			// type casting
+			const char c = static_cast<char>(i);
+			std::string str1 = std::to_string(c);
+
+			if (to_be_checked.find(str1) != std::string::npos)
+				count = 1;
+		}
+
+		if (count == 0)
+			return false;
 	}
-
-	if (count == 0)
-		return false;
-
-	count = 0;
-
-	// checking small letters
-	for (int i = 97; i <= 122; i++)
-	{
-		// type casting
-		const char c = static_cast<char>(i);
-		std::string str1 = std::to_string(c);
-
-		if (to_be_checked.find(str1) != std::string::npos)
-			count = 1;
-	}
-
-	if (count == 0)
-		return false;
-
 	return true;
 }
 
@@ -92,37 +90,41 @@ void Account::create(const std::string& username, const std::string& email, cons
 	nlohmann::json loaded_accounts;
 
 	LOG(INFO) << "INFO: " << "Create your account!";
-	hashed_username = hash(username);
-	hashed_password = hash(password);
-	hashed_email = hash(email);
-	hashed_phone_number = hash(phone_number);
-	user_id = std::to_string(client_id(email));
-
-	// Check if email already exist
-	//std::string hashed_key = std::to_string(client_id(to_check));
-
-	LOG(INFO) << "INFO: " << "Happened succesfully!";
-
-	std::ifstream clients("clients.json"); // first we read the database
-	if (!clients || utils::file_empty(clients)) // check if file is empty
+	if (check_valid(username, 1, 50, false, false, false) && check_valid(email, 5, 50, false, true, false) && check_valid(password, 12, 50, true, true, true) 
+		&& check_valid(phone_number, 9, 10, true, false, false))
 	{
-		LOG(ERROR) << "ERROR: " << "File is empty or couldn't be opened.";
+		hashed_username = hash(username);
+		hashed_password = hash(password);
+		hashed_email = hash(email);
+		hashed_phone_number = hash(phone_number);
+		user_id = std::to_string(client_id(email));
 
-		clients.close();
+		// Check if username already exists with SQLite
+
+		LOG(INFO) << "INFO: " << "Happened succesfully!";
+
+		std::ifstream clients("clients.json"); // first we read the database
+		if (!clients || utils::file_empty(clients)) // check if file is empty
+		{
+			LOG(ERROR) << "ERROR: " << "File is empty or couldn't be opened.";
+
+			clients.close();
+		}
+		else
+		{
+			clients >> loaded_accounts; // and set it as "loaded_accounts"
+			clients.close();
+		}
+
+		loaded_accounts[user_id] = {
+			{"username", hashed_username}, {"password", hashed_password}, {"email", hashed_email}, {"phone-number", hashed_phone_number}
+		}; // then append the new account to it with the key "email"
+		std::ofstream write("clients.json");
+
+		write << loaded_accounts; // save to the file again with new account
+		write.close();
 	}
-	else
-	{
-		clients >> loaded_accounts; // and set it as "loaded_accounts"
-		clients.close();
-	}
 
-	loaded_accounts[user_id] = {
-		{"username", username}, {"password", password}, {"email", email}, {"phone-number", phone_number}
-	}; // then append the new account to it with the key "email"
-	std::ofstream write("clients.json");
-
-	write << loaded_accounts; // save to the file again with new account
-	write.close();
 }
 
 void Account::login(const std::string& username, std::string email, std::string password, const std::string& phone_number) const
