@@ -86,19 +86,17 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t string_
 	return true;
 }
 
-void Account::create(const std::string& username, const std::string& email, const std::string& password,
-                     int phone_number)
+void Account::create(const std::string& username, const std::string& email, const std::string& password, const std::string& phone_number)
 {
-	std::string key_email;
-	std::string client_email;
+	std::string user_id;
 	nlohmann::json loaded_accounts;
 
 	LOG(INFO) << "INFO: " << "Create your account!";
-	hashed_username = hash(std::string("username"));
-	hashed_password = hash(std::string("password", 4, 40));
-	hashed_email = hash(std::string("email"));
-	hashed_phone_number = hash(std::string("phone-number"));
-	key_email = std::to_string(client_id(client_email));
+	hashed_username = hash(username);
+	hashed_password = hash(password);
+	hashed_email = hash(email);
+	hashed_phone_number = hash(phone_number);
+	user_id = std::to_string(client_id(email));
 
 	// Check if email already exist
 	//std::string hashed_key = std::to_string(client_id(to_check));
@@ -118,7 +116,7 @@ void Account::create(const std::string& username, const std::string& email, cons
 		clients.close();
 	}
 
-	loaded_accounts[key_email] = {
+	loaded_accounts[user_id] = {
 		{"username", username}, {"password", password}, {"email", email}, {"phone-number", phone_number}
 	}; // then append the new account to it with the key "email"
 	std::ofstream write("clients.json");
@@ -127,7 +125,7 @@ void Account::create(const std::string& username, const std::string& email, cons
 	write.close();
 }
 
-void Account::login(const std::string& username, std::string email, std::string password, int phone_number) const
+void Account::login(const std::string& username, std::string email, std::string password, const std::string& phone_number) const
 {
 	std::string key_email;
 

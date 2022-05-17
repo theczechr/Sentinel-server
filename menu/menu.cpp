@@ -3,10 +3,6 @@
 #include "menu.hpp"
 #include "account.hpp"
 
-// Chtel jsem aby jsme meli takhle rozdeleny to menu, ale rn to nefunguje.. Musime nejdriv poresit ty ucty a potom se vrhnem na tohle
-// Update: Nejak jsem to fixnul, ale nefungujou ty accounts xDD
-// Update: Register, login funkce se opakuje, ale podle me to je ok
-
 void menu::start()
 {
 	int choice;
@@ -43,19 +39,19 @@ void menu::create()
 	Account a{};
 
 	std::string username;
-	const std::string email;
-	const std::string password;
-	constexpr int phone_number = 0;
+	std::string email;
+	std::string password;
+	std::string phone_number;
 
 	LOG(INFO) << "INFO: " << "* - required\n";
 	std::cout << "Enter username*: \n";
 	std::cin >> username;
 	std::cout << "Enter email: \n";
-	std::cin >> username;
+	std::cin >> email;
 	std::cout << "Enter password*: \n";
-	std::cin >> username;
+	std::cin >> password;
 	std::cout << "Enter phone number: \n";
-	std::cin >> username;
+	std::cin >> phone_number;
 
 	a.create(username, email, password, phone_number);
 }
@@ -65,19 +61,19 @@ void menu::login()
 	constexpr Account a{};
 
 	std::string username;
-	const std::string email;
-	const std::string password;
-	constexpr int phone_number = 0;
+	std::string email;
+	std::string password;
+	std::string phone_number;
 
 	LOG(ERROR) << "ERROR: " << "Leave blank if none\n";
 	std::cout << "Enter username: \n";
 	std::cin >> username;
 	std::cout << "Enter email: \n";
-	std::cin >> username;
+	std::cin >> email;
 	std::cout << "Enter password: \n";
-	std::cin >> username;
+	std::cin >> password;
 	std::cout << "Enter phone number: \n";
-	std::cin >> username;
+	std::cin >> phone_number;
 
 	a.login(username, email, password, phone_number);
 }

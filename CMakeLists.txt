@@ -25,7 +25,7 @@ file(GLOB SRC
    ${CMAKE_CURRENT_SOURCE_DIR}/menu/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/security/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/bcrypt/src/*.c
+   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/bcrypt/src/*.c
 )
 
 find_package(Drogon CONFIG REQUIRED)
@@ -35,6 +35,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 # For more information, see the docs here: https://json.nlohmann.me/features/macros/#json_use_implicit_conversions
 find_package(OpenSSL REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(unofficial-sqlite3 CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SRC})
 
@@ -45,4 +46,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenSSL::Crypto
     spdlog::spdlog
     spdlog::spdlog_header_only
+    unofficial::sqlite3::sqlite3
 )
