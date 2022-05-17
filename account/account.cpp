@@ -10,7 +10,7 @@
 #include "utils.hpp"
 
 /* Doesn't specify reason what's wrong, should be added (easy) */
-bool Account::check_valid(const std::string& to_be_checked, const size_t string_from, const size_t string_to, const bool use_digits, const bool allow_special_char, const bool char_check) const
+bool Account::check_valid(const std::string& to_be_checked, const size_t length_from, const size_t length_to, const bool digits, const bool special_char, const bool char_size) const
 {
 	if (!(to_be_checked.length() >= string_from
 		&& to_be_checked.length() <= string_to))
