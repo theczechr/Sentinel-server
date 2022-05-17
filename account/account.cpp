@@ -22,7 +22,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 
 	int count = 0;
 
-	if (digits)
+	if (!digits)
 	{
 		// check digits from 0 to 9
 		for (int i = 0; i <= 9; i++)
@@ -42,7 +42,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 	// for special characters
 	if (!special_char)
 	{
-		std::string special_chars = "@#!~$%^&*()-_=+/\.,:?|<> ";
+		std::string special_chars = "#!~$%^&*()-_=+/\,:?|<>";
 
 		for (char c : special_chars)
 		{
@@ -52,7 +52,7 @@ bool Account::check_valid(const std::string& to_be_checked, const size_t length_
 	}
 
 
-	if (char_size)
+	if (!char_size)
 	{
 		count = 0;
 		// checking capital letters
@@ -89,9 +89,9 @@ void Account::create(const std::string& username, const std::string& email, cons
 	nlohmann::json loaded_accounts;
 
 	LOG(INFO) << "INFO: " << "Create your account!";
-	if (check_valid(username, 1, 50, false, false, false)
-		&& check_valid(email, 5, 50, false, true, false)
-		&& check_valid(password, 12, 50, true, true, true) 
+	if (check_valid(username, 1, 50, true, true, true)
+		&& check_valid(email, 5, 50, true, false, true)
+		&& check_valid(password, 12, 50, true, true, true)
 		&& check_valid(phone_number, 9, 10, true, false, false))
 	{
 		hashed_username = hash(username);
@@ -154,18 +154,21 @@ void Account::login(const std::string& username, std::string password) const
 
 	for (auto it = loaded_accounts.begin(); it != loaded_accounts.end(); ++it) //looping through the json keys
 	{
-		if (it.key() == username_key) // find the email
+		if (it.key() == username_key) // find the client_id
 		{
 			nlohmann::json value = it.value(); // creating a json from the keys
 			for (auto val = value.begin(); val != value.end(); ++val) //looping through the json keys
 			{
 				if (val.key() == "password" && val.value() == l_hashed_password)
+				{
 					// checking if the password is correct
-				LOG(INFO) << "INFO: " << "Logged in!";
+					LOG(INFO) << "INFO: " << "Logged in!";
+					return;
+				}
 			}
-
 			LOG(ERROR) << "ERROR: " << "Incorrect password.";
-			break;
+			LOG(ERROR) << "ERROR: " << "You have failed to log in.";
+			return;
 		}
 	}
 	LOG(ERROR) << "ERROR: " << "This account doesn't exist.";

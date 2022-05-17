@@ -61,19 +61,13 @@ void menu::login()
 	constexpr Account a{};
 
 	std::string username;
-	std::string email;
 	std::string password;
-	std::string phone_number;
 
 	LOG(ERROR) << "ERROR: " << "Leave blank if none\n";
 	std::cout << "Enter username: ";
 	std::cin >> username;
-	std::cout << "Enter email: ";
-	std::cin >> email;
 	std::cout << "Enter password: ";
 	std::cin >> password;
-	std::cout << "Enter phone number: ";
-	std::cin >> phone_number;
 
-	a.login(username, email, password, phone_number);
+	a.login(username, password);
 }
