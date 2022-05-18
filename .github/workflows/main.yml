@@ -1,4 +1,4 @@
-name: Control of compilation
+name: Action
 on:
   push:
     branches: [ main ]
