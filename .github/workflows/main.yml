@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v3
       # Get CMake
       - name: get-cmake
-        uses: lukka/get-cmake@v3.19
+        uses: lukka/get-cmake@v3.19.0
       # Setup vcpkg
       - name: Run vcpkg
         uses: lukka/run-vcpkg@v10
@@ -23,7 +23,7 @@ jobs:
           vcpkgTriplet: 'x64-windows' # Later change to static
           additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
       - name: Run CMake with Ninja, install dependencies with vcpkg, build with CMake
-        uses: lukka/run-cmake@latest
+        uses: lukka/run-cmake@v10
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtBasic
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
