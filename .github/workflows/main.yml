@@ -8,8 +8,12 @@ jobs:
     environment: ${{ github.workspace }}/build
     name: KRapp-server
     runs-on: windows-latest
+    env:
+      VCPKG_DEFAULT_TRIPLET: x64-windows
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
       # Get CMake
       - name: get-cmake
         uses: lukka/get-cmake@v3.19.0
