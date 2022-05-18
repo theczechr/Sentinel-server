@@ -9,7 +9,7 @@ jobs:
     name: ${{ krAPP }}-server
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@latest
       # Get CMake
       - name: get-cmake
         uses: lukka/get-cmake@latest
