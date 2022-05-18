@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     environment: ${{ github.workspace }}/build
-    name: ${{ krAPP }}-server
+    name: KRapp-server
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@latest
