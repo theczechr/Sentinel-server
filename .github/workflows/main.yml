@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    environment: ${{ github.workspace }}/build
+    environment: ${{ github.workspace }}/actions/build
     name: KRapp-server
     runs-on: windows-latest
     env:
@@ -21,7 +21,7 @@ jobs:
       - name: Run vcpkg
         uses: lukka/run-vcpkg@v10
         with:
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgDirectory: '${{ github.workspace }}/actions/vcpkg'
           vcpkgGitCommitId: '52955a7ae52bbf821a603e4e3be49ab7e437639b'
           runVcpkgInstall: true
           appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
@@ -33,4 +33,4 @@ jobs:
           cmakeListsOrSettingsJson: CMakeListsTxtBasic
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           useVcpkgToolchainFile: true
-          buildDirectory: '${{ github.workspace }}/build'
+          buildDirectory: '${{ env.buildDir }}'
