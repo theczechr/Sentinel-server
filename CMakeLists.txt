@@ -3,7 +3,7 @@
 # set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "" FORCE) # Vcpkg path
 set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
 
-project(KRapp
+project(KRapp-server
         LANGUAGES CXX
 )
 
