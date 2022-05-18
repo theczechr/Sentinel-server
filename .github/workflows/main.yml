@@ -9,13 +9,13 @@ jobs:
     name: KRapp-server
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v3
       # Get CMake
       - name: get-cmake
-        uses: lukka/get-cmake@latest
+        uses: lukka/get-cmake@v3.19
       # Setup vcpkg
       - name: Run vcpkg
-        uses: lukka/run-vcpkg@latest
+        uses: lukka/run-vcpkg@v10
         with:
           setupOnly: true
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
