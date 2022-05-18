@@ -26,7 +26,7 @@ jobs:
           runVcpkgInstall: true
           appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
           vcpkgTriplet: 'x64-windows' # Later change to static
-          additionalCachedPaths: '${{ env.buildDir }}/vcpkg_installed'
+          additionalCachedPaths: '${{ env.buildDir }}/actions/vcpkg_installed'
       - name: Run CMake with Ninja, install dependencies with vcpkg, build with CMake
         uses: lukka/run-cmake@v10
         with:
