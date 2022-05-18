@@ -21,15 +21,16 @@ jobs:
       - name: Run vcpkg
         uses: lukka/run-vcpkg@v10
         with:
-          setupOnly: true
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '52955a7ae52bbf821a603e4e3be49ab7e437639b'
+          runVcpkgInstall: true
           appendedCacheKey: ${{ hashFiles( '**/vcpkg.json' ) }}
           vcpkgTriplet: 'x64-windows' # Later change to static
-          additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
+          additionalCachedPaths: '${{ env.buildDir }}/vcpkg_installed'
       - name: Run CMake with Ninja, install dependencies with vcpkg, build with CMake
         uses: lukka/run-cmake@v10
         with:
           cmakeListsOrSettingsJson: CMakeListsTxtBasic
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           useVcpkgToolchainFile: true
-          buildDirectory: ${{ env.buildDir }}
+          buildDirectory: '${{ github.workspace }}/build'
