@@ -1,11 +1,13 @@
 name: Test build
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
   build:
     name: KRapp-server
     runs-on: windows-latest
-    
+    strategy:
+      fail-fast: false
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,8 +25,6 @@ jobs:
         uses: lukka/run-cmake@v10
         id: runcmake
         with:
-          cmakeListsOrSettingsJson: CMakeListsTxtBasic
-          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-debug'
           testPreset: 'ninja-multi-vcpkg-debug'
