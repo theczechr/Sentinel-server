@@ -35,17 +35,5 @@
       "description": "Build ninja-multi-vcpkg Release configuration",
       "configuration": "RelWithDebInfo"
     }
-  ],
-  "testPresets": [
-    {
-      "name": "ninja-multi-vcpkg-debug",
-      "configurePreset": "ninja-multi-vcpkg",
-      "configuration": "Debug"
-    },
-    {
-      "name": "ninja-multi-vcpkg-release",
-      "configurePreset": "ninja-multi-vcpkg",
-      "configuration": "RelWithDebInfo"
-    }
   ]
 }
