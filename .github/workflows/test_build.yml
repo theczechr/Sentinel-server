@@ -1,0 +1,29 @@
+name: Test build
+on: [push]
+
+jobs:
+  build:
+    name: KRapp-server
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - uses: lukka/get-cmake@v3.19.0
+      
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgJsonGlob: 'vcpkg.json'
+
+      - name: Run CMake, vcpkg
+        uses: lukka/run-cmake@v10
+        id: runcmake
+        with:
+          cmakeListsOrSettingsJson: CMakeListsTxtBasic
+          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+          useVcpkgToolchainFile: true
+          buildDirectory: '${{ github.workflow }}/build'
