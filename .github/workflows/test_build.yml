@@ -7,7 +7,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           submodules: true
 
@@ -17,7 +17,6 @@ jobs:
         uses: lukka/run-vcpkg@v10
         id: runvcpkg
         with:
-          vcpkgGitCommitId: '52955a7ae52bbf821a603e4e3be49ab7e437639b'
           vcpkgJsonGlob: 'vcpkg.json'
 
       - name: Run CMake, vcpkg
@@ -29,7 +28,3 @@ jobs:
           configurePreset: 'ninja-multi-vcpkg'
           buildPreset: 'ninja-multi-vcpkg-debug'
           testPreset: 'ninja-multi-vcpkg-debug'
-#           cmakeListsOrSettingsJson: CMakeListsTxtBasic
-#           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
-#           useVcpkgToolchainFile: true
-#           buildDirectory: '${{ github.workflow }}/build'
