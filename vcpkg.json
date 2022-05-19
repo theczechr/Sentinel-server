@@ -1,0 +1,11 @@
+{
+  "name": "main",
+  "version-string": "latest",
+  "dependencies": [
+    "drogon:x64-windows",
+    "nlohmann-json:x64-windows",
+    "openssl:x64-windows",
+    "spdlog:x64-windows",
+    "sqlitecpp:x64-windows"
+  ]
+}
