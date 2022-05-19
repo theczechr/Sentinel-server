@@ -24,7 +24,10 @@ jobs:
         uses: lukka/run-cmake@v10
         id: runcmake
         with:
-          cmakeListsOrSettingsJson: CMakeListsTxtBasic
-          cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
-          useVcpkgToolchainFile: true
-          buildDirectory: '${{ github.workflow }}/build'
+          configurePreset: 'ninja-multi-vcpkg'
+          buildPreset: 'ninja-multi-vcpkg-debug'
+          testPreset: 'ninja-multi-vcpkg-debug'
+#           cmakeListsOrSettingsJson: CMakeListsTxtBasic
+#           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+#           useVcpkgToolchainFile: true
+#           buildDirectory: '${{ github.workflow }}/build'
