@@ -17,7 +17,7 @@ public:
     virtual void handleConnectionClosed(const drogon::WebSocketConnectionPtr&) override;
     virtual void handleNewConnection(const drogon::HttpRequestPtr&, const drogon::WebSocketConnectionPtr&) override;
     WS_PATH_LIST_BEGIN
-    WS_PATH_ADD("/test", drogon::Get);
+    WS_PATH_ADD("/ping", drogon::Get);
     WS_PATH_LIST_END
 private:
     drogon::PubSubService<std::string> chatRooms_;
