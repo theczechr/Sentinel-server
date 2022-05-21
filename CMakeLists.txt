@@ -1,6 +1,5 @@
 ﻿cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
-# set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "" FORCE) # Vcpkg path
 set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
 
 project(KRapp-server
@@ -13,6 +12,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17 /W4 /O2" CACHE STRING "" FORC
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/account
+    ${CMAKE_CURRENT_SOURCE_DIR}/database
     ${CMAKE_CURRENT_SOURCE_DIR}/main
     ${CMAKE_CURRENT_SOURCE_DIR}/menu
     ${CMAKE_CURRENT_SOURCE_DIR}/security
@@ -21,11 +21,11 @@ include_directories(
 
 file(GLOB SRC
    ${CMAKE_CURRENT_SOURCE_DIR}/account/*.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/database/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/main/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/menu/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/security/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/vendor/bcrypt/src/*.c
 )
 
 find_package(Drogon CONFIG REQUIRED)
@@ -34,7 +34,6 @@ find_package(nlohmann_json CONFIG REQUIRED)
 # set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
 # For more information, see the docs here: https://json.nlohmann.me/features/macros/#json_use_implicit_conversions
 find_package(OpenSSL REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SRC})
@@ -44,7 +43,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     nlohmann_json::nlohmann_json
     OpenSSL::SSL
     OpenSSL::Crypto
-    spdlog::spdlog
-    spdlog::spdlog_header_only
     SQLiteCpp
 )
