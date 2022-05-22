@@ -71,42 +71,48 @@
 
 #include <trantor/utils/Logger.h>
 #include <SQLiteCpp/SQLiteCpp.h>
+#include "database.hpp"
 
 int main()
 {
-    LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-    LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
-    std::string db_name = "KRappDB.db3";
-    std::string tb_name = "users";
+    //LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
+    //LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
 
-    try
-    {
-        // Open a database file in create/write mode
-        SQLite::Database db(db_name, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-        LOG_INFO << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully";
+    //try
+    //{
+    //    // Open a database file in create/write mode
+    //    SQLite::Database db(db_name, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+    //    LOG_INFO << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully";
 
-        // Create a new table with an explicit "id" column aliasing the underlying rowid
-        db.exec("DROP TABLE IF EXISTS " + tb_name);
-        db.exec("CREATE TABLE " + tb_name + " (id ID, username USERNAME, email_hash EMAIL_HASH, password_hash PASSWORD_HASH, phone_hash PHONE_HASH, recovery_phrase RECOVERY_PHRASE)");
+    //    // Create a new table with an explicit "id" column aliasing the underlying rowid
+    //    db.exec("DROP TABLE IF EXISTS " + tb_name);
+    //    db.exec("CREATE TABLE " + tb_name + " (username USERNAME, email_hash EMAIL_HASH, password_hash PASSWORD_HASH, phone_hash PHONE_HASH, recovery_phrase RECOVERY_PHRASE)");
 
-        // first row
-        int nb = db.exec("INSERT INTO " + tb_name + " VALUES ('1', \"karlos\", \"$2a$12$EZO38XCgdPikYUng7l5np.KkxUB45OpsHgNI3dM1MDJn6t1hxw9lq\", \"$2a$12$1gOINTpsQm1yaj7WtKCsv.tNgHcfwFOTRPnWPmW8z2p8H7/cxsbd2\", \"$2a$12$qDyufSzMRl.N/GkFWLMU3.HPRSKYWCWAJIRKhMKiwsJ.rRYs157B.\", \"gasp correspondence pat craftsman clean allowance frequency proportion champagne wound stress car\")");
+    //    // first row
+    //    db.exec("INSERT INTO " + tb_name + " VALUES (NULL, NULL, NULL, NULL, NULL)");
+    //    db.exec("UPDATE " + tb_name + " SET username = \"sdffsfd\", email_hash = \"sjahdea53421u123fsfds\", password_hash = \"sjahde2wdf21u123fsfds\", phone_hash = \"y2189hdgf43iohfsdfhfd21\", recovery_phrase = \"co delas dneska\"");
 
-        // Check the results : expect two row of result
-        SQLite::Statement query(db, "SELECT * FROM " + tb_name);
-        LOG_INFO << "SELECT * FROM " + tb_name + " :";
-        while (query.executeStep())
-        {
-            std::cout << "row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << ", \"" << query.getColumn(2) << ", \"" << query.getColumn(3) << ", \"" << query.getColumn(4) << ", \"" << query.getColumn(5) << "\")\n";
-        }
-    }
-    catch (std::exception& e)
-    {
-        LOG_INFO << "SQLite exception: " << e.what();
-        return EXIT_FAILURE; // unexpected error
-    }
+    //    // Check the results : expect two row of result
+    //    SQLite::Statement query(db, "SELECT * FROM " + tb_name);
+    //    LOG_INFO << "SELECT * FROM " + tb_name + " :";
+    //    while (query.executeStep())
+    //    {
+    //        std::cout << "row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << ", \"" << query.getColumn(2) << ", \"" << query.getColumn(3) << ", \"" << query.getColumn(4) << ", \"" << query.getColumn(5) << "\")\n";
+    //    }
+    //}
+    //catch (std::exception& e)
+    //{
+    //    LOG_INFO << "SQLite exception: " << e.what();
+    //    return EXIT_FAILURE; // unexpected error
+    //}
 
-    LOG_INFO << "everything ok, quitting";
+    //LOG_INFO << "everything ok, quitting";
 
-    return EXIT_SUCCESS;
+    //return EXIT_SUCCESS;
+
+    database::create();
+    database::create_account("fdsufg", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21", "ahoj jak se mas dneska");
+    //database::create_account("as2fda", "sjahdeaw22hsu123fsfds", "sjahd12wdfhsu123fsfds", "y2189hdgfsugfhfsdfhfd21", "ahoj cof se mas dneska");
+    database::display();
+    std::cout << "dsada" << database::get("email_hash") << std::endl;
 }
