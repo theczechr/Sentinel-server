@@ -72,66 +72,16 @@ void database::create_account(std::string username, std::string email_hash, std:
 	LOG_INFO << "Account created successfully, quitting";
 }
 
-std::string database::get(std::string item)
+bool database::user_exist(std::string username, std::string email_hash, std::string password_hash, std::string phone_hash)
 {
-	LOG_INFO << "Getting " << item << " from database";
+	LOG_INFO << "Finding in database";
 	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
 	LOG_INFO << "SQLite database file '" << db_name << "' opened successfully";
 
-	try
+	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM users WHERE username = \"" + username + "\")");
+	while (query.executeStep())
 	{
-		// udelam to zitra
+		std::cout << "query.getColumn(0): " << query.getColumn(0); // 0 - false, 1 - true
 	}
-	catch (std::exception& e)
-	{
-		LOG_ERROR << "SQLite exception: " << e.what();
-		return "";
-	}
-	LOG_INFO << "Quitting";
+	return true;
 }
-
-//
-//int main()
-//{
-//    try
-//    {
-//        // Open a database file in create/write mode
-//        SQLite::Database db("users.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-//        LOG_INFO << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully";
-//
-//        // Create a new table with an explicit "id" column aliasing the underlying rowid
-//        db.exec("DROP TABLE IF EXISTS users");
-//        db.exec("CREATE TABLE users (id INTEGER PRIMARY KEY, value TEXT)");
-//
-//        // first row
-//        int nb = db.exec("INSERT INTO test VALUES (NULL, \"test\")");
-//        LOG_INFO << "INSERT INTO test VALUES (NULL, \"test\")\", returned " << nb;
-//
-//        // second row
-//        nb = db.exec("INSERT INTO test VALUES (NULL, \"second\")");
-//        LOG_INFO << "INSERT INTO test VALUES (NULL, \"second\")\", returned " << nb;
-//
-//        // update the second row
-//        nb = db.exec("UPDATE test SET value=\"second-updated\" WHERE id='2'");
-//        LOG_INFO << "UPDATE test SET value=\"second-updated\" WHERE id='2', returned " << nb;
-//
-//        // Check the results : expect two row of result
-//        SQLite::Statement   query(db, "SELECT * FROM test");
-//        LOG_INFO << "SELECT * FROM test :";
-//        while (query.executeStep())
-//        {
-//            LOG_INFO << "row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << "\")";
-//        }
-//
-//        db.exec("DROP TABLE test");
-//    }
-//    catch (std::exception& e)
-//    {
-//        LOG_INFO << "SQLite exception: " << e.what();
-//        return EXIT_FAILURE; // unexpected error : exit the example program
-//    }
-//
-//    LOG_INFO << "everything ok, quitting";
-//
-//    return EXIT_SUCCESS;
-//}

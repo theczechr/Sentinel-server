@@ -75,44 +75,9 @@
 
 int main()
 {
-    //LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-    //LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
-
-    //try
-    //{
-    //    // Open a database file in create/write mode
-    //    SQLite::Database db(db_name, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-    //    LOG_INFO << "SQLite database file '" << db.getFilename().c_str() << "' opened successfully";
-
-    //    // Create a new table with an explicit "id" column aliasing the underlying rowid
-    //    db.exec("DROP TABLE IF EXISTS " + tb_name);
-    //    db.exec("CREATE TABLE " + tb_name + " (username USERNAME, email_hash EMAIL_HASH, password_hash PASSWORD_HASH, phone_hash PHONE_HASH, recovery_phrase RECOVERY_PHRASE)");
-
-    //    // first row
-    //    db.exec("INSERT INTO " + tb_name + " VALUES (NULL, NULL, NULL, NULL, NULL)");
-    //    db.exec("UPDATE " + tb_name + " SET username = \"sdffsfd\", email_hash = \"sjahdea53421u123fsfds\", password_hash = \"sjahde2wdf21u123fsfds\", phone_hash = \"y2189hdgf43iohfsdfhfd21\", recovery_phrase = \"co delas dneska\"");
-
-    //    // Check the results : expect two row of result
-    //    SQLite::Statement query(db, "SELECT * FROM " + tb_name);
-    //    LOG_INFO << "SELECT * FROM " + tb_name + " :";
-    //    while (query.executeStep())
-    //    {
-    //        std::cout << "row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << ", \"" << query.getColumn(2) << ", \"" << query.getColumn(3) << ", \"" << query.getColumn(4) << ", \"" << query.getColumn(5) << "\")\n";
-    //    }
-    //}
-    //catch (std::exception& e)
-    //{
-    //    LOG_INFO << "SQLite exception: " << e.what();
-    //    return EXIT_FAILURE; // unexpected error
-    //}
-
-    //LOG_INFO << "everything ok, quitting";
-
-    //return EXIT_SUCCESS;
-
     database::create();
     database::create_account("fdsufg", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21", "ahoj jak se mas dneska");
     //database::create_account("as2fda", "sjahdeaw22hsu123fsfds", "sjahd12wdfhsu123fsfds", "y2189hdgfsugfhfsdfhfd21", "ahoj cof se mas dneska");
     database::display();
-    std::cout << "dsada" << database::get("email_hash") << std::endl;
+    database::user_exist("dd", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21");
 }
