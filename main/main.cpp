@@ -77,7 +77,7 @@ int main()
 {
     database::create();
     database::create_account("fdsufg", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21", "ahoj jak se mas dneska");
-    //database::create_account("as2fda", "sjahdeaw22hsu123fsfds", "sjahd12wdfhsu123fsfds", "y2189hdgfsugfhfsdfhfd21", "ahoj cof se mas dneska");
+    //database::create_account("as2fda", "sjahdeaw22hsu123fsfds", "sjahd12wdfhsu123fsfds", "y2189hdgfsugfhfsdfhfd21", "ahoj co se mas dneska");
     database::display();
-    database::user_exist("dd", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21");
+    database::user_exist("fdsufg", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21");
 }
