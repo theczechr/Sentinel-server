@@ -76,8 +76,10 @@
 int main()
 {
     database::create();
-    database::create_account("fdsufg", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21", "ahoj jak se mas dneska");
-    //database::create_account("as2fda", "sjahdeaw22hsu123fsfds", "sjahd12wdfhsu123fsfds", "y2189hdgfsugfhfsdfhfd21", "ahoj co se mas dneska");
+    database::create_account("karlos", "Dh3HMLVDEd", "ScSATQ7Efy", "GrceO7gb3G", "co jak kdy kde");
+    database::create_account("robin", "kbwAMK6nDQ", "pAkd7h1Z5r", "cLdR9OH9jY", "na proc o vim");
     database::display();
-    database::user_exist("fdsufg", "sjahdeawdfhsu123fsfds", "sjahde2wdfhsu123fsfds", "y2189hdgfsuiohfsdfhfd21");
+    database::user_exist("karlos", "Dh3HMLVDEd", "ScSATQ7Efy", "GrceO7gb3G");
+    database::update_user("phone_hash", "GrceO7gb3G", "fungujeTo");
+    database::display();
 }

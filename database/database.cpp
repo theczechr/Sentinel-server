@@ -11,7 +11,7 @@ void database::create()
 
 	if (utils::file_exist(db_name))
 	{
-		LOG_ERROR << "SQLite database file '" << db_name << "' already exist";
+		LOG_ERROR << "SQLite database file '" << db_name << "' already exist, quitting";
 		return;
 	}
 
@@ -95,9 +95,6 @@ void database::update_user(std::string data_type, std::string old_data, std::str
 	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
 	LOG_INFO << "SQLite database file '" << db_name << "' opened successfully";
 	
-	SQLite::Statement query(db, "");
-	while (query.executeStep())
-	{
-
-	}
+	SQLite::Statement query(db, "UPDATE " + tb_name + " SET " + data_type + " = \"" + new_data + "\" WHERE " + data_type + " = \"" + old_data + "\"");
+	while (query.executeStep());
 }
