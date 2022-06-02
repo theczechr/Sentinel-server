@@ -53,7 +53,7 @@ void database::create_account(std::string username, std::string email_hash, std:
 	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
 	LOG_INFO << "SQLite database file '" << db_name << "' opened successfully";
 
-	if (user_exist(username, email_hash, password_hash, phone_hash))
+	if (user_exist_full(username, email_hash, password_hash, phone_hash))
 	{
 		LOG_INFO << "User with these credentials already exist";
 		return;
@@ -64,7 +64,7 @@ void database::create_account(std::string username, std::string email_hash, std:
 	LOG_INFO << "Account created successfully, quitting";
 }
 
-bool database::user_exist(std::string username, std::string email_hash, std::string password_hash, std::string phone_hash)
+bool database::user_exist_full(std::string username, std::string email_hash, std::string password_hash, std::string phone_hash)
 {
 	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
@@ -74,6 +74,28 @@ bool database::user_exist(std::string username, std::string email_hash, std::str
 	LOG_INFO << "SQLite database file '" << db_name << "' opened successfully";
 
 	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE username = \"" + username + "\" AND email_hash = \"" + email_hash + "\" AND password_hash = \"" + password_hash + "\" AND phone_hash = \"" + phone_hash + "\")");
+	while (query.executeStep())
+	{
+		if (!query.getColumn(0).getInt())
+		{
+			LOG_INFO << "User doesnt exist";
+			return false;
+		}
+	}
+	LOG_INFO << "User does exist";
+	return true;
+}
+
+bool database::user_exist(std::string username, std::string password_hash)
+{
+	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
+	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
+	LOG_INFO << "Checking if user exist";
+
+	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
+	LOG_INFO << "SQLite database file '" << db_name << "' opened successfully";
+
+	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE username = \"" + username + "\" AND password_hash = \"" + password_hash + "\")");
 	while (query.executeStep())
 	{
 		if (!query.getColumn(0).getInt())
@@ -97,4 +119,6 @@ void database::update_user(std::string data_type, std::string old_data, std::str
 	
 	SQLite::Statement query(db, "UPDATE " + tb_name + " SET " + data_type + " = \"" + new_data + "\" WHERE " + data_type + " = \"" + old_data + "\"");
 	while (query.executeStep());
+
+	LOG_INFO << "Successfully updated " << data_type;
 }
