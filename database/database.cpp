@@ -55,7 +55,7 @@ void database::create_account(std::string username, std::string email_hash, std:
 
 	if (user_exist_full(username, email_hash, password_hash, phone_hash))
 	{
-		LOG_INFO << "User with these credentials already exist";
+		LOG_INFO << "User already exist";
 		return;
 	}
 
