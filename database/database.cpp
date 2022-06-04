@@ -1,7 +1,8 @@
 #include "database.hpp"
 
 /*
-* Pridal jsem ke kazdemu logu i ze odkud to je.. vim ze se tam pise, ale idk prislo mi to better na orientaci
+* Pridal jsem ke kazdemu logu i ze odkud to je  napr. DATABASE CREATE: ...
+* Vim ze to ta library kterou pouzivame uz pise ale idk prislo mi to better na orientaci
 * Co si o tom myslis ?
 */
 
@@ -47,6 +48,28 @@ void database::display()
 		std::cout << "Row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << ", \"" << query.getColumn(2) << ", \"" << query.getColumn(3) << ", \"" << query.getColumn(4) << "\")\n";
 	}
 	LOG_INFO << "DATABASE DISPLAY: Database displayed successfully, quitting";
+}
+
+bool database::item_exist(std::string name, std::string value)
+{
+	LOG_INFO << "DATABASE item_exist: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
+	LOG_INFO << "DATABASE item_exist: SQliteC++ version " << SQLITECPP_VERSION;
+	LOG_INFO << "DATABASE item_exist: Checking if user exist";
+
+	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
+	LOG_INFO << "DATABASE item_exist: SQLite database file '" << db_name << "' opened successfully";
+
+	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE " + name + " = \"" + value + "\")");
+	while (query.executeStep())
+	{
+		if (!query.getColumn(0).getInt())
+		{
+			LOG_INFO << "DATABASE item_exist: Item doesnt exist";
+			return false;
+		}
+	}
+	LOG_INFO << "DATABASE item_exist: Item does exist";
+	return true;
 }
 
 void database::create_account(std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_phrase)

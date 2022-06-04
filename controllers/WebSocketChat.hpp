@@ -1,10 +1,8 @@
 #pragma once
-#include "account.hpp"
-#include "database.hpp"
-
 #include <drogon/WebSocketController.h>
+#include <drogon/PubSubService.h>
 
-class WebSocketAccount : public drogon::WebSocketController<WebSocketAccount>
+class WebSocketChat : public drogon::WebSocketController<WebSocketChat>
 {
 public:
     virtual void handleNewMessage(const drogon::WebSocketConnectionPtr&, std::string&&, const drogon::WebSocketMessageType&) override;
@@ -13,10 +11,13 @@ public:
 
     WS_PATH_LIST_BEGIN
     WS_PATH_ADD("/register", drogon::Head);
-    WS_PATH_ADD("/login", drogon::Head);
-    WS_PATH_ADD("/changeUsername", drogon::Head);
-    WS_PATH_ADD("/changeEmail", drogon::Head);
-    WS_PATH_ADD("/changePassword", drogon::Head);
     WS_PATH_LIST_END
 private:
+    drogon::PubSubService<std::string> chatRooms_;
+};
+
+struct Subscriber
+{
+    std::string chatRoomName_;
+    drogon::SubscriberID id_;
 };
