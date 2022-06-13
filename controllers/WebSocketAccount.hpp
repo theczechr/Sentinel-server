@@ -20,3 +20,5 @@ public:
     WS_PATH_LIST_END
 private:
 };
+
+Account account;
