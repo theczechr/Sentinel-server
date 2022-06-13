@@ -1,6 +1,6 @@
 #include "account.hpp"
 
-void Account::change_username(std::string& old_username, std::string& new_username)
+void Account::change_username(std::string old_username, std::string new_username)
 {
 	LOG_INFO << "Changing username from '" << old_username << "' to '" << new_username << "'";
 	if (database::item_exist("username", old_username))
@@ -11,7 +11,7 @@ void Account::change_username(std::string& old_username, std::string& new_userna
 	database::update_user("username", old_username, new_username);
 }
 
-void Account::change_email_hash(std::string& old_hash, std::string& new_hash)
+void Account::change_email_hash(std::string old_hash, std::string new_hash)
 {
 	LOG_INFO << "Changing email hash from '" << old_hash << "' to '" << new_hash << "'";
 	if (database::item_exist("email_hash", old_hash))
@@ -22,7 +22,7 @@ void Account::change_email_hash(std::string& old_hash, std::string& new_hash)
 	database::update_user("email_hash", old_hash, new_hash);
 }
 
-void Account::change_password_hash(std::string& old_hash, std::string& new_hash)
+void Account::change_password_hash(std::string old_hash, std::string new_hash)
 {
 	LOG_INFO << "Changing password hash from '" << old_hash << "' to '" << new_hash << "'";
 	if (database::item_exist("password_hash", old_hash))

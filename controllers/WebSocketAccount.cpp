@@ -33,24 +33,30 @@ void WebSocketAccount::handleConnectionClosed(const drogon::WebSocketConnectionP
 void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, const drogon::WebSocketConnectionPtr& conn)
 {
     LOG_DEBUG << "New websocket connection!";
+
+    std::string username = req->getParameter("username");
+    std::string password_hash = req->getParameter("password_hash");
+    std::string email_hash = req->getParameter("email_hash");
+    std::string phone_hash = req->getParameter("phone_hash");
+    std::string recovery_phrase = req->getParameter("recovery_phrase");
     
     // Tohle mi prijde hrozne ghetto, ale nevim jak to jinak vyresit
     if (req->getPath() == "/register")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
-        if (database::user_exist_full(req->getParameter("username"), req->getParameter("email_hash"), req->getParameter("password_hash"), req->getParameter("phone_hash")))
+        if (database::user_exist_full(username, email_hash, password_hash, phone_hash))
         {
             conn->send("0, User already exist.");
             return;
         }
-        database::create_account(req->getParameter("username"), req->getParameter("email_hash"), req->getParameter("password_hash"), req->getParameter("phone_hash"), "co jak kdy kde");
+        database::create_account(username, email_hash, password_hash, phone_hash, recovery_phrase);
         conn->send("1, Successfully registered.");
         return;
     }
     else if (req->getPath() == "/login")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
-        if (!database::user_exist(req->getParameter("username"), req->getParameter("password_hash")))
+        if (!database::user_exist(username, password_hash))
         {
             conn->send("0, User doesnt exist. Please register.");
             return;
@@ -61,7 +67,12 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
     else if (req->getPath() == "/changeUsername")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
-        // Jak se dostanu k Account change_username ?
+        if (!database::user_exist(username, password_hash))
+        {
+            conn->send("0, User doesnt exist. Please register.");
+            return;
+        }
+        account.change_username(req->getParameter("old_username"), req->getParameter("new_username"));
     }
     else if (req->getPath() == "/changeEmail")
     {

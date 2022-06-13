@@ -15,7 +15,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/controllers
     ${CMAKE_CURRENT_SOURCE_DIR}/database
     ${CMAKE_CURRENT_SOURCE_DIR}/main
-    ${CMAKE_CURRENT_SOURCE_DIR}/security
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
 
@@ -24,7 +23,6 @@ file(GLOB SRC
    ${CMAKE_CURRENT_SOURCE_DIR}/controllers/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/database/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/main/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/security/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
 )
 
