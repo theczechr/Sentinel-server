@@ -24,3 +24,8 @@ struct Subscriber
     std::string chatRoomName_;
     drogon::SubscriberID id_;
 };
+struct Response
+{
+    std::string res = "a";
+    int type = 0;
+};

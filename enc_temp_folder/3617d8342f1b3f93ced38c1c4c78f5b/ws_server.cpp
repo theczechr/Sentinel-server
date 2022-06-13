@@ -24,10 +24,9 @@ void WebSocketChat::handleConnectionClosed(const drogon::WebSocketConnectionPtr&
 
 void WebSocketChat::handleNewConnection(const drogon::HttpRequestPtr& req, const drogon::WebSocketConnectionPtr& conn)
 {
-    req->addHeader("", "asg");
+    req->addHeader("Header", "asg");
     //LOG_INFO << req->getPath();
     req->setBody("aaa");
-    conn->setContext(req);
     std::vector<std::string> kontakty = { "Karel", "Kornel", "Robin", "Valon", "Kuba" };
     LOG_DEBUG << "New websocket connection!";
     Subscriber s;
