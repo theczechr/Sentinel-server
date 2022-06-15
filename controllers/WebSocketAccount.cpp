@@ -1,13 +1,5 @@
 #include "WebSocketAccount.hpp"
 
-/*
-* Smazal jsem tvoje veci na chatrooms, protoze jsme se bavili, ze si to musime rozdelit
-* Tohle bude slouzit na komunikaci ohledne accountu
-* Ty vytvor neco jako WebSocketChat, ale necham to na tobe
-* ---
-* Udelal jsem ti nejakou base podle examplu
-*/
-
 void WebSocketAccount::handleNewMessage(const drogon::WebSocketConnectionPtr& wsConnPtr, std::string&& message, const drogon::WebSocketMessageType& type)
 {
     std::string messageType = "Unknown";
@@ -40,7 +32,6 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
     std::string phone_hash = req->getParameter("phone_hash");
     std::string recovery_phrase = req->getParameter("recovery_phrase");
     
-    // Tohle mi prijde hrozne ghetto, ale nevim jak to jinak vyresit
     if (req->getPath() == "/register")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
@@ -77,12 +68,10 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
     else if (req->getPath() == "/changeEmail")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
-        // Jak se dostanu k Account change_email_hash ?
     }
     else if (req->getPath() == "/changePassword")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
-        // Jak se dostanu k Account change_password_hash ?
     }
     LOG_ERROR << "Request path '" << req->getPath() << "' doesnt exist";
 }

@@ -14,7 +14,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/account
     ${CMAKE_CURRENT_SOURCE_DIR}/controllers
     ${CMAKE_CURRENT_SOURCE_DIR}/database
-    ${CMAKE_CURRENT_SOURCE_DIR}/main
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
 
@@ -33,6 +32,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 # For more information, see the docs here: https://json.nlohmann.me/features/macros/#json_use_implicit_conversions
 find_package(OpenSSL REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
+find_package(Boost REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SRC})
 
@@ -42,4 +42,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenSSL::SSL
     OpenSSL::Crypto
     SQLiteCpp
+    ${Boost_INCLUDE_DIRS}
 )

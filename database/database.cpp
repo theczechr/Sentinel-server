@@ -1,11 +1,5 @@
 #include "database.hpp"
 
-/*
-* Pridal jsem ke kazdemu logu i ze odkud to je  napr. DATABASE CREATE: ...
-* Vim ze to ta library kterou pouzivame uz pise ale idk prislo mi to better na orientaci
-* Co si o tom myslis ?
-*/
-
 std::string db_name = "KRappDB.db3";
 std::string tb_name = "users";
 
@@ -25,9 +19,9 @@ void database::create()
 	LOG_INFO << "DATABASE CREATE: SQLite database file '" << db_name << "' created successfully";
 
 	LOG_INFO << "DATABASE CREATE: Creating database table '" << tb_name << "'";
-	db.exec("CREATE TABLE " + tb_name + " (username USERNAME, email_hash EMAIL_HASH, password_hash PASSWORD_HASH, phone_hash PHONE_HASH, recovery_phrase RECOVERY_PHRASE)");
+	db.exec("CREATE TABLE " + tb_name + " (id ID, username USERNAME, email_hash EMAIL_HASH, password_hash PASSWORD_HASH, phone_hash PHONE_HASH, recovery_phrase RECOVERY_PHRASE)");
 	LOG_INFO << "DATABASE CREATE: Inserting NULL values";
-	db.exec("INSERT INTO " + tb_name + " VALUES (NULL, NULL, NULL, NULL, NULL)");
+	db.exec("INSERT INTO " + tb_name + " VALUES (NULL, NULL, NULL, NULL, NULL, NULL)"); // ??
 
 	LOG_INFO << "DATABASE CREATE: Database created successfully, quitting";
 }
@@ -42,10 +36,10 @@ void database::display()
 	LOG_INFO << "DATABASE DISPLAY: SQLite database file '" << db_name << "' opened successfully";
 
 	SQLite::Statement query(db, "SELECT * FROM " + tb_name);
-	LOG_INFO << "DATABASE DISPLAY: username " << "email_hash " << "password_hash " << "phone_hash " << "recovery phrase";
+	LOG_INFO << "DATABASE DISPLAY: id username email_hash password_hash phone_hash recovery";
 	while (query.executeStep())
 	{
-		std::cout << "Row (" << query.getColumn(0) << ", \"" << query.getColumn(1) << ", \"" << query.getColumn(2) << ", \"" << query.getColumn(3) << ", \"" << query.getColumn(4) << "\")\n";
+		std::cout << "Row (\"" << query.getColumn(0) << "\", \"" << query.getColumn(1) << "\", \"" << query.getColumn(2) << "\", \"" << query.getColumn(3) << "\", \"" << query.getColumn(4) << "\", \"" << query.getColumn(5) << "\")\n";
 	}
 	LOG_INFO << "DATABASE DISPLAY: Database displayed successfully, quitting";
 }
@@ -72,7 +66,7 @@ bool database::item_exist(std::string name, std::string value)
 	return true;
 }
 
-void database::create_account(std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_phrase)
+void database::create_account(std::string uuid, std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_phrase)
 {
 	LOG_INFO << "DATABASE create_account: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "DATABASE create_account: SQliteC++ version " << SQLITECPP_VERSION;
@@ -87,7 +81,7 @@ void database::create_account(std::string username, std::string email_hash, std:
 		return;
 	}
 
-	db.exec("INSERT INTO " + tb_name + " VALUES (\"" + username + "\", \"" + email_hash + "\", \"" + password_hash + "\", \"" + phone_hash + "\", \"" + recovery_phrase + "\")");
+	db.exec("INSERT INTO " + tb_name + " VALUES (\"" + uuid + "\", \"" + username + "\", \"" + email_hash + "\", \"" + password_hash + "\", \"" + phone_hash + "\", \"" + recovery_phrase + "\")");
 	
 	LOG_INFO << "DATABASE create_account: Account created successfully, quitting";
 }

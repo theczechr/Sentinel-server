@@ -1,6 +1,6 @@
 #include "account.hpp"
 
-void Account::change_username(std::string old_username, std::string new_username)
+void account::change_username(std::string old_username, std::string new_username)
 {
 	LOG_INFO << "Changing username from '" << old_username << "' to '" << new_username << "'";
 	if (database::item_exist("username", old_username))
@@ -11,7 +11,7 @@ void Account::change_username(std::string old_username, std::string new_username
 	database::update_user("username", old_username, new_username);
 }
 
-void Account::change_email_hash(std::string old_hash, std::string new_hash)
+void account::change_email_hash(std::string old_hash, std::string new_hash)
 {
 	LOG_INFO << "Changing email hash from '" << old_hash << "' to '" << new_hash << "'";
 	if (database::item_exist("email_hash", old_hash))
@@ -22,7 +22,7 @@ void Account::change_email_hash(std::string old_hash, std::string new_hash)
 	database::update_user("email_hash", old_hash, new_hash);
 }
 
-void Account::change_password_hash(std::string old_hash, std::string new_hash)
+void account::change_password_hash(std::string old_hash, std::string new_hash)
 {
 	LOG_INFO << "Changing password hash from '" << old_hash << "' to '" << new_hash << "'";
 	if (database::item_exist("password_hash", old_hash))
@@ -33,7 +33,7 @@ void Account::change_password_hash(std::string old_hash, std::string new_hash)
 	database::update_user("password_hash", old_hash, new_hash);
 }
 
-void Account::create(const std::string& username, const std::string& email, const std::string& password, const std::string& phone_number, const std::string& recovery_phrase)
+void account::create(const std::string& username, const std::string& email, const std::string& password, const std::string& phone_number, const std::string& recovery_phrase)
 {
 	if (database::user_exist_full(username, email, password, phone_number))
 	{
@@ -44,7 +44,7 @@ void Account::create(const std::string& username, const std::string& email, cons
 	LOG_INFO << "Registered successufully!";
 }
 
-void Account::login(const std::string& username, std::string password) const
+void account::login(const std::string& username, std::string password)
 {
 	if (!database::user_exist(username, password))
 	{
