@@ -75,7 +75,7 @@ void database::create_account(std::string uuid, std::string username, std::strin
 	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
 	LOG_INFO << "DATABASE create_account: SQLite database file '" << db_name << "' opened successfully";
 
-	if (user_exist_full(username, email_hash, password_hash, phone_hash))
+	if (user_exist_full(uuid, username, email_hash, password_hash, phone_hash))
 	{
 		LOG_INFO << "DATABASE create_account: User already exist";
 		return;
@@ -86,7 +86,7 @@ void database::create_account(std::string uuid, std::string username, std::strin
 	LOG_INFO << "DATABASE create_account: Account created successfully, quitting";
 }
 
-bool database::user_exist_full(std::string username, std::string email_hash, std::string password_hash, std::string phone_hash)
+bool database::user_exist_full(std::string uuid, std::string username, std::string email_hash, std::string password_hash, std::string phone_hash)
 {
 	LOG_INFO << "DATABASE user_exist_full: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "DATABASE user_exist_full: SQliteC++ version " << SQLITECPP_VERSION;
@@ -95,7 +95,7 @@ bool database::user_exist_full(std::string username, std::string email_hash, std
 	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
 	LOG_INFO << "DATABASE user_exist_full: SQLite database file '" << db_name << "' opened successfully";
 
-	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE username = \"" + username + "\" AND email_hash = \"" + email_hash + "\" AND password_hash = \"" + password_hash + "\" AND phone_hash = \"" + phone_hash + "\")");
+	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE id = \"" + uuid + "\" username = \"" + username + "\" AND email_hash = \"" + email_hash + "\" AND password_hash = \"" + password_hash + "\" AND phone_hash = \"" + phone_hash + "\")");
 	while (query.executeStep())
 	{
 		if (!query.getColumn(0).getInt())

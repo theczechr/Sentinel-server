@@ -35,12 +35,12 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
     if (req->getPath() == "/register")
     {
         LOG_INFO << "Request path '" << req->getPath() << "'";
-        if (database::user_exist_full(username, email_hash, password_hash, phone_hash))
+        //if (database::user_exist_full(username, email_hash, password_hash, phone_hash))
         {
             conn->send("0, User already exist.");
             return;
         }
-        database::create_account(username, email_hash, password_hash, phone_hash, recovery_phrase);
+        //database::create_account(username, email_hash, password_hash, phone_hash, recovery_phrase);
         conn->send("1, Successfully registered.");
         return;
     }

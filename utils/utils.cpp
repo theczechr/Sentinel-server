@@ -13,14 +13,3 @@ bool utils::file_exist(std::string file)
 		return false;
 	return true;
 }
-
-std::string utils::gen_uuid()
-{
-	return std::string();
-}
-
-std::string gen_uuid()
-{
-	boost::uuids::uuid uuid = boost::uuids::random_generator()();
-	return boost::lexical_cast<std::string>(uuid); // remake
-}

@@ -1,55 +1,50 @@
 #include "account.hpp"
 
+bool account::authorize(std::string uuid)
+{
+	LOG_INFO << "Authorizing '" << uuid << "'";
+
+	if (database::item_exist("id", uuid))
+	{
+		return false;
+	}
+	return true;
+}
+
 void account::change_username(std::string old_username, std::string new_username)
 {
 	LOG_INFO << "Changing username from '" << old_username << "' to '" << new_username << "'";
-	if (database::item_exist("username", old_username))
-	{
-		LOG_ERROR << "Username '" << old_username << "' already exist";
-		return;
-	}
 	database::update_user("username", old_username, new_username);
 }
 
 void account::change_email_hash(std::string old_hash, std::string new_hash)
 {
 	LOG_INFO << "Changing email hash from '" << old_hash << "' to '" << new_hash << "'";
-	if (database::item_exist("email_hash", old_hash))
-	{
-		LOG_ERROR << "Email hash '" << old_hash << "' already exist";
-		return;
-	}
 	database::update_user("email_hash", old_hash, new_hash);
 }
 
 void account::change_password_hash(std::string old_hash, std::string new_hash)
 {
 	LOG_INFO << "Changing password hash from '" << old_hash << "' to '" << new_hash << "'";
-	if (database::item_exist("password_hash", old_hash))
-	{
-		LOG_ERROR << "Email hash '" << old_hash << "' already exist";
-		return;
-	}
 	database::update_user("password_hash", old_hash, new_hash);
 }
 
-void account::create(const std::string& username, const std::string& email, const std::string& password, const std::string& phone_number, const std::string& recovery_phrase)
+bool account::create(std::string uuid, std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_phrase)
 {
-	if (database::user_exist_full(username, email, password, phone_number))
+	if (database::user_exist_full(uuid, username, email_hash, password_hash, phone_hash))
 	{
-		LOG_ERROR << "Cannot create account, because account already exist.";
-		return;
+		return false;
 	}
-	database::create_account(username, email, password, phone_number, recovery_phrase);
-	LOG_INFO << "Registered successufully!";
+	database::create_account(uuid, username, email_hash, password_hash, phone_hash, recovery_phrase);
+
+	return true;
 }
 
-void account::login(const std::string& username, std::string password)
+bool account::login(std::string username, std::string password_hash)
 {
-	if (!database::user_exist(username, password))
+	if (!database::user_exist(username, password_hash))
 	{
-		LOG_ERROR << "User doesnt exist, please register.";
-		return;
+		return false;
 	}
-	LOG_INFO << "Logged successufully!";
+	return true;
 }
