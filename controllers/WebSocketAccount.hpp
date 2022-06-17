@@ -19,6 +19,31 @@ public:
     WS_PATH_ADD("/changePassword", drogon::Head);
     WS_PATH_LIST_END
 private:
-};
+    enum Options {
+        Option_Invalid,
+        Register,
+        Login,
+        Change_username,
+        Change_password,
+        Change_email
 
+        //others...
+    };
+
+    Options resolveOption(std::string input) {
+        static const std::map<std::string, Options> optionStrings{
+            { "/register", Register },
+            { "/login", Login },
+            { "/change_username", Change_username },
+            { "/change_password", Change_password },
+            { "/change_email", Change_email },
+        };
+
+        auto itr = optionStrings.find(input);
+        if (itr != optionStrings.end()) {
+            return itr->second;
+        }
+        return Option_Invalid;
+    }
+};
 Account account;

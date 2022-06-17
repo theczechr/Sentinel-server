@@ -16,5 +16,5 @@ bool utils::file_exist(std::string file)
 
 size_t gen_id()
 {
-
+	return 0;
 }

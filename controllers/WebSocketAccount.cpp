@@ -39,7 +39,64 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
     std::string email_hash = req->getParameter("email_hash");
     std::string phone_hash = req->getParameter("phone_hash");
     std::string recovery_phrase = req->getParameter("recovery_phrase");
-    
+    std::string input = req->getPath();
+
+    switch (resolveOption(input))
+    {
+        case Login:
+        {
+            LOG_INFO << "Request path '" << req->getPath() << "'";
+            if (!database::user_exist(username, password_hash))
+            {
+                conn->send("0, User doesnt exist. Please register.");
+                return;
+            }
+            conn->send("1, Successfully logged in.");
+            return;
+        }
+        case Register:
+        {
+            LOG_INFO << "Request path '" << req->getPath() << "'";
+            if (database::user_exist_full(username, email_hash, password_hash, phone_hash))
+            {
+                conn->send("0, User already exist.");
+                return;
+            }
+            database::create_account(username, email_hash, password_hash, phone_hash, recovery_phrase);
+            conn->send("1, Successfully registered.");
+            return;
+        }
+        case Change_username:
+        {
+            LOG_INFO << "Request path '" << req->getPath() << "'";
+            if (!database::user_exist(username, password_hash))
+            {
+                conn->send("0, User doesnt exist. Please register.");
+                return;
+            }
+            account.change_username(req->getParameter("old_username"), req->getParameter("new_username"));
+            break;
+        }
+        case Change_password:
+        {
+            LOG_INFO << "Request path '" << req->getPath() << "'";
+            // Jak se dostanu k Account change_password_hash ?
+            break;
+        }
+        case Change_email:
+        {
+            LOG_INFO << "Request path '" << req->getPath() << "'";
+            // Jak se dostanu k Account change_email_hash ?
+            break;
+        }
+                    // handles Option_Invalid and any other missing/unmapped cases
+        default:
+        {
+            LOG_ERROR << "Request path '" << req->getPath() << "' doesnt exist";
+            break;
+        }
+    }
+/*
     // Tohle mi prijde hrozne ghetto, ale nevim jak to jinak vyresit
     if (req->getPath() == "/register")
     {
@@ -85,4 +142,5 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
         // Jak se dostanu k Account change_password_hash ?
     }
     LOG_ERROR << "Request path '" << req->getPath() << "' doesnt exist";
+*/
 }
