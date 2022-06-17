@@ -2,15 +2,16 @@
 #include <trantor/utils/Logger.h>
 #include "database.hpp"
 
-class Account
+namespace account
 {
-public:
+	bool authorize(std::string uuid);
+
 	void change_username(std::string old_username, std::string new_username);
 	void change_email_hash(std::string old_hash, std::string new_hash);
 	void change_password_hash(std::string old_hash, std::string new_hash);
 
-	void create(const std::string& username, const std::string& email, const std::string& password, const std::string& phone_number, const std::string& recovery_phrase);
-	void login(const std::string& username, std::string password) const;
+	bool create(std::string uuid, std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_phrase);
+	bool login(std::string username, std::string password_hash);
 	void close(); // Delete account
 	void reopen(); // Only within x days ?
 };

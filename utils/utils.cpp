@@ -13,8 +13,3 @@ bool utils::file_exist(std::string file)
 		return false;
 	return true;
 }
-
-size_t gen_id()
-{
-	return 0;
-}
