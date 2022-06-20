@@ -5,12 +5,20 @@
 class Account
 {
 private:
+	int verion;
+	bool status; // active / inactive
 	std::string uuid;
 	std::string username;
 	std::string email_hash;
 	std::string password_hash;
 	std::string number_hash;
 public:
+	int get_version();
+	void set_version(int version);
+
+	bool get_status();
+	void set_status(bool status);
+
 	std::string get_uuid();
 	void set_uuid(std::string uuid);
 
@@ -26,18 +34,3 @@ public:
 	std::string get_number_hash();
 	void set_number_hash(std::string number_hash);
 };
-
-//namespace account
-//{
-//
-//	bool authorize(std::string uuid);
-//
-//	void change_username(std::string old_username, std::string new_username);
-//	void change_email_hash(std::string old_hash, std::string new_hash);
-//	void change_password_hash(std::string old_hash, std::string new_hash);
-//
-//	bool create(std::string uuid, std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_phrase);
-//	bool login(std::string username, std::string password_hash);
-//	void close(); // Delete account
-//	void reopen(); // Only within x days ?
-//};
