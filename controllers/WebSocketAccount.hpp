@@ -32,8 +32,8 @@ private:
 
     Options resolveOption(std::string input) {
         static const std::map<std::string, Options> optionStrings{
-            { "/register", Register },
             { "/login", Login },
+            { "/register", Register },
             { "/change_username", Change_username },
             { "/change_password", Change_password },
             { "/change_email", Change_email },
@@ -46,4 +46,3 @@ private:
         return Option_Invalid;
     }
 };
-Account account;

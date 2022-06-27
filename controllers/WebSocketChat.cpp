@@ -20,6 +20,7 @@ void WebSocketChat::handleConnectionClosed(const drogon::WebSocketConnectionPtr&
 {
     LOG_INFO << "Websocket connection closed!";
     auto& s = conn->getContextRef<Subscriber>();
+    if (s == nullptr) // exception throwuje s was nullptr ale toto nejde :D
     chatRooms_.unsubscribe(s.chatRoomName_, s.id_);
 }
 
@@ -27,14 +28,54 @@ void WebSocketChat::handleNewConnection(const drogon::HttpRequestPtr& req, const
 {
     LOG_DEBUG << "New websocket connection!";
 
-    conn->send("haha!!!");
+    std::string input = req->getPath();
     Subscriber s;
     s.chatRoomName_ = req->getParameter("room_name");
+    std::string example_chatroom = "karol"; \
+    std::string example_userid = "187";
 
-    s.id_ = chatRooms_.subscribe(s.chatRoomName_, [conn](const std::string& topic, const std::string& message)
+    switch (resolveOption(input))
     {
-        (void)topic;
-        conn->send(message);
-    });
-    conn->setContext(std::make_shared<Subscriber>(std::move(s)));
+        case Send_txt:
+        {
+            if (s.chatRoomName_ == example_chatroom)
+            {
+                break;
+            }
+            else
+            {
+                foo(conn, Wrong_chatroom); // jen test ale asi to bude vypada takto ta funkce
+                return;
+            }
+        }
+
+        case Send_media:
+        {
+            return;
+        }
+
+        case Create_chatroom:
+        {
+            return;
+        }
+
+        case Delete_chatroom:
+        {
+            return;
+        }
+
+        default:
+        {
+            return;
+        }
+    }
+        conn->send("successful connection");
+        s.id_ = chatRooms_.subscribe(s.chatRoomName_, [conn](const std::string& topic, const std::string& message)
+            {
+                (void)topic;
+                conn->send(message);
+            });
+        conn->setContext(std::make_shared<Subscriber>(std::move(s)));
+        return;
+
 }

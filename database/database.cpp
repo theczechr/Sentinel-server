@@ -73,6 +73,7 @@ bool database::user_exist(std::string email_hash, std::string phone_hash)
 	LOG_INFO << "DATABASE user_exist_full: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "DATABASE user_exist_full: SQliteC++ version " << SQLITECPP_VERSION;
 	LOG_INFO << "DATABASE user_exist_full: Checking if user exist";
+	std::string uuid, username, password_hash; // !! hazelo to ERROR, protoze uuid a username nebylo defined tak jsem udelal jen toto at mi to nerve !!
 
 	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
 	LOG_INFO << "DATABASE user_exist_full: SQLite database file '" << db_name << "' opened successfully";
