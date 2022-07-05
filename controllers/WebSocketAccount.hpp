@@ -15,34 +15,30 @@ public:
     WS_PATH_ADD("/register", drogon::Head);
     WS_PATH_ADD("/login", drogon::Head);
     WS_PATH_ADD("/changeUsername", drogon::Head);
-    WS_PATH_ADD("/changeEmail", drogon::Head);
-    WS_PATH_ADD("/changePassword", drogon::Head);
+    WS_PATH_ADD("/recovery", drogon::Head);
     WS_PATH_LIST_END
 private:
     enum Options {
-        Option_Invalid,
+        option_Invalid,
         Register,
-        Login,
-        Change_username,
-        Change_password,
-        Change_email
-
+        login,
+        change_username,
+        recovery
         //others...
     };
 
     Options resolveOption(std::string input) {
         static const std::map<std::string, Options> optionStrings{
-            { "/login", Login },
             { "/register", Register },
-            { "/change_username", Change_username },
-            { "/change_password", Change_password },
-            { "/change_email", Change_email },
+            { "/login", login },
+            { "/changeUsername", change_username },
+            { "/recovery", recovery },
         };
 
         auto itr = optionStrings.find(input);
         if (itr != optionStrings.end()) {
             return itr->second;
         }
-        return Option_Invalid;
+        return option_Invalid;
     }
 };

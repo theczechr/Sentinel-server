@@ -1,129 +1,73 @@
 #include "database.hpp"
 
-std::string db_name = "KRappDB.db3";
-std::string tb_name = "users";
+std::string db_name = "krapp.db";
 
 void database::create()
 {
-    LOG_INFO << "DATABASE CREATE: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-    LOG_INFO << "DATABASE CREATE: SQliteC++ version " << SQLITECPP_VERSION;
-    LOG_INFO << "DATABASE CREATE: Creating new database file '" << db_name << "'";
+    LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
+    LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
+    LOG_INFO << "Creating new database file '" << db_name << "'";
 
 	if (utils::file_exist(db_name))
 	{
-		LOG_ERROR << "DATABASE CREATE: SQLite database file '" << db_name << "' already exist, quitting";
+		LOG_ERROR << "SQLite database file '" << db_name << "' already exist, quitting";
 		return;
 	}
 
-	SQLite::Database db(db_name, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-	LOG_INFO << "DATABASE CREATE: SQLite database file '" << db_name << "' created successfully";
-
-	LOG_INFO << "DATABASE CREATE: Creating database table '" << tb_name << "'";
-	db.exec("CREATE TABLE " + tb_name + " (id ID, username USERNAME, email_hash EMAIL_HASH, password_hash PASSWORD_HASH, phone_hash PHONE_HASH, recovery_hash RECOVERY_HASH)");
-	LOG_INFO << "DATABASE CREATE: Inserting NULL values";
-	db.exec("INSERT INTO " + tb_name + " VALUES (NULL, NULL, NULL, NULL, NULL, NULL)"); // ??
-
-	LOG_INFO << "DATABASE CREATE: Database created successfully, quitting";
+	SQLite::Database db(db_name, SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE);
+	LOG_INFO << "SQLite database file '" << db_name << "' created successfully. quitting";
 }
 
-bool database::item_exist(std::string name, std::string value)
+void database::exec(std::string command)
 {
-	LOG_INFO << "DATABASE item_exist: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-	LOG_INFO << "DATABASE item_exist: SQliteC++ version " << SQLITECPP_VERSION;
-	LOG_INFO << "DATABASE item_exist: Checking if user exist";
+	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
+	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
+	LOG_INFO << "Executing command into '" << db_name << "'";
 
-	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
-	LOG_INFO << "DATABASE item_exist: SQLite database file '" << db_name << "' opened successfully";
-
-	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE " + name + " = \"" + value + "\")");
-	while (query.executeStep())
+	if (!utils::file_exist(db_name))
 	{
-		if (!query.getColumn(0).getInt())
-		{
-			LOG_INFO << "DATABASE item_exist: Item doesnt exist";
-			return false;
-		}
-	}
-	LOG_INFO << "DATABASE item_exist: Item does exist";
-	return true;
-}
-
-void database::create_account(std::string uuid, std::string username, std::string email_hash, std::string password_hash, std::string phone_hash, std::string recovery_hash)
-{
-	LOG_INFO << "DATABASE create_account: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-	LOG_INFO << "DATABASE create_account: SQliteC++ version " << SQLITECPP_VERSION;
-	LOG_INFO << "DATABASE create_account: Creating new user account";
-
-	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
-	LOG_INFO << "DATABASE create_account: SQLite database file '" << db_name << "' opened successfully";
-
-	if (user_exist(email_hash, phone_hash))
-	{
-		LOG_INFO << "DATABASE create_account: User already exist";
+		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
 		return;
 	}
 
-	db.exec("INSERT INTO " + tb_name + " VALUES (\"" + uuid + "\", \"" + username + "\", \"" + email_hash + "\", \"" + password_hash + "\", \"" + phone_hash + "\", \"" + recovery_hash + "\")");
-	
-	LOG_INFO << "DATABASE create_account: Account created successfully, quitting";
+	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
+	db.exec(command);
+
+	LOG_INFO << "Command executed, quitting";
 }
 
-bool database::user_exist(std::string email_hash, std::string phone_hash)
+void database::create_tables()
 {
-	LOG_INFO << "DATABASE user_exist_full: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-	LOG_INFO << "DATABASE user_exist_full: SQliteC++ version " << SQLITECPP_VERSION;
-	LOG_INFO << "DATABASE user_exist_full: Checking if user exist";
-	std::string uuid, username, password_hash; // !! hazelo to ERROR, protoze uuid a username nebylo defined tak jsem udelal jen toto at mi to nerve !!
+	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
+	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
+	LOG_INFO << "Creating database tables in database file '" << db_name << "'";
 
-	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
-	LOG_INFO << "DATABASE user_exist_full: SQLite database file '" << db_name << "' opened successfully";
-
-	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE id = \"" + uuid + "\" username = \"" + username + "\" AND email_hash = \"" + email_hash + "\" AND password_hash = \"" + password_hash + "\" AND phone_hash = \"" + phone_hash + "\")");
-	while (query.executeStep())
+	if (!utils::file_exist(db_name))
 	{
-		if (!query.getColumn(0).getInt())
-		{
-			LOG_INFO << "DATABASE user_exist_full: User doesnt exist";
-			return false;
-		}
+		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
+		return;
 	}
-	LOG_INFO << "DATABASE user_exist_full: User does exist";
-	return true;
-}
-
-//bool database::user_exist(std::string username, std::string password_hash)
-//{
-//	LOG_INFO << "DATABASE user_exist: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-//	LOG_INFO << "DATABASE user_exist: SQliteC++ version " << SQLITECPP_VERSION;
-//	LOG_INFO << "DATABASE user_exist: Checking if user exist";
-//
-//	SQLite::Database db(db_name, SQLite::OPEN_READONLY);
-//	LOG_INFO << "DATABASE user_exist: SQLite database file '" << db_name << "' opened successfully";
-//
-//	SQLite::Statement query(db, "SELECT EXISTS(SELECT 1 FROM " + tb_name + " WHERE username = \"" + username + "\" AND password_hash = \"" + password_hash + "\")");
-//	while (query.executeStep())
-//	{
-//		if (!query.getColumn(0).getInt())
-//		{
-//			LOG_INFO << "DATABASE user_exist: User doesnt exist";
-//			return false;
-//		}
-//	}
-//	LOG_INFO << "DATABASE user_exist: User does exist";
-//	return true;
-//}
-
-void database::update(std::string data_type, std::string old_data, std::string new_data)
-{
-	LOG_INFO << "DATABASE update_user: SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
-	LOG_INFO << "DATABASE update_user: SQliteC++ version " << SQLITECPP_VERSION;
-	LOG_INFO << "DATABASE update_user: Updating user " << data_type;
 
 	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
-	LOG_INFO << "DATABASE update_user: SQLite database file '" << db_name << "' opened successfully";
-	
-	SQLite::Statement query(db, "UPDATE " + tb_name + " SET " + data_type + " = \"" + new_data + "\" WHERE " + data_type + " = \"" + old_data + "\"");
-	while (query.executeStep());
 
-	LOG_INFO << "DATABASE update_user: Successfully updated " << data_type;
+	// Accounts table
+	db.exec("CREATE TABLE \"Accounts\" (\"uuid\"	TEXT NOT NULL UNIQUE, \"public_key\"	TEXT NOT NULL UNIQUE, \"username\"	TEXT NOT NULL, \"recovery_phrase\" TEXT, \"last_login\"	INTEGER NOT NULL)");
+	// ...
+
+	LOG_INFO << "Tables created, quitting";
+}
+
+void database::create_account(std::string uuid, std::string public_key, std::string username, std::string recovery_phrase, long last_login)
+{
+	LOG_INFO << "Creating new account with uuid '" << uuid << "'";
+
+	if (!utils::file_exist(db_name))
+	{
+		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
+		return;
+	}
+	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
+	//db.exec("INSERT INTO accounts VALUES(" + uuid + "," + public_key + "," + username + "," + recovery_phrase + "," + std::to_string(last_login) + ")"); // Error ?
+
+	LOG_INFO << "Account with uuid '" << uuid << "' created, quitting";
 }

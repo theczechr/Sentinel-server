@@ -30,6 +30,9 @@ find_package(OpenSSL REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 
+list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+find_package(Botan REQUIRED)
+
 add_executable(${PROJECT_NAME} ${SRC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -38,4 +41,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenSSL::Crypto
     SQLiteCpp
     ${Boost_INCLUDE_DIRS}
+    Botan::Botan
 )

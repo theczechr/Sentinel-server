@@ -20,7 +20,7 @@ void WebSocketChat::handleConnectionClosed(const drogon::WebSocketConnectionPtr&
 {
     LOG_INFO << "Websocket connection closed!";
     auto& s = conn->getContextRef<Subscriber>();
-    if (s == nullptr) // exception throwuje s was nullptr ale toto nejde :D
+    // if (s == nullptr) // exception throwuje s was nullptr ale toto nejde :D
     chatRooms_.unsubscribe(s.chatRoomName_, s.id_);
 }
 

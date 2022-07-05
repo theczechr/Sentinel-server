@@ -1,14 +1,5 @@
 #include "account.hpp"
 
-int Account::get_version()
-{
-	return verion;
-}
-void Account::set_version(int version)
-{
-	Account::verion = version;
-}
-
 bool Account::get_status()
 {
 	return status;
@@ -27,6 +18,15 @@ void Account::set_uuid(std::string uuid)
 	Account::uuid = uuid;
 }
 
+Botan::RSA_PublicKey Account::get_pub_key()
+{
+	return Account::pub_key;
+}
+void Account::set_pub_key(Botan::RSA_PublicKey pub_key)
+{
+	Account::pub_key = pub_key;
+}
+
 std::string Account::get_username()
 {
 	return username;
@@ -36,29 +36,20 @@ void Account::set_username(std::string username)
 	Account::username = username;
 }
 
-std::string Account::get_email_hash()
+std::string Account::get_recovery_phrase()
 {
-	return email_hash;
+	return recovery_phrase;
 }
-void Account::set_email_hash(std::string email_hash)
+void Account::set_recovery_phrase(std::string recovery_phrase)
 {
-	Account::email_hash = email_hash;
-}
-
-std::string Account::get_password_hash()
-{
-	return password_hash;
-}
-void Account::set_password_hash(std::string password_hash)
-{
-	Account::password_hash = password_hash;
+	Account::recovery_phrase = recovery_phrase;
 }
 
-std::string Account::get_number_hash()
+long Account::get_last_login()
 {
-	return number_hash;
+	return last_login;
 }
-void Account::set_number_hash(std::string number_hash)
+void Account::set_last_login(long last_login)
 {
-	Account::number_hash = number_hash;
+	Account::last_login = last_login;
 }
