@@ -1,6 +1,11 @@
 ﻿cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
-set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
+if(CMAKE_HOST_WIN32)
+    set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
+elseif(CMAKE_HOST_UNIX)
+    set(CMAKE_TOOLCHAIN_FILE "/home/karlos/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+    set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "" FORCE)
+endif()
 
 project(KRapp-server
         LANGUAGES CXX
@@ -8,7 +13,11 @@ project(KRapp-server
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17 /W4 /O2" CACHE STRING "" FORCE)
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17 /W4 /O2" CACHE STRING "" FORCE)
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -O3" CACHE STRING "" FORCE)
+endif()
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/account
@@ -30,16 +39,26 @@ find_package(OpenSSL REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(Botan REQUIRED)
+find_package(PkgConfig)
+pkg_check_modules(BOTAN2 botan-2)
 
-add_executable(${PROJECT_NAME} ${SRC})
-
-target_link_libraries(${PROJECT_NAME} PRIVATE
+if(BOTAN2_FOUND) 
+  add_executable(${PROJECT_NAME} ${SRC})
+  
+  target_link_libraries(${PROJECT_NAME} PRIVATE
     Drogon::Drogon
     OpenSSL::SSL
     OpenSSL::Crypto
     SQLiteCpp
     ${Boost_INCLUDE_DIRS}
-    Botan::Botan
-)
+    ${BOTAN2_LIBRARIES}
+    ${BOTAN2_LDFLAGS}
+  )
+
+  target_include_directories(${PROJECT_NAME} PRIVATE
+        ${BOTAN2_INCLUDE_DIRS}
+    )
+  target_compile_options(${PROJECT_NAME} PRIVATE
+        ${BOTAN2_CFLAGS_OTHER}
+  )
+endif()

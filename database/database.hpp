@@ -24,6 +24,8 @@
             - Vytvoreni noveho private, public key (lokalne)
             - Poslani noveho public key na server
             - Prihlaseni pod stejnym acc
+        - Pokud neni
+            - Znova registrace
 */
 
 namespace database
@@ -34,4 +36,5 @@ namespace database
 
     // Account
     void create_account(std::string uuid, std::string public_key, std::string username, std::string recovery_phrase, long last_login);
+    bool recovery_login(std::string username, std::string recovery_prase, long last_login);
 }

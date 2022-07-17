@@ -71,3 +71,14 @@ void database::create_account(std::string uuid, std::string public_key, std::str
 
 	LOG_INFO << "Account with uuid '" << uuid << "' created, quitting";
 }
+
+bool database::recovery_login(std::string username, std::string recovery_prase, long last_login)
+{
+	if (!utils::file_exist(db_name))
+	{
+		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
+		return false;
+	}
+	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
+	// dvb.exec()
+}

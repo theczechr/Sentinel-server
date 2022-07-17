@@ -1,3 +1,10 @@
+if (NOT WIN32)
+    find_package(PkgConfig)
+    Botan::Botan
+    pkg_check_modules(PC_BOTAN QUIET botan)
+    set(PC_BOTAN_DEFINITIONS ${PC_BOTAN_CFLAGS_OTHER})
+endif (NOT WIN32)
+
 find_path(Botan_INCLUDE_DIR botan/botan.h
         HINTS ${PC_BOTAN_INCLUDEDIR} ${PC_BOTAN_INCLUDE_DIRS} "c:/"
         PATH_SUFFIXES botan/include/botan-2
