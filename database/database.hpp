@@ -28,13 +28,16 @@
             - Znova registrace
 */
 
-namespace database
+namespace database // Mozna Class ?
 {
 	void create();
     void exec(std::string command);
+    void display_accounts();
     void create_tables(); // Accounts, ...
 
-    // Account
+    // Accounts
     void create_account(std::string uuid, std::string public_key, std::string username, std::string recovery_phrase, long last_login);
-    bool recovery_login(std::string username, std::string recovery_prase, long last_login);
+    bool recovery_login(std::string username, std::string recovery_phrase, long last_login);
+
+    // Pending messages - musime to cachovat
 }

@@ -42,23 +42,36 @@ find_package(Boost REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(BOTAN2 botan-2)
 
-if(BOTAN2_FOUND) 
-  add_executable(${PROJECT_NAME} ${SRC})
-  
-  target_link_libraries(${PROJECT_NAME} PRIVATE
+list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+find_package(Botan REQUIRED)
+
+add_executable(${PROJECT_NAME} ${SRC})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
     Drogon::Drogon
     OpenSSL::SSL
     OpenSSL::Crypto
     SQLiteCpp
     ${Boost_INCLUDE_DIRS}
-    ${BOTAN2_LIBRARIES}
-    ${BOTAN2_LDFLAGS}
-  )
+)
 
-  target_include_directories(${PROJECT_NAME} PRIVATE
-        ${BOTAN2_INCLUDE_DIRS}
-    )
-  target_compile_options(${PROJECT_NAME} PRIVATE
-        ${BOTAN2_CFLAGS_OTHER}
-  )
+if(BOTAN2_FOUND) 
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+            Botan::Botan
+        )
+    else()
+
+      target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${BOTAN2_LIBRARIES}
+        ${BOTAN2_LDFLAGS}
+      )
+
+      target_include_directories(${PROJECT_NAME} PRIVATE
+            ${BOTAN2_INCLUDE_DIRS}
+        )
+      target_compile_options(${PROJECT_NAME} PRIVATE
+            ${BOTAN2_CFLAGS_OTHER}
+      )
+  endif()
 endif()

@@ -1,6 +1,5 @@
 if (NOT WIN32)
     find_package(PkgConfig)
-    Botan::Botan
     pkg_check_modules(PC_BOTAN QUIET botan)
     set(PC_BOTAN_DEFINITIONS ${PC_BOTAN_CFLAGS_OTHER})
 endif (NOT WIN32)
@@ -34,4 +33,4 @@ if (Botan_FOUND AND NOT TARGET Botan::Botan)
     set_target_properties(Botan::Botan PROPERTIES
             IMPORTED_LOCATION ${Botan_LIBRARY}
             )
-endif ()
+endif () 
