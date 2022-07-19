@@ -22,15 +22,17 @@ endif()
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/account
     ${CMAKE_CURRENT_SOURCE_DIR}/controllers
-    ${CMAKE_CURRENT_SOURCE_DIR}/database
+    ${CMAKE_CURRENT_SOURCE_DIR}/storage
+    ${CMAKE_CURRENT_SOURCE_DIR}/storage/tables
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
 
 file(GLOB SRC
    ${CMAKE_CURRENT_SOURCE_DIR}/account/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/controllers/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/database/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/main/*.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/storage/*.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/storage/tables/*.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
 )
 

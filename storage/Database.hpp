@@ -4,7 +4,7 @@
 #include "utils.hpp"
 
 /*
-* Server db: identifier, public key, username, recovery phrase, last login
+* Server db: uuid, public key, username, recovery phrase, last login
 1. Registrace
     - Username
     - Zeptat se pokud bude chtit moznost obnoveni
@@ -28,16 +28,25 @@
             - Znova registrace
 */
 
-namespace database // Mozna Class ?
+/*
+* Client vzdycky posle uuid
+* Sqlitecpp ma execAndGet
+*/
+
+class Database
 {
-	void create();
+private:
+    const std::string db_name = "krapp.db";
+public:
+    Database()
+    {
+        create();
+    }
+
+    std::string get_db_name() const;
+
+    void create();
+    void create_table(std::string table_name);
     void exec(std::string command);
-    void display_accounts();
-    void create_tables(); // Accounts, ...
-
-    // Accounts
-    void create_account(std::string uuid, std::string public_key, std::string username, std::string recovery_phrase, long last_login);
-    bool recovery_login(std::string username, std::string recovery_phrase, long last_login);
-
-    // Pending messages - musime to cachovat
-}
+    void drop_table(std::string table_name);
+};
