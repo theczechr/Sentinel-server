@@ -1,5 +1,10 @@
 #include "Account.hpp"
 
+void Account::create()
+{
+
+}
+
 bool Account::get_status() const
 {
 	return status;
@@ -9,22 +14,22 @@ void Account::set_status(bool status)
 	this->status = status;
 }
 
-std::string Account::get_uuid() const
+boost::uuids::uuid Account::get_uuid() const
 {
 	return uuid;
 }
-void Account::set_uuid(std::string uuid)
+void Account::set_uuid(boost::uuids::uuid uuid)
 {
 	this->uuid = uuid;
 }
 
-Botan::RSA_PublicKey Account::get_pub_key() const
+std::string Account::get_pub_key_fprint() const
 {
-	return Account::pub_key;
+	return pub_key_fprint;
 }
-void Account::set_pub_key(Botan::RSA_PublicKey pub_key)
+void Account::set_pub_key_fprint(std::string pub_key_fprint)
 {
-	this->pub_key = pub_key;
+	this->pub_key_fprint = pub_key_fprint;
 }
 
 std::string Account::get_username() const

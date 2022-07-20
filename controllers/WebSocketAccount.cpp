@@ -34,11 +34,19 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
         {
             LOG_INFO << "Request path '" << req->getPath() << "'";
 
+            std::string pub_key_fprint = req->getParameter("pub_key_fprint");
+            std::string username = req->getParameter("username");
+            std::string recovery_phrase = req->getParameter("recovery_phrase");
+            std::string last_login = req->getParameter("last_login");
+
             return;
         }
         case login:
         {
             LOG_INFO << "Request path '" << req->getPath() << "'";
+
+            std::string pub_key_fprint = req->getParameter("pub_key_fprint");
+            std::string last_login = req->getParameter("last_login");
 
             return;
         }
@@ -46,11 +54,18 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
         {
             LOG_INFO << "Request path '" << req->getPath() << "'";
 
+            std::string pub_key_fprint = req->getParameter("pub_key_fprint");
+            std::string username = req->getParameter("username");
+            std::string last_login = req->getParameter("last_login");            
+
             break;
         }
         case recovery:
         {
             LOG_INFO << "Request path '" << req->getPath() << "'";
+
+            std::string recovery_phrase = req->getParameter("recovery_phrase");
+            std::string last_login = req->getParameter("last_login");
 
             break;
         }
