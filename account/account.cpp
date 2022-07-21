@@ -1,10 +1,5 @@
 #include "Account.hpp"
 
-void Account::create()
-{
-
-}
-
 bool Account::get_status() const
 {
 	return status;
@@ -17,10 +12,6 @@ void Account::set_status(bool status)
 boost::uuids::uuid Account::get_uuid() const
 {
 	return uuid;
-}
-void Account::set_uuid(boost::uuids::uuid uuid)
-{
-	this->uuid = uuid;
 }
 
 std::string Account::get_pub_key_fprint() const

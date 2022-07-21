@@ -20,7 +20,7 @@
         - Nejak se prevedou vsechny chaty atd.
     2. Recovery
         - Zada recovery phrase
-        - Pokud je spravne
+        - Pokud je spravne (jak se zjisti jestli je spravne ??) 
             - Vytvoreni noveho private, public key (lokalne)
             - Poslani noveho public key fingerprintu na server
             - Prihlaseni pod stejnym acc
@@ -31,7 +31,7 @@
 /*
  * Client vzdycky posle uuid
  * Sqlitecpp ma execAndGet
- * Taky me vadi nebo jak bych to rekl ze v .cpp vytvarime v kazde funkci znova SQLite::Database db.. zkousel jsem to dat sem, ale to nejde (nebo nevim jak)
+ * Taky mne vadi nebo jak bych to rekl ze v .cpp vytvarime v kazde funkci znova SQLite::Database db.. zkousel jsem to dat sem, ale to nejde (nebo nevim jak)
  * Tpc doufam ze si jednou ty notes prectes : DDD (20.6.2022 19:00)
 */
 

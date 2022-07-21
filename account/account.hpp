@@ -19,7 +19,6 @@ private:
 	unsigned long int last_login;
 protected:
 	boost::uuids::random_generator uuid_generator;
-	void create();
 public:
 	Account(std::string& pub_key_fprint, std::string& username, std::string& recovery_phrase, unsigned long int& last_login)
 	{
@@ -27,17 +26,14 @@ public:
 		this->pub_key_fprint = pub_key_fprint;
 		this->username = username;
 		this->recovery_phrase = recovery_phrase;
-		this->status = true; // Active account
+		this->status = true;
 		this->last_login = last_login;
-
-		create();
 	}
 
 	bool get_status() const;
 	void set_status(bool status);
 
 	boost::uuids::uuid get_uuid() const;
-	void set_uuid(boost::uuids::uuid uuid);
 
 	std::string get_pub_key_fprint() const;
 	void set_pub_key_fprint(std::string pub_key_fprint);
