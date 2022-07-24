@@ -10,11 +10,6 @@
 
 class Table
 {
-private:
-	Database db;
-	std::string table_name;
-protected:
-	void create(std::vector<std::pair<std::string, std::string>> columns);
 public:
 	/*
 	 * @brief Create new table with columns in database
@@ -26,12 +21,13 @@ public:
 	 * @see Datatypes https://www.sqlite.org/datatype3.html
 	 * @see Constraints https://www.tutorialspoint.com/sqlite/sqlite_constraints.htm
 	 */
-	Table(Database& db, std::string table_name, std::vector<std::pair<std::string, std::string>> columns)
+	Table(std::string table_name, std::vector<std::pair<std::string, std::string>> columns)
 	{
-		this->db = db;
 		this->table_name = table_name;
 		create(columns);
 	}
+protected:
+	void create(std::vector<std::pair<std::string, std::string>>& columns);
 
 	/*
 	 * @brief Returns table name
@@ -83,11 +79,7 @@ public:
 	 * @brief Delete row that matches two conditions (for deleting account)
 	*/
 	void delete_row_where_d(std::string condition_column1, std::string condition_value1, std::string condition_column2, std::string condition_value2);
+private:
+	Database db;
+	std::string table_name;
 };
-
-/*
- * Asi neni potreba ?
- * Nevim jak chceme udelat disappearing - vim ze se to dela pres TTL (Time To Live) ale jak to udelat ? A jestli to jde pres ws
- * Prozatim to tady necham
- * Kdybychom to nahodou nejak vyuzili tak bych to prejmenoval tak aby to zacinalo Table
-*/

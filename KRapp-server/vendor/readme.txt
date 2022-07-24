@@ -1,0 +1,1 @@
+Sem by jsme mohli dat vsechny libs a zbavit se vcpkg ? Vyuzilibychom na to git sumbodules takze bychom to meli i aktualni

@@ -1,16 +1,17 @@
 #include "Table.hpp"
+#include <iostream>
 
-void Table::create(std::vector<std::pair<std::string, std::string>> columns)
+void Table::create(std::vector<std::pair<std::string, std::string>>& columns)
 {
 	db.create_table(table_name);
-	for (auto &column : columns)
-	{
-		LOG_INFO << column.first << ", " << column.second;
-		db.exec("ALTER TABLE " + table_name + " ADD COLUMN " + column.first + " " + column.second + "");
-	}
-
 	// Deleting temp. column
 	db.exec("ALTER TABLE " + table_name + " DROP COLUMN columnn");
+
+	for (const auto& column : columns)
+	{
+		std::cout << column.first << ", " << column.second;
+		db.exec("ALTER TABLE " + table_name + " ADD COLUMN " + column.first + " " + column.second + "");
+	}
 }
 
 std::string Table::get_table_name() const
@@ -31,7 +32,7 @@ bool Table::column_exist(std::string column_name)
 {
 	LOG_INFO << "Checking if '" << column_name << "' exist in database '" << db.get_db_name() << "'";
 
-
+	// TODO:
 
 	return false;
 }

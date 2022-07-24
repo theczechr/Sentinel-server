@@ -1,11 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
-if(CMAKE_HOST_WIN32)
-    set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
-elseif(CMAKE_HOST_UNIX)
-    set(CMAKE_TOOLCHAIN_FILE "/home/karlos/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
-    set(VCPKG_TARGET_TRIPLET "x64-linux" CACHE STRING "" FORCE)
-endif()
+set(VCPKG_TARGET_TRIPLET "x64-windows" CACHE STRING "" FORCE)
 
 project(KRapp-server
         LANGUAGES CXX
@@ -13,27 +8,28 @@ project(KRapp-server
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17 /W4 /O2" CACHE STRING "" FORCE)
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -O3" CACHE STRING "" FORCE)
-endif()
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20 /W4 /O2" CACHE STRING "" FORCE)
+
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/src)
 
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/account
-    ${CMAKE_CURRENT_SOURCE_DIR}/controllers
-    ${CMAKE_CURRENT_SOURCE_DIR}/storage
-    ${CMAKE_CURRENT_SOURCE_DIR}/storage/tables
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+    ${SRC_DIR}/Account
+    ${SRC_DIR}/Core
+    ${SRC_DIR}/Controllers
+    ${SRC_DIR}/Storage
+    ${SRC_DIR}/Storage/Tables
+    ${SRC_DIR}/Utils
 )
 
-file(GLOB SRC
-   ${CMAKE_CURRENT_SOURCE_DIR}/account/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/controllers/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/main/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/storage/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/storage/tables/*.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
+file(GLOB EXEC
+   ${SRC_DIR}/Account/*.cpp
+   ${SRC_DIR}/Core/*.cpp
+   ${SRC_DIR}/Controllers/*.cpp
+   ${SRC_DIR}/*.cpp
+   ${SRC_DIR}/Storage/*.cpp
+   ${SRC_DIR}/Storage/Tables/*.cpp
+   ${SRC_DIR}/Utils/*.cpp
 )
 
 find_package(Drogon CONFIG REQUIRED)
@@ -41,13 +37,10 @@ find_package(OpenSSL REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
 find_package(Boost REQUIRED)
 
-find_package(PkgConfig)
-pkg_check_modules(BOTAN2 botan-2)
-
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(Botan REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SRC})
+add_executable(${PROJECT_NAME} ${EXEC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Drogon::Drogon
@@ -55,25 +48,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenSSL::Crypto
     SQLiteCpp
     ${Boost_INCLUDE_DIRS}
+    Botan::Botan
 )
-
-if(BOTAN2_FOUND) 
-    if (WIN32)
-        target_link_libraries(${PROJECT_NAME} PRIVATE
-            Botan::Botan
-        )
-    else()
-
-      target_link_libraries(${PROJECT_NAME} PRIVATE
-        ${BOTAN2_LIBRARIES}
-        ${BOTAN2_LDFLAGS}
-      )
-
-      target_include_directories(${PROJECT_NAME} PRIVATE
-            ${BOTAN2_INCLUDE_DIRS}
-        )
-      target_compile_options(${PROJECT_NAME} PRIVATE
-            ${BOTAN2_CFLAGS_OTHER}
-      )
-  endif()
-endif()
