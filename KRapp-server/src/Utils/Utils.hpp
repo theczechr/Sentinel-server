@@ -1,7 +1,7 @@
 #pragma once
 #include <fstream>
 
-namespace utils
+namespace Utils
 {
 	bool file_exist(std::string file);
 }

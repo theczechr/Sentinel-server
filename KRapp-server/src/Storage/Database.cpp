@@ -1,23 +1,23 @@
 #include "Database.hpp"
 
-std::string Database::get_db_name() const
+std::string storage::Database::get_name() const
 {
 	return db_name;
 }
 
-SQLite::Database Database::get_db() const
+SQLite::Database storage::Database::get_db() const
 {
 	SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
 	return db;
 }
 
-void Database::create()
+void storage::Database::create()
 {
     LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
     LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
     LOG_INFO << "Creating new database file '" << db_name << "'";
 
-	if (utils::file_exist(db_name))
+	if (Utils::file_exist(db_name))
 	{
 		LOG_ERROR << "SQLite database file '" << db_name << "' already exist, quitting";
 		return;
@@ -27,13 +27,13 @@ void Database::create()
 	LOG_INFO << "SQLite database file '" << db_name << "' created successfully. quitting";
 }
 
-void Database::create_table(std::string table_name)
+void storage::Database::create_table(std::string table_name)
 {
 	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
 	LOG_INFO << "Creating table '" << table_name << "'";
 
-	if (!utils::file_exist(db_name))
+	if (!Utils::file_exist(db_name))
 	{
 		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
 		return;
@@ -53,19 +53,19 @@ void Database::create_table(std::string table_name)
 	LOG_INFO << "Table '" + table_name + "' created successfully, quitting";
 }
 
-void Database::exec(std::string command)
+void storage::Database::exec(std::string command)
 {
 	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
 	LOG_INFO << "Executing command into '" << db_name << "'";
 
-	if (!utils::file_exist(db_name))
+	if (!Utils::file_exist(db_name))
 	{
 		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
 		return;
 	}
 
-	// Try je tady potreba, protoze se nevi co se bude executovat
+	// Needed, because we don't know what will be executed here so we can't catch the error
 	try
 	{
 		SQLite::Database db(db_name, SQLite::OPEN_READWRITE);
@@ -80,13 +80,13 @@ void Database::exec(std::string command)
 	LOG_INFO << "Command executed, quitting";
 }
 
-void Database::drop_table(std::string table_name)
+void storage::Database::drop_table(std::string table_name)
 {
 	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";
 	LOG_INFO << "SQliteC++ version " << SQLITECPP_VERSION;
 	LOG_INFO << "Dropping table '" << table_name << "'";
 
-	if (!utils::file_exist(db_name))
+	if (!Utils::file_exist(db_name))
 	{
 		LOG_ERROR << "SQLite database file '" << db_name << "' doesn't exist, quitting";
 		return;

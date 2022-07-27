@@ -15,38 +15,34 @@ set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/src)
 
 include_directories(
     ${SRC_DIR}/Account
-    ${SRC_DIR}/Core
-    ${SRC_DIR}/Controllers
     ${SRC_DIR}/Storage
-    ${SRC_DIR}/Storage/Tables
     ${SRC_DIR}/Utils
+    ${SRC_DIR}/WebSocketControllers
 )
 
 file(GLOB EXEC
    ${SRC_DIR}/Account/*.cpp
-   ${SRC_DIR}/Core/*.cpp
-   ${SRC_DIR}/Controllers/*.cpp
-   ${SRC_DIR}/*.cpp
    ${SRC_DIR}/Storage/*.cpp
-   ${SRC_DIR}/Storage/Tables/*.cpp
    ${SRC_DIR}/Utils/*.cpp
+   ${SRC_DIR}/WebSocketControllers/*.cpp
+   ${SRC_DIR}/*.cpp
 )
 
 find_package(Drogon CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+#find_package(OpenSSL REQUIRED)
 find_package(SQLiteCpp CONFIG REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost REQUIRED) # Nepotrebujeme celej boost - staci jenom najit co potrebujeme xD
 
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-find_package(Botan REQUIRED)
+#list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+#find_package(Botan REQUIRED)
 
 add_executable(${PROJECT_NAME} ${EXEC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Drogon::Drogon
-    OpenSSL::SSL
-    OpenSSL::Crypto
+#    OpenSSL::SSL
+#    OpenSSL::Crypto
     SQLiteCpp
     ${Boost_INCLUDE_DIRS}
-    Botan::Botan
+#    Botan::Botan
 )
