@@ -51,7 +51,7 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
 
 		return;
 	}
-	case login:
+	case Login:
 	{
 		LOG_INFO << "Request path '" << req->getPath() << "'";
 
@@ -60,7 +60,7 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
 
 		return;
 	}
-	case change_username:
+	case Change_username:
 	{
 		LOG_INFO << "Request path '" << req->getPath() << "'";
 
@@ -79,7 +79,7 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
 
 		break;
 	}
-	case recovery:
+	case Recovery:
 	{
 		LOG_INFO << "Request path '" << req->getPath() << "'";
 

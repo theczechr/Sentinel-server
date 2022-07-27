@@ -14,32 +14,41 @@ public:
 		WS_PATH_ADD("/register", drogon::Head);
 	WS_PATH_ADD("/login", drogon::Head);
 	WS_PATH_ADD("/changeUsername", drogon::Head);
+	WS_PATH_ADD("/changePkf", drogon::Head);
+	WS_PATH_ADD("/changeRecoveryPhrase", drogon::Head);
 	WS_PATH_ADD("/recovery", drogon::Head);
+	WS_PATH_ADD("/deactivate", drogon::Head);
 	WS_PATH_LIST_END
 private:
 	AccountManager account_manager;
 
 	enum Options {
-		option_Invalid,
+		Option_Invalid,
 		Register,
-		login,
-		change_username,
-		recovery
+		Login,
+		Change_username,
+		Change_pkf,
+		Change_recovery_phrase,
+		Recovery,
+		Deactivate
 		//others...
 	};
 
 	Options resolveOption(std::string input) {
 		static const std::map<std::string, Options> optionStrings{
 			{ "/register", Register },
-			{ "/login", login },
-			{ "/changeUsername", change_username },
-			{ "/recovery", recovery },
+			{ "/login", Login },
+			{ "/changeUsername", Change_username },
+			{ "/changePkf", Change_pkf },
+			{ "/changeRecoveryPhrase", Change_recovery_phrase },
+			{ "/recovery", Recovery },
+			{ "/deactivate", Deactivate }
 		};
 
-		auto itr = optionStrings.find(input);
+		std::map<std::string, WebSocketAccount::Options>::const_iterator itr = optionStrings.find(input);
 		if (itr != optionStrings.end()) {
 			return itr->second;
 		}
-		return option_Invalid;
+		return Option_Invalid;
 	}
 };

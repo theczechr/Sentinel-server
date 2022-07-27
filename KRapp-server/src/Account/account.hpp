@@ -23,6 +23,9 @@ public:
 
 	std::string get_status() const;
 	void set_status(std::string& status);
+
+	operator std::string() const { if (!status) return "inactive"; else return "active"; }
+	operator bool() const { return this->status; }
 private:
 	Utils::UUID uuid;
 	std::string username;
@@ -34,7 +37,7 @@ private:
 	std::string pub_key_fprint;
 	bool recovery_enabled = true;
 	std::string recovery_phrase;
-	std::string status; // active / inactive - byl to bool, ale s tim se tezko pracuje kdyz mame vsechno v stringu
+	bool status; // active / inactive
 
 	void require_active();
 };

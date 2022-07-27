@@ -33,14 +33,6 @@
  * Tpc doufam ze si jednou ty notes prectes : DDD (20.6.2022 19:00)
 */
 
-/*
-//! Important - formatted as bold.
-//? Question - colored red.
-//x Removed - formatted as strikethrough.
-//TODO: Task - colored light green.
-//!? WT*‽ - colored Purple.
-*/
-
 namespace storage {
 	class Database
 	{
