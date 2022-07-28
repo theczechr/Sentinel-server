@@ -2,7 +2,7 @@
 
 Account AccountManager::create(std::string& username, std::string& pub_key_fprint, std::string& recovery_phrase)
 {
-	account.set_uuid(Utils::UUID().generage_new());
+	account.set_uuid(uuid);
 	account.set_username(username);
 	account.set_pub_key_fprint(pub_key_fprint);
 	account.set_recovery_phrase(recovery_phrase);
@@ -90,7 +90,7 @@ bool AccountManager::login(Account& account)
 
 void AccountManager::delete_(Account& account)
 {
-	account.set_status(std::string("inactive"));
+	account.set_status("inactive");
 
 	table.delete_row_where_d("uuid", account.get_uuid(), "public_key_fingerprint", account.get_pub_key_fprint());
 }

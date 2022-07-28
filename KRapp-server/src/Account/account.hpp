@@ -10,22 +10,19 @@ public:
 	Account() { this->status = true; }
 
 	Utils::UUID get_uuid() const;
-	void set_uuid(Utils::UUID& uuid);
+	void set_uuid(Utils::UUID uuid);
 
 	std::string get_username() const;
-	void set_username(std::string& username);
+	void set_username(std::string username);
 
 	std::string get_pub_key_fprint() const;
-	void set_pub_key_fprint(std::string& pub_key_fprint);
+	void set_pub_key_fprint(std::string pub_key_fprint);
 
 	std::optional<std::string> get_recovery_phrase() const;
-	void set_recovery_phrase(std::string& recovery_phrase);
+	void set_recovery_phrase(std::string recovery_phrase);
 
 	std::string get_status() const;
-	void set_status(std::string& status);
-
-	operator std::string() const { if (!status) return "inactive"; else return "active"; }
-	operator bool() const { return this->status; }
+	void set_status(std::string status);
 private:
 	Utils::UUID uuid;
 	std::string username;

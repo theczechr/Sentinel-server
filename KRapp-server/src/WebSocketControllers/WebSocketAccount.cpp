@@ -67,8 +67,10 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr& req, co
 		std::string pub_key_fprint = req->getParameter("pub_key_fprint");
 		std::string new_username = req->getParameter("new_username");
 		//std::string last_login = req->getParameter("last_login");
+		
+		Account a = account_manager.get_by_pkf(pub_key_fprint);
 
-		account_manager.update_username(account_manager.get_by_pkf(pub_key_fprint), new_username);
+		account_manager.update_username(a, new_username);
 
 		// Make it bool so we can send response to the client
 

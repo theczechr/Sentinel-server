@@ -29,6 +29,7 @@ public:
 	void delete_(Account& account);
 private:
 	Account account;
+	Utils::UUID uuid = uuid.generage_new();
 	storage::Table table;
 	int column_num = 6;
 };
