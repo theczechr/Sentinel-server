@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include <drogon/WebSocketController.h>
 #include <drogon/PubSubService.h>
 
@@ -77,10 +78,5 @@ private:
 struct Subscriber
 {
     std::string chatRoomName_;
-    drogon::SubscriberID id_;
-};
-struct Response
-{
-    std::string res = "a";
-    int type = 0;
+    std::optional<drogon::SubscriberID> id_;
 };

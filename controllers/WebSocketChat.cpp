@@ -20,8 +20,18 @@ void WebSocketChat::handleConnectionClosed(const drogon::WebSocketConnectionPtr&
 {
     LOG_INFO << "Websocket connection closed!";
     auto& s = conn->getContextRef<Subscriber>();
-    // if (s == nullptr) // exception throwuje s was nullptr ale toto nejde :D
-    chatRooms_.unsubscribe(s.chatRoomName_, s.id_);
+    if (s.id_)
+    {
+        std::cout << " unsubscribe";
+        chatRooms_.unsubscribe(s.chatRoomName_, *s.id_);
+    }
+    else
+    {
+        std::cout << " shutdown";
+        conn->shutdown();
+    }
+        
+
 }
 
 void WebSocketChat::handleNewConnection(const drogon::HttpRequestPtr& req, const drogon::WebSocketConnectionPtr& conn)
@@ -44,6 +54,7 @@ void WebSocketChat::handleNewConnection(const drogon::HttpRequestPtr& req, const
             }
             else
             {
+                conn->setContext(std::make_shared<Subscriber>(std::move(s)));
                 foo(conn, Wrong_chatroom); // jen test ale asi to bude vypada takto ta funkce
                 return;
             }
