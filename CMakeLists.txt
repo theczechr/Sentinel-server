@@ -1,7 +1,7 @@
 ﻿# Do powershellu dej: winget install CMake a mas latest CMake
 cmake_minimum_required(VERSION 3.21)
 
-project(Sentinel # Okay tady jsem dal uz sentinel protoze z nejakeho duvodu mi neslo same name jako dir (idk proc, prosim neptej se me byl jsem unaveny)
+project(Sentinel # Okay tady jsem dal uz sentinel protoze z nejakeho duvodu mi neslo same name jako dir (idk proc, prosim neptej se me, byl jsem unaveny)
         LANGUAGES CXX)
 		
 set(CMAKE_CXX_STANDARD 20)
