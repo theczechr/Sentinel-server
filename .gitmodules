@@ -4,3 +4,6 @@
 [submodule "KRapp-server/vendor/sqlitecpp"]
 	path = KRapp-server/vendor/sqlitecpp
 	url = https://github.com/SRombauts/SQLiteCpp.git
+[submodule "KRapp-server/vendor/boost-headers"]
+	path = KRapp-server/vendor/boost-headers
+	url = https://github.com/jvishnefske/boost-headers.git
