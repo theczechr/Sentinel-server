@@ -1,7 +1,7 @@
 ﻿# Do powershellu dej: winget install CMake a mas latest CMake
 cmake_minimum_required(VERSION 3.21)
 
-project(KRapp-server # Jmeno sentinel ? XD
+project(Sentinel # Jmeno sentinel ? XD
         LANGUAGES CXX)
 		
 set(CMAKE_CXX_STANDARD 20)
@@ -15,7 +15,7 @@ endif()
 
 if(MSVC)
     add_compile_options("/W4" "$<$<CONFIG:RELEASE>:/O2>")
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+elseif()
     add_compile_options("-Wall" "-Wextra" "-Werror" "$<$<CONFIG:RELEASE>:-O3>" "-stdlib=libc++")
 endif()
 
@@ -29,9 +29,10 @@ include_directories(
     ${SRC_DIR}/Storage
     ${SRC_DIR}/Utils
     ${SRC_DIR}/WebSocketControllers
+    ${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/vendor/boost-headers
 )
 
-file(GLOB EXEC
+file(GLOB EXEC # Nemeli bychom pouzivat GLOB x_x
    ${SRC_DIR}/Account/*.cpp
    ${SRC_DIR}/Storage/*.cpp
    ${SRC_DIR}/Utils/*.cpp
@@ -39,7 +40,6 @@ file(GLOB EXEC
    ${SRC_DIR}/*.cpp
 )
 
-find_package(Boost REQUIRED) # Pridat jako submodule (jenom algorithm)
 find_package(Git QUIET)
 
 # Update git submodules
@@ -61,5 +61,4 @@ add_executable(${PROJECT_NAME} ${EXEC})
 target_link_libraries(${PROJECT_NAME} PRIVATE
     drogon
     SQLiteCpp
-    Boost::headers
 )

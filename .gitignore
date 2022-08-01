@@ -10,3 +10,10 @@ builds
 
 # CMake
 CMakeSettings.json
+
+# Db
+*.db
+*.mysql
+
+# Temp
+uploads
