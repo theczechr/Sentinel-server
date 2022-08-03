@@ -1,7 +1,11 @@
 ﻿# Do powershellu dej: winget install CMake a mas latest CMake
 cmake_minimum_required(VERSION 3.21)
 
+<<<<<<< HEAD
 project(Sentinel # Okay tady jsem dal uz sentinel protoze z nejakeho duvodu mi neslo same name jako dir (idk proc, prosim neptej se me, byl jsem unaveny)
+=======
+project(Sentinel
+>>>>>>> f3056b24 (reorganized files)
         LANGUAGES CXX)
 		
 set(CMAKE_CXX_STANDARD 20)
@@ -19,20 +23,20 @@ elseif()
     add_compile_options("-Wall" "-Wextra" "-Werror" "$<$<CONFIG:RELEASE>:-O3>" "-stdlib=libc++")
 endif()
 
-set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/src)
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/vendor/drogon)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/vendor/sqlitecpp)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/drogon)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sqlitecpp)
 
 include_directories(
     ${SRC_DIR}/Account
     ${SRC_DIR}/Storage
     ${SRC_DIR}/Utils
     ${SRC_DIR}/WebSocketControllers
-    ${CMAKE_CURRENT_SOURCE_DIR}/KRapp-server/vendor/boost-headers
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/boost-headers
 )
 
-file(GLOB EXEC # Nemeli bychom pouzivat GLOB x_x
+file(GLOB EXEC # We shouldn't use GLOB
    ${SRC_DIR}/Account/*.cpp
    ${SRC_DIR}/Storage/*.cpp
    ${SRC_DIR}/Utils/*.cpp

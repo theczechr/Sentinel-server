@@ -1,6 +1,6 @@
-[submodule "KRapp-server/vendor/drogon"]
-	path = KRapp-server/vendor/drogon
+[submodule "vendor/drogon"]
+	path = vendor/drogon
 	url = https://github.com/drogonframework/drogon.git
-[submodule "KRapp-server/vendor/sqlitecpp"]
-	path = KRapp-server/vendor/sqlitecpp
+[submodule "vendor/sqlitecpp"]
+	path = vendor/sqlitecpp
 	url = https://github.com/SRombauts/SQLiteCpp.git

@@ -14,6 +14,7 @@ CMakeSettings.json
 # Db
 *.db
 *.mysql
+*.sql
 
 # Temp
 uploads
