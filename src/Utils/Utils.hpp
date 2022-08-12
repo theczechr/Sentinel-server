@@ -3,5 +3,5 @@
 
 namespace Utils
 {
-	bool file_exist(std::string file);
+bool file_exist(std::string file);
 }
