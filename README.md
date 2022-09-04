@@ -1,1 +1,1 @@
-Use `git clone` with `--recursive` flag
+`git clone --recursive https://github.com/theczechr/Sentinel-server.git`
