@@ -1,1 +1,3 @@
-`git clone --recursive https://github.com/theczechr/Sentinel-server.git`
+```
+git clone --recursive https://github.com/theczechr/Sentinel-server.git
+```
