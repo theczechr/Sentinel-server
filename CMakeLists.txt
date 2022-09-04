@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(MSVC)
-    add_compile_options("/W3" "/O2" "/std:c++20")
+    add_compile_options("/W3" "/Ox" "/std:c++20")
 elseif()
     add_compile_options("-Wall" "-Wextra" "-Werror" "-O3" "-std=c++20")
 endif()
@@ -19,10 +19,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sqlitecpp)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/drogon)
 
 include_directories(
-    ${SRC_DIR}/Account
-    ${SRC_DIR}/Storage
-    ${SRC_DIR}/Utils
-    ${SRC_DIR}/WebSocketControllers
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/vendor/boost-headers
 )
 

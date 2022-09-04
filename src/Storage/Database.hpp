@@ -1,5 +1,6 @@
 ﻿#pragma once
-#include "Utils.hpp"
+#include "Utils/Utils.hpp"
+
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <trantor/utils/Logger.h>
 
@@ -35,25 +36,22 @@ login
  * Tpc doufam ze si jednou ty notes prectes : DDD (20.6.2022 19:00)
  */
 
-namespace storage
-{
-class Database
-{
-  public:
-    Database()
-    {
-        create();
-    }
+namespace storage {
+	class Database {
+	  public:
+		Database() {
+			create();
+		}
 
-    std::string get_name() const;
-    SQLite::Database get_db() const;
+		std::string		 get_name() const;
+		SQLite::Database get_db() const;
 
-    void create_table(std::string table_name);
-    void exec(std::string command);
-    void drop_table(std::string table_name);
+		void create_table(std::string table_name);
+		void exec(std::string command);
+		void drop_table(std::string table_name);
 
-  private:
-    std::string db_name = "my_db.db";
-    void create();
-};
-} // namespace storage
+	  private:
+		std::string db_name = "my_db.db";
+		void		create();
+	};
+}// namespace storage
