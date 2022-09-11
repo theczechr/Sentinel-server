@@ -1,43 +1,41 @@
 #pragma once
-#include "Utils/UNIX_TS.hpp"
-#include "Utils/UUID.hpp"
+#include "utils/UUID.hpp"
 
 #include <optional>// std::optional
 #include <trantor/utils/Logger.h>
 
-class Account {
-  public:
-	Account() {
-		this->status = true;
-	}
+namespace sentinel {
 
-	Utils::UUID get_uuid() const;
-	void		set_uuid(Utils::UUID uuid);
+	class account {
+	  public:
+		utils::UUID get_uuid() const;
+		void		set_uuid(utils::UUID uuid);
 
-	std::string get_username() const;
-	void		set_username(std::string username);
+		std::string get_username() const;
+		void		set_username(std::string username);
 
-	std::string get_pub_key_fprint() const;
-	void		set_pub_key_fprint(std::string pub_key_fprint);
+		std::string get_pub_key_fprint() const;
+		void		set_pub_key_fprint(std::string pub_key_fprint);
 
-	std::optional<std::string> get_recovery_phrase() const;
-	void					   set_recovery_phrase(std::string recovery_phrase);
+		std::optional<std::string> get_recovery_phrase() const;
+		void					   set_recovery_phrase(std::string recovery_phrase);
 
-	std::string get_status() const;
-	void		set_status(std::string status);
+		bool get_status() const;
+		void set_status(bool status);
 
-  private:
-	Utils::UUID uuid;
-	std::string username;
-	/*
-     * Nebudeme storovat celej public key, ale jenom jeho fingerprint
-     * Ma mensi size a je to string takze to pro nas bude jednodussi
-     * E.g. 43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8
-     */
-	std::string pub_key_fprint;
-	bool		recovery_enabled = true;
-	std::string recovery_phrase;
-	bool		status;// active / inactive
+		unsigned long long get_last_login() const;
+		void			   set_last_login(unsigned long long last_login);
 
-	void require_active();
-};
+	  private:
+		utils::UUID		   uuid_;
+		std::string		   username_;
+		std::string		   pub_key_fprint_;
+		bool			   recovery_enabled_ = true;
+		std::string		   recovery_phrase_;
+		bool			   status_ = true;
+		unsigned long long last_login_;
+
+		void require_active();
+	};
+
+}// namespace sentinel

@@ -1,55 +1,59 @@
-#include "Account.hpp"
+#include "account.hpp"
 
-Utils::UUID Account::get_uuid() const {
-	return uuid;
+sentinel::utils::UUID sentinel::account::get_uuid() const {
+	return uuid_;
 }
 
-void Account::set_uuid(Utils::UUID uuid) {
+void sentinel::account::set_uuid(sentinel::utils::UUID uuid) {
 	require_active();
-	this->uuid = uuid;
+	this->uuid_ = uuid;
 }
 
-std::string Account::get_username() const {
-	return username;
+std::string sentinel::account::get_username() const {
+	return username_;
 }
-void Account::set_username(std::string username) {
-	require_active();
-
-	this->username = username;
-}
-
-std::string Account::get_pub_key_fprint() const {
-	return pub_key_fprint;
-}
-void Account::set_pub_key_fprint(std::string pub_key_fprint) {
+void sentinel::account::set_username(std::string username) {
 	require_active();
 
-	this->pub_key_fprint = pub_key_fprint;
+	this->username_ = username;
 }
 
-std::optional<std::string> Account::get_recovery_phrase() const {
-	if (recovery_enabled)
-		return recovery_phrase;
+std::string sentinel::account::get_pub_key_fprint() const {
+	return pub_key_fprint_;
 }
-void Account::set_recovery_phrase(std::string recovery_phrase) {
+void sentinel::account::set_pub_key_fprint(std::string pub_key_fprint) {
 	require_active();
 
-	this->recovery_enabled = true;
-	this->recovery_phrase  = recovery_phrase;
+	this->pub_key_fprint_ = pub_key_fprint;
 }
 
-std::string Account::get_status() const {
-	return this->status ? "active" : "false";
+std::optional<std::string> sentinel::account::get_recovery_phrase() const {
+	if (recovery_enabled_)
+		return recovery_phrase_;
 }
-void Account::set_status(std::string status) {
-	if (status == "inactive")
-		this->status = false;
-	else
-		this->status = true;
+void sentinel::account::set_recovery_phrase(std::string recovery_phrase) {
+	require_active();
+
+	this->recovery_enabled_ = true;
+	this->recovery_phrase_	= recovery_phrase;
 }
 
-void Account::require_active() {
-	if (status) {
-		throw("Account '" + (std::string) this->uuid + "' is not active");
-	}
+bool sentinel::account::get_status() const {
+	return this->status_;
+}
+void sentinel::account::set_status(bool status) {
+	this->status_ = status;
+}
+
+unsigned long long sentinel::account::get_last_login() const {
+	return this->last_login_;
+}
+
+void sentinel::account::set_last_login(unsigned long long last_login) {
+	this->last_login_ = last_login;
+}
+
+void sentinel::account::require_active() {
+	if (!this->status_)
+		throw("Account '" + (std::string) this->uuid_ + "' is not active");
 }

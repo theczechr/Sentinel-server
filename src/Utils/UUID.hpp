@@ -1,27 +1,28 @@
 #pragma once
 #include <drogon/utils/Utilities.h>
 
-namespace Utils {
+namespace sentinel {
+	namespace utils {
 
-	class UUID {
-	  public:
-		UUID() {
-		}
-		UUID(std::string uuid) : m_UUID(uuid) {
-		}
+		class UUID {
+		  public:
+			UUID() {}
+			UUID(std::string UUID) : UUID_(UUID) {}
 
-		UUID generage_new() {
-			return m_UUID = drogon::utils::getUuid();
-		}
-		operator UUID() const {
-			return UUID(m_UUID);
-		}
-		operator std::string() const {
-			return m_UUID;
-		}
+			operator UUID() const {
+				return UUID(UUID_);
+			}
+			operator std::string() const {
+				return UUID_;
+			}
 
-	  private:
-		std::string m_UUID;
-	};
+			UUID generage_new() {
+				return UUID_ = drogon::utils::getUuid();
+			}
 
-}// namespace Utils
+		  private:
+			std::string UUID_;
+		};
+
+	}// namespace utils
+}// namespace sentinel

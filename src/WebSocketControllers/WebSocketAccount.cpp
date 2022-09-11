@@ -63,7 +63,7 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
 			std::string new_username   = req->getParameter("new_username");
 			// std::string last_login = req->getParameter("last_login");
 
-			Account a = account_manager.get_by_pkf(pub_key_fprint);
+			sentinel::account a = account_manager.get_by_pkf(pub_key_fprint);
 
 			account_manager.update_username(a, new_username);
 

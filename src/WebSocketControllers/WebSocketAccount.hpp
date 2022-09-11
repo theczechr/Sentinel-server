@@ -1,5 +1,5 @@
 #pragma once
-#include "Account/AccountManager.hpp"
+#include "account/account_manager.hpp"
 
 #include <drogon/WebSocketController.h>
 
@@ -19,7 +19,7 @@ class WebSocketAccount : public drogon::WebSocketController<WebSocketAccount> {
 	WS_PATH_ADD("/deactivate", drogon::Head);
 	WS_PATH_LIST_END
   private:
-	AccountManager account_manager;
+	sentinel::account_manager account_manager;
 
 	enum Options {
 		Option_Invalid,
