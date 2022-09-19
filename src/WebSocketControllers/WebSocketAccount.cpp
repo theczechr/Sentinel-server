@@ -31,7 +31,7 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
 		case Register: {
 			LOG_INFO << "Request path '" << req->getPath() << "'";
 
-			std::string username		= req->getParameter("username");
+			Sentinel::Username username		= req->getParameter("username");
 			std::string pub_key_fprint	= req->getParameter("pub_key_fprint");
 			std::string recovery_phrase = req->getParameter("recovery_phrase");
 			// std::string last_login = req->getParameter("last_login"); // Dame do device
@@ -63,7 +63,7 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
 			std::string new_username   = req->getParameter("new_username");
 			// std::string last_login = req->getParameter("last_login");
 
-			sentinel::account a = account_manager.get_by_pkf(pub_key_fprint);
+			Sentinel::Account a = account_manager.get_by_pkf(pub_key_fprint);
 
 			account_manager.update_username(a, new_username);
 

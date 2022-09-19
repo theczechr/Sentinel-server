@@ -29,27 +29,25 @@ login
                         - Znova registrace
 */
 
-namespace sentinel {
-	namespace storage {
+namespace Sentinel {
 
-		class database {
-		  public:
-			database() {}
-			database(std::string name) {
-				_create(name);
-			}
+	class Database {
+	  public:
+		Database() {}
+		Database(std::string name) {
+			create_(name);
+		}
 
-			void create_table(std::string table_name);
-			void exec(std::string command);
-			void drop_table(std::string table_name);
+		void create_table(std::string table_name);
+		void exec(std::string command);
+		void drop_table(std::string table_name);
 
-			SQLite::Database db = SQLite::Database(this->_name, SQLite::OPEN_READWRITE);
+		SQLite::Database db_connector = SQLite::Database(this->name_, SQLite::OPEN_READWRITE);
 
-		  private:
-			std::string _name;
-			void		_create(std::string &name);
-			bool		_file_exist(std::string file);
-		};
+	  private:
+		std::string name_;
+		void		create_(std::string& name);
+		bool		file_exist_(std::string file);
+	};
 
-	}// namespace storage
-}// namespace sentinel
+}// namespace Sentinel
