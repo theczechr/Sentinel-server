@@ -1,6 +1,7 @@
-#include "DatabaseTables.hpp"
+#include "database_table.hpp"
 
-/*
+#include <iostream>
+
 void sentinel::storage::table::_create(std::vector<std::pair<std::string, std::string>> &columns) {
 	this->_db.create_table(this->_name);
 	// Deleting temp. column
@@ -43,15 +44,15 @@ void sentinel::storage::table::update_value(std::string column_name, std::string
 	this->_db.exec("UPDATE " + this->_name + " SET " + column_name + " = '" + new_value + "' WHERE " + column_name + " = '" + old_value + "'");
 }
 
-void sentinel::storage::table::update_row_value_where(std::vector<std::pair<std::string, std::string>> value, std::vector<std::pair<std::string, std::string>> condition) {
-	LOG_INFO << "Changing " << value[0] << " to '" << value[1] << "' where '" << condition[0] << "' is '" << condition[1] << "' in '" << this->_name << "' table.";
+void sentinel::storage::table::update_row_value_where(std::string value_column, std::string value, std::string condition_column, std::string condition_value) {
+	LOG_INFO << "Changing " << value_column << " to '" << value << "' where '" << condition_column << "' is '" << condition_value << "' in '" << this->_name << "' table.";
 
-	if (!value_exist(condition[0], condition[1])) {
-		LOG_ERROR << "Condition value '" << condition[1] << "' doesn't exist, quitting";
+	if (!value_exist(condition_column, condition_value)) {
+		LOG_ERROR << "Condition value '" << condition_value << "' doesn't exist, quitting";
 		return;
 	}
 
-	this->_db.exec("UPDATE " + this->_name + " SET " + value[0] + " = '" + value[1] + "' WHERE " + condition[0] + " = '" + condition[1] + "'");
+	this->_db.exec("UPDATE " + this->_name + " SET " + value_column + " = '" + value + "' WHERE " + condition_column + " = '" + condition_value + "'");
 }
 
 void sentinel::storage::table::update_row_value_where_d(std::string value_column, std::string value, std::string condition_column1, std::string condition_value1, std::string condition_column2, std::string condition_value2) {
@@ -126,4 +127,3 @@ std::vector<std::string> sentinel::storage::table::get_row_where_d(std::string c
 	}
 	return row;
 }
-*/
