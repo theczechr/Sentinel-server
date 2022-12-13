@@ -1,4 +1,4 @@
-#include "account.hpp"
+#include "Account.hpp"
 
 sentinel::utils::UUID sentinel::account::get_uuid() const {
 	return uuid_;

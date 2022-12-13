@@ -15,7 +15,7 @@ endif()
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sqlitecpp)
+#add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sqlitecpp) # FIXME
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/drogon)
 
 include_directories(
@@ -30,6 +30,8 @@ file(GLOB EXEC # We shouldn't use GLOB
    ${SRC_DIR}/WebSocketControllers/*.cpp
    ${SRC_DIR}/*.cpp
 )
+
+find_package(SQLiteCpp CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} ${EXEC})
 target_link_libraries(${PROJECT_NAME} PRIVATE

@@ -1,4 +1,4 @@
-#include "database.hpp"
+#include "Database.hpp"
 
 void sentinel::storage::database::_create(std::string &name) {
 	LOG_INFO << "SQlite3 version " << SQLite::VERSION << " (" << SQLite::getLibVersion() << ")";

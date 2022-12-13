@@ -1,4 +1,4 @@
-#include "database_table.hpp"
+#include "DatabaseTable.hpp"
 
 #include <iostream>
 
@@ -23,7 +23,7 @@ void sentinel::storage::table::add_row(std::vector<std::string> row) {
 bool sentinel::storage::table::value_exist(std::string column_name, std::string value) {
 	LOG_INFO << "Checking if '" << column_name << "' exist in table '" << this->_name << "'";
 
-	if (this->_db._db.execAndGet("SELECT EXISTS(SELECT 1 FROM Accounts WHERE " + column_name + " = '" + value + "')")
+	if (this->_db.db.execAndGet("SELECT EXISTS(SELECT 1 FROM Accounts WHERE " + column_name + " = '" + value + "')")
 			.getString() == "0") {
 		LOG_INFO << "Item '" << column_name << "' doens't exist";
 		return false;
@@ -98,7 +98,7 @@ std::vector<std::string> sentinel::storage::table::get_row_where(std::string con
 	LOG_INFO << "Filling vector with row where '" << condition_column << "' = '" << condition_value << "' in '" << this->_name << "' table.";
 
 	std::vector<std::string> row;
-	SQLite::Statement		 query(this->_db._db,
+	SQLite::Statement		 query(this->_db.db,
 							   "SELECT * FROM Accounts WHERE " + condition_column + " = '" + condition_value + "'");
 
 	while (query.executeStep()) {
@@ -118,7 +118,7 @@ std::vector<std::string> sentinel::storage::table::get_row_where_d(std::string c
 	}
 
 	std::vector<std::string> row;
-	SQLite::Statement		 query(this->_db._db, "SELECT * FROM Accounts WHERE " + condition_column1 + " = '" + condition_value1 + "' AND " + condition_column2 + " = '" + condition_value2 + "'");
+	SQLite::Statement		 query(this->_db.db, "SELECT * FROM Accounts WHERE " + condition_column1 + " = '" + condition_value1 + "' AND " + condition_column2 + " = '" + condition_value2 + "'");
 
 	while (query.executeStep()) {
 		for (int n {}; n < query.getColumnCount(); n++) {

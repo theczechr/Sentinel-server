@@ -1,4 +1,4 @@
-#include "account_manager.hpp"
+#include "AccountManager.hpp"
 
 sentinel::account sentinel::account_manager::create(std::string &username, std::string &pub_key_fprint, std::string &recovery_phrase) {
 	account account;
