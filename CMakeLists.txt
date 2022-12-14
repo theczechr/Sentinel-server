@@ -28,5 +28,5 @@ file(GLOB EXEC
 add_executable(${PROJECT_NAME} ${EXEC})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    drogon
-)
+                        drogon
+                        )

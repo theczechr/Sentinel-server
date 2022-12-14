@@ -7,15 +7,15 @@ namespace sentinel {
 	class account_manager {
 	  public:
 		account_manager() {
-			this->table_ = sentinel::storage::table(
-				"Accounts", {
-					{"uuid", "TEXT NOT NULL"},
-					{"username", "TEXT NOT NULL"},
-					{"pub_key_fprint", "TEXT NOT NULL"},
-					{"recovery_phrase", "TEXT"},
-					{"status", "TEXT NOT NULL"},
-					{"last_login", "INTEGER NOT NULL"}
-				});
+			// this->table_ = sentinel::storage::table(
+			// 	"Accounts", {
+			// 		{"uuid", "TEXT NOT NULL"},
+			// 		{"username", "TEXT NOT NULL"},
+			// 		{"pub_key_fprint", "TEXT NOT NULL"},
+			// 		{"recovery_phrase", "TEXT"},
+			// 		{"status", "TEXT NOT NULL"},
+			// 		{"last_login", "INTEGER NOT NULL"}
+			// 	});
 		}
 
 		account create(std::string &username, std::string &pub_key_fprint, std::string &recovery_phrase);
@@ -30,7 +30,7 @@ namespace sentinel {
 
 	  private:
 		sentinel::utils::UUID	 uuid_;
-		sentinel::storage::table table_;
+		// sentinel::storage::table table_;
 	};
 
 }// namespace sentinel

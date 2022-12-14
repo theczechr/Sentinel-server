@@ -1,3 +1,4 @@
+/*
 #include "DatabaseTable.hpp"
 
 #include <iostream>
@@ -127,3 +128,4 @@ std::vector<std::string> sentinel::storage::table::get_row_where_d(std::string c
 	}
 	return row;
 }
+*/

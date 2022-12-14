@@ -1,10 +1,11 @@
-﻿#pragma once
+﻿/*
+#pragma once
 #include <SQLiteCpp/SQLiteCpp.h>
 #include <fstream>
 #include <trantor/utils/Logger.h>
 
-/*
- * Server db: uuid, public key fingerprint, username, recovery phrase, last
+
+Server db: uuid, public key fingerprint, username, recovery phrase, last
 login
 1. Registrace
         - Username
@@ -27,7 +28,7 @@ login
                         - Prihlaseni pod stejnym acc
                 - Pokud neni
                         - Znova registrace
-*/
+
 
 namespace sentinel {
 	namespace storage {
@@ -53,3 +54,4 @@ namespace sentinel {
 
 	}// namespace storage
 }// namespace sentinel
+*/

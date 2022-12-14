@@ -1,3 +1,4 @@
+/*
 #include "Database.hpp"
 
 void sentinel::storage::database::_create(std::string &name) {
@@ -77,3 +78,4 @@ void sentinel::storage::database::drop_table(std::string table_name) {
 
 	LOG_INFO << "Table '" + table_name + "' was dropped successfully, quitting";
 }
+*/

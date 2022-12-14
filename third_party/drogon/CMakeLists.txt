@@ -6,11 +6,11 @@ message(STATUS "compiler: " ${CMAKE_CXX_COMPILER_ID})
 
 # If your cross compile is failing, you should set
 # CMAKE_SYSTEM_NAME in your toolchain file
-# if (NOT CMAKE_CROSSCOMPILING)
-#     set(BUILD_PROGRAMS ON)
-# else ()
-#     set(BUILD_PROGRAMS OFF)
-# endif ()
+if (NOT CMAKE_CROSSCOMPILING)
+    set(BUILD_PROGRAMS ON)
+else ()
+    set(BUILD_PROGRAMS OFF)
+endif ()
 
 set(BUILD_PROGRAMS OFF)
 
@@ -199,9 +199,10 @@ else()
 endif()
 
 # jsoncpp
-find_package(Jsoncpp REQUIRED)
-target_link_libraries(${PROJECT_NAME} PUBLIC Jsoncpp_lib)
-list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
+# find_package(Jsoncpp REQUIRED)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/jsoncpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC jsoncpp)
+# list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
 
 if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD"
     AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "OpenBSD"
