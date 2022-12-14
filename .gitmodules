@@ -1,6 +1,0 @@
-[submodule "vendor/drogon"]
-	path = vendor/drogon
-	url = https://github.com/drogonframework/drogon.git
-[submodule "vendor/sqlitecpp"]
-	path = vendor/sqlitecpp
-	url = https://github.com/SRombauts/SQLiteCpp.git
