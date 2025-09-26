@@ -25,7 +25,7 @@
 
 ## About
 
-Sentinel is a proof-of-concept messaging application I co-created with my friend, designed with privacy and security at its core. It features end-to-end encryption and utilizes WebSockets, the Drogon HTTP web framework, and an SQL database to provide a secure and efficient communication platform. After completing the text-based user interface and proof of concept, we open-sourced it and moved on to other projects.
+Sentinel is a proof-of-concept, privacy and security-focused messaging application co-created as a demonstration of secure communication protocols. It features end-to-end encryption and utilizes WebSockets, the Drogon HTTP web framework, and an SQL database to provide a secure and efficient communication platform. After completing the text-based user interface and proof of concept, the project was open-sourced for the community to learn from and build upon.
 
 ## Features
 
