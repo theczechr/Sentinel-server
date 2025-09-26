@@ -27,6 +27,14 @@ void sentinel::account::set_pub_key_fprint(std::string pub_key_fprint) {
 	this->pub_key_fprint_ = pub_key_fprint;
 }
 
+std::optional<std::string> sentinel::account::get_public_key() const {
+	return public_key_;
+}
+void sentinel::account::set_public_key(const std::string &public_key) {
+	require_active();
+	this->public_key_ = public_key;
+}
+
 std::optional<std::string> sentinel::account::get_recovery_phrase() const {
 	if (recovery_enabled_)
 		return recovery_phrase_;

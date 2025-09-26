@@ -1,4 +1,10 @@
 #include "WebSocketAccount.hpp"
+#include "Utils/CryptoVerifier.hpp"
+#include "Utils/Base64.hpp"
+#include "Utils/E2E.hpp"
+
+#include <chrono>
+
 
 void WebSocketAccount::handleNewMessage(const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message, const drogon::WebSocketMessageType &type) {
 	std::string messageType = "Unknown";
@@ -22,7 +28,7 @@ void WebSocketAccount::handleConnectionClosed(const drogon::WebSocketConnectionP
 }
 
 void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
-										   const drogon::WebSocketConnectionPtr &conn) {
+											   const drogon::WebSocketConnectionPtr &conn) {
 	LOG_INFO << "New websocket connection!";
 
 	std::string input = req->getPath();
@@ -34,15 +40,13 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
 			std::string username		= req->getParameter("username");
 			std::string pub_key_fprint	= req->getParameter("pub_key_fprint");
 			std::string recovery_phrase = req->getParameter("recovery_phrase");
+			std::string public_key		= req->getParameter("public_key");
 			// std::string last_login = req->getParameter("last_login"); // Dame do device
 
-			account_manager.create(username, pub_key_fprint, recovery_phrase);
-
-			// Make it bool so we can send response to the client
-
-			/*
-         * List of codes on both client and server side and as response we will just send error code
-         */
+			auto acc = account_manager.create(username, pub_key_fprint, recovery_phrase);
+			if (!public_key.empty()) {
+				account_manager.upsert_public_key_for_pkf(pub_key_fprint, public_key);
+			}
 
 			conn->send("4444");
 
@@ -67,11 +71,6 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
 
 			account_manager.update_username(a, new_username);
 
-			// Make it bool so we can send response to the client
-
-			/*
-         * List of codes on both client and server side and as response we will just send error code
-         */
 			conn->send("1");
 
 			break;
@@ -83,6 +82,67 @@ void WebSocketAccount::handleNewConnection(const drogon::HttpRequestPtr			&req,
 			std::string last_login		= req->getParameter("last_login");
 
 			break;
+		}
+		case Get_pubkey: {
+			LOG_INFO << "Request path '" << req->getPath() << "'";
+			std::string target_pkf = req->getParameter("pub_key_fprint");
+			auto pubkeyOpt = account_manager.get_public_key_by_pkf(target_pkf);
+			if (pubkeyOpt.has_value()) {
+				conn->send(pubkeyOpt.value());
+			} else {
+				conn->send("");
+			}
+			return;
+		}
+		case Publish_pubkey: {
+			LOG_INFO << "Request path '" << req->getPath() << "'";
+			std::string pub_key_fprint = req->getParameter("pub_key_fprint");
+			std::string public_key		= req->getParameter("public_key");
+			std::string signed_payload = req->getParameter("signed_payload"); // Base64 of the string being signed
+			std::string signature		= req->getParameter("signature"); // Base64 of Ed25519 signature
+			// Rate limit by ip + fingerprint
+			std::string rl_key = conn->peerAddr().toIpPort() + "|" + pub_key_fprint;
+			if (!publish_limiter.allow(rl_key)) {
+				conn->send("0");
+				return;
+			}
+			if (!pub_key_fprint.empty() && !public_key.empty()) {
+				// Verify fingerprint matches published key
+				if (!sentinel::utils::fingerprint_matches_pubkey_hex_b64(pub_key_fprint, public_key)) {
+					conn->send("0");
+					return;
+				}
+				// Verify signature matches the public key over the payload
+				if (!sentinel::utils::verify_ed25519_base64(public_key, signed_payload, signature)) {
+					conn->send("0");
+					return;
+				}
+				// Replay protection: payload must be "fprint|timestamp" and recent
+				auto parsed = sentinel::utils::parse_signed_payload_b64(signed_payload);
+				if (!parsed.has_value()) {
+					conn->send("0");
+					return;
+				}
+				const std::string &payload_fprint = parsed->first;
+				unsigned long long payload_ts = parsed->second;
+				if (payload_fprint != pub_key_fprint) {
+					conn->send("0");
+					return;
+				}
+				const unsigned long long now = static_cast<unsigned long long>(std::chrono::duration_cast<std::chrono::seconds>(
+											std::chrono::system_clock::now().time_since_epoch())
+											.count());
+				constexpr unsigned long long kMaxAgeSeconds = 300ULL; // 5 minutes
+				if (payload_ts > now || (now - payload_ts) > kMaxAgeSeconds) {
+					conn->send("0");
+					return;
+				}
+				account_manager.upsert_public_key_for_pkf(pub_key_fprint, public_key);
+				conn->send("1");
+				return;
+			}
+			conn->send("0");
+			return;
 		}
 
 		// handles Option_Invalid and any other missing/unmapped cases

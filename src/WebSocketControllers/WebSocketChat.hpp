@@ -30,6 +30,8 @@ class WebSocketChat : public drogon::WebSocketController<WebSocketChat> {
 		// others...
 	};
 
+	static constexpr size_t kMaxMessageBytes = 64 * 1024; // 64KB limit
+
 	void foo(const drogon::WebSocketConnectionPtr &conn, Error_codes code) {
 		std::string error;
 

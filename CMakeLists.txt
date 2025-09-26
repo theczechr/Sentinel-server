@@ -29,7 +29,11 @@ file(GLOB EXEC
 )
 
 find_package(Drogon CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 add_executable(${PROJECT_NAME} ${EXEC})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
+target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon OpenSSL::SSL OpenSSL::Crypto)
+
+# Tests
+add_subdirectory(tests)

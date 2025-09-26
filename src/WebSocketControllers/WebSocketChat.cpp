@@ -1,15 +1,20 @@
 #include "WebSocketChat.hpp"
 
 void WebSocketChat::handleNewMessage(const drogon::WebSocketConnectionPtr &wsConnPtr, std::string &&message, const drogon::WebSocketMessageType &type) {
-	LOG_DEBUG << "new websocket message:" << message;
 	if (type == drogon::WebSocketMessageType::Ping) {
 		LOG_DEBUG << "recv a ping";
 	} else if (type == drogon::WebSocketMessageType::Text) {
+		if (message.size() > kMaxMessageBytes) {
+			LOG_WARN << "Dropping oversized message from '" << wsConnPtr->peerAddr().toIpPort() << "'";
+			return;
+		}
 		auto &s = wsConnPtr->getContextRef<Subscriber>();
+		// Broadcast without logging plaintext to keep E2E opaque on the server
 		chatRooms_.publish(s.chatRoomName_, message);
 	}
 
-	LOG_INFO << "Message from '" << wsConnPtr->peerAddr().toIpPort() << "', message content '" << message << "'";
+	// Avoid logging full plaintext message contents for privacy
+	LOG_INFO << "Message from '" << wsConnPtr->peerAddr().toIpPort() << "'";
 }
 
 void WebSocketChat::handleConnectionClosed(const drogon::WebSocketConnectionPtr &conn) {

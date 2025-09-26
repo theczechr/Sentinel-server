@@ -2,11 +2,14 @@
 #include "Storage/DatabaseTable.hpp"
 #include "Account.hpp"
 
+#include <unordered_map>
+#include "Storage/PublicKeyStore.hpp"
+
 namespace sentinel {
 
 	class account_manager {
 	  public:
-		account_manager() {
+		account_manager() : key_store_{"keys.db"} {
 			// this->table_ = sentinel::storage::table(
 			// 	"Accounts", {
 			// 		{"uuid", "TEXT NOT NULL"},
@@ -28,9 +31,18 @@ namespace sentinel {
 		bool login(account &account);
 		void delete_(account &account);
 
+		// New helpers for E2E key discovery (persisted)
+		std::optional<std::string> get_public_key_by_pkf(const std::string &public_key_fingerprint) const;
+		void upsert_public_key_for_pkf(const std::string &public_key_fingerprint, const std::string &public_key);
+		void erase_public_key_for_pkf(const std::string &public_key_fingerprint);
+
 	  private:
 		sentinel::utils::UUID	 uuid_;
 		// sentinel::storage::table table_;
+
+		// In-memory index for accounts (PoC)
+		std::unordered_map<std::string, account> pkf_to_account_;
+		storage::PublicKeyStore key_store_;
 	};
 
 }// namespace sentinel
